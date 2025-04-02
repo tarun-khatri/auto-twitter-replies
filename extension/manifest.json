@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Twitter Reply Generator",
+  "version": "1.0.0",
+  "description": "Generates human-like replies for tweets using GPT-J-6B.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://x.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://twitter.com/*", "https://x.com/*"],
+      "js": ["dist/content/content.js"],
+      "run_at": "document_end",
+      "type": "module"
+    }
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  }
+}
