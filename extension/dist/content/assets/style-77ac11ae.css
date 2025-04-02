@@ -1,0 +1,132 @@
+/* Container that positions the panel */
+.overlay-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    pointer-events: none; /* Allow clicks to pass through to the backdrop */
+}
+
+/* Panel styling - this will be positioned programmatically */
+.overlay-panel {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    width: 320px;
+    max-height: 450px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    pointer-events: auto; /* Make the panel clickable */
+}
+
+/* Header styling */
+.overlay-header {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+    color: #0f1419;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+/* Box containing all reply options */
+.replies-box {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #f7f9f9;
+    padding: 10px;
+    margin-bottom: 16px;
+}
+
+/* Container for reply option buttons */
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between reply buttons */
+    max-height: 240px; /* Show approximately 3 replies */
+    overflow-y: auto;
+}
+
+/* Styling for each reply option button */
+.reply-option-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    text-align: left;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #0f1419;
+    line-height: 1.4;
+    min-height: 60px; /* Minimum height for each reply */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: block; /* Ensures each reply is on a new line */
+}
+
+.reply-option-button:hover {
+    background-color: #f8f8f8;
+    border-color: #1da1f2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Styling for the cancel button */
+.cancel-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    background: #f4212e; /* Twitter red */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 8px;
+    box-shadow: 0 2px 4px rgba(244,33,46,0.2);
+}
+
+.cancel-button:hover {
+    background-color: #e0001b;
+    box-shadow: 0 2px 8px rgba(244,33,46,0.3);
+}
+
+/* Custom scrollbar for the options container */
+.options-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.options-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.options-container::-webkit-scrollbar-thumb {
+    background: #cfd9de;
+    border-radius: 10px;
+}
+
+.options-container::-webkit-scrollbar-thumb:hover {
+    background: #1da1f2;
+}
+
+/* Slide in animation for the panel */
+@keyframes slideIn {
+    from {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

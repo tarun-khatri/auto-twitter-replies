@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+python-dotenv
+requests
+emoji
+google-genai
