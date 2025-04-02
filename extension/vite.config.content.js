@@ -10,8 +10,9 @@ export default defineConfig({
         content: resolve(__dirname, 'src/ContentScript.jsx')
       },
       output: {
-        inlineDynamicImports: true,  // Bundle everything into one file
+        inlineDynamicImports: true,
         format: 'es',
+        dir: 'dist/content',
         entryFileNames: 'content.js'
       }
     },

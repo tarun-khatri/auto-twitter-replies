@@ -488,7 +488,6 @@ const BACKEND_URL = "http://localhost:8000";
 function TwitterReplyGenerator() {
   const [loading, setLoading] = reactExports.useState(false);
   const [replyOptionsData, setReplyOptionsData] = reactExports.useState(null);
-  const [tweetDialogElement, setTweetDialogElement] = reactExports.useState(null);
   const getOriginalTweetText = () => {
     let tweetElement = document.querySelector("article div[lang]");
     if (!tweetElement) {
@@ -497,7 +496,7 @@ function TwitterReplyGenerator() {
     return tweetElement ? tweetElement.innerText : "";
   };
   const generateReplyOptions = async () => {
-    let replyOptions = 3;
+    let replyOptions = 1;
     if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
       await new Promise((resolve) => {
         chrome.storage.local.get(["replyOptions"], (result) => {
@@ -522,8 +521,6 @@ function TwitterReplyGenerator() {
       });
       const data = await response.json();
       if (data.replies && data.replies.length > 0) {
-        const modal = document.querySelector("div[role='dialog']");
-        setTweetDialogElement(modal);
         setReplyOptionsData(data.replies);
       } else {
         alert("No reply generated.");
@@ -538,8 +535,9 @@ function TwitterReplyGenerator() {
     setReplyOptionsData(null);
   };
   const insertReply = (reply) => {
-    if (tweetDialogElement) {
-      const textArea = tweetDialogElement.querySelector("div[data-testid='tweetTextarea_0']");
+    const modal = document.querySelector("div[role='dialog']");
+    if (modal) {
+      const textArea = modal.querySelector("div[data-testid='tweetTextarea_0']");
       if (textArea) {
         textArea.focus();
         document.execCommand("insertText", false, reply);
@@ -602,17 +600,14 @@ function TwitterReplyGenerator() {
       clearInterval(interval);
     };
   }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    loading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-indicator", children: "Generating replies..." }),
-    replyOptionsData && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      ReplyOptionsOverlay,
-      {
-        replies: replyOptionsData,
-        onSelect: handleOverlaySelect,
-        onCancel: removeOverlay
-      }
-    )
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: replyOptionsData && /* @__PURE__ */ jsxRuntimeExports.jsx(
+    ReplyOptionsOverlay,
+    {
+      replies: replyOptionsData,
+      onSelect: handleOverlaySelect,
+      onCancel: removeOverlay
+    }
+  ) });
 }
 const container = document.createElement("div");
 document.body.appendChild(container);

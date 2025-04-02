@@ -11,6 +11,7 @@ export default defineConfig({
       },
       output: {
         format: 'es',
+        dir: 'dist/popup',
         entryFileNames: 'popup.js',
         chunkFileNames: 'chunks/[name].[hash].js',
         assetFileNames: 'assets/[name].[ext]'

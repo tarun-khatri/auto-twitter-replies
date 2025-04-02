@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import ReplyOptionsOverlay from './ReplyOptionsOverlay';
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom/client";
+import ReplyOptionsOverlay from "./ReplyOptionsOverlay";
 
-const BACKEND_URL = "http://localhost:8000"; // Adjust if needed
+const BACKEND_URL = "http://localhost:8000"; // Update if needed
 
 function TwitterReplyGenerator() {
   const [loading, setLoading] = useState(false);
   const [replyOptionsData, setReplyOptionsData] = useState(null);
-  const [tweetDialogElement, setTweetDialogElement] = useState(null);
 
   const getOriginalTweetText = () => {
     let tweetElement = document.querySelector("article div[lang]");
@@ -18,11 +17,10 @@ function TwitterReplyGenerator() {
   };
 
   const generateReplyOptions = async () => {
-    // Read replyOptions from chrome.storage; default to 3 if unavailable.
-    let replyOptions = 3;
+    let replyOptions = 1;
     if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
       await new Promise((resolve) => {
-        chrome.storage.local.get(['replyOptions'], (result) => {
+        chrome.storage.local.get(["replyOptions"], (result) => {
           if (result && result.replyOptions) {
             replyOptions = result.replyOptions;
           }
@@ -40,13 +38,10 @@ function TwitterReplyGenerator() {
       const response = await fetch(`${BACKEND_URL}/generate_reply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tweet_text: tweetText, reply_options: replyOptions })
+        body: JSON.stringify({ tweet_text: tweetText, reply_options: replyOptions }),
       });
       const data = await response.json();
       if (data.replies && data.replies.length > 0) {
-        // Store the current tweet dialog element when we generate replies
-        const modal = document.querySelector("div[role='dialog']");
-        setTweetDialogElement(modal);
         setReplyOptionsData(data.replies);
       } else {
         alert("No reply generated.");
@@ -63,11 +58,12 @@ function TwitterReplyGenerator() {
   };
 
   const insertReply = (reply) => {
-    if (tweetDialogElement) {
-      const textArea = tweetDialogElement.querySelector("div[data-testid='tweetTextarea_0']");
+    const modal = document.querySelector("div[role='dialog']");
+    if (modal) {
+      const textArea = modal.querySelector("div[data-testid='tweetTextarea_0']");
       if (textArea) {
         textArea.focus();
-        document.execCommand('insertText', false, reply);
+        document.execCommand("insertText", false, reply);
       } else {
         alert("Reply box not found in modal. Please paste the reply manually: " + reply);
       }
@@ -81,7 +77,6 @@ function TwitterReplyGenerator() {
     removeOverlay();
   };
 
-  // Inject the auto-reply button into the reply modal.
   const injectButton = () => {
     const modal = document.querySelector("div[role='dialog']");
     if (modal) {
@@ -132,11 +127,6 @@ function TwitterReplyGenerator() {
 
   return (
     <>
-      {loading && (
-        <div className="loading-indicator">
-          Generating replies...
-        </div>
-      )}
       {replyOptionsData && (
         <ReplyOptionsOverlay
           replies={replyOptionsData}
