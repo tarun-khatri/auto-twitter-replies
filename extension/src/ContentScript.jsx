@@ -1,12 +1,24 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import ReplyOptionsOverlay from "./ReplyOptionsOverlay";
 
 const BACKEND_URL = "http://localhost:8000"; // Update if needed
+=======
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom/client';
+import ReplyOptionsOverlay from './ReplyOptionsOverlay';
+
+const BACKEND_URL = "http://localhost:8000"; // Adjust if needed
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
 
 function TwitterReplyGenerator() {
   const [loading, setLoading] = useState(false);
   const [replyOptionsData, setReplyOptionsData] = useState(null);
+<<<<<<< HEAD
+=======
+  const [tweetDialogElement, setTweetDialogElement] = useState(null);
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
 
   const getOriginalTweetText = () => {
     let tweetElement = document.querySelector("article div[lang]");
@@ -17,10 +29,18 @@ function TwitterReplyGenerator() {
   };
 
   const generateReplyOptions = async () => {
+<<<<<<< HEAD
     let replyOptions = 1;
     if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
       await new Promise((resolve) => {
         chrome.storage.local.get(["replyOptions"], (result) => {
+=======
+    // Read replyOptions from chrome.storage; default to 3 if unavailable.
+    let replyOptions = 3;
+    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+      await new Promise((resolve) => {
+        chrome.storage.local.get(['replyOptions'], (result) => {
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
           if (result && result.replyOptions) {
             replyOptions = result.replyOptions;
           }
@@ -38,10 +58,20 @@ function TwitterReplyGenerator() {
       const response = await fetch(`${BACKEND_URL}/generate_reply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+<<<<<<< HEAD
         body: JSON.stringify({ tweet_text: tweetText, reply_options: replyOptions }),
       });
       const data = await response.json();
       if (data.replies && data.replies.length > 0) {
+=======
+        body: JSON.stringify({ tweet_text: tweetText, reply_options: replyOptions })
+      });
+      const data = await response.json();
+      if (data.replies && data.replies.length > 0) {
+        // Store the current tweet dialog element when we generate replies
+        const modal = document.querySelector("div[role='dialog']");
+        setTweetDialogElement(modal);
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
         setReplyOptionsData(data.replies);
       } else {
         alert("No reply generated.");
@@ -58,12 +88,20 @@ function TwitterReplyGenerator() {
   };
 
   const insertReply = (reply) => {
+<<<<<<< HEAD
     const modal = document.querySelector("div[role='dialog']");
     if (modal) {
       const textArea = modal.querySelector("div[data-testid='tweetTextarea_0']");
       if (textArea) {
         textArea.focus();
         document.execCommand("insertText", false, reply);
+=======
+    if (tweetDialogElement) {
+      const textArea = tweetDialogElement.querySelector("div[data-testid='tweetTextarea_0']");
+      if (textArea) {
+        textArea.focus();
+        document.execCommand('insertText', false, reply);
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
       } else {
         alert("Reply box not found in modal. Please paste the reply manually: " + reply);
       }
@@ -77,6 +115,10 @@ function TwitterReplyGenerator() {
     removeOverlay();
   };
 
+<<<<<<< HEAD
+=======
+  // Inject the auto-reply button into the reply modal.
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
   const injectButton = () => {
     const modal = document.querySelector("div[role='dialog']");
     if (modal) {
@@ -127,6 +169,14 @@ function TwitterReplyGenerator() {
 
   return (
     <>
+<<<<<<< HEAD
+=======
+      {loading && (
+        <div className="loading-indicator">
+          Generating replies...
+        </div>
+      )}
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
       {replyOptionsData && (
         <ReplyOptionsOverlay
           replies={replyOptionsData}
@@ -141,4 +191,8 @@ function TwitterReplyGenerator() {
 const container = document.createElement("div");
 document.body.appendChild(container);
 const root = ReactDOM.createRoot(container);
+<<<<<<< HEAD
 root.render(<TwitterReplyGenerator />);
+=======
+root.render(<TwitterReplyGenerator />);
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a

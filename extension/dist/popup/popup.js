@@ -453,6 +453,7 @@ var m = reactDomExports;
   client.hydrateRoot = m.hydrateRoot;
 }
 
+<<<<<<< HEAD
 const getDefaultsFromPostinstall = () => (undefined);
 
 /**
@@ -9637,4 +9638,70 @@ const root = client.createRoot(container);
 root.render(
   /* @__PURE__ */ jsxRuntimeExports.jsx(React.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) })
 );
+=======
+function App() {
+  const [replyOptions, setReplyOptions] = reactExports.useState(1);
+  reactExports.useEffect(() => {
+    if (chrome && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(["replyOptions"], (result) => {
+        if (result.replyOptions) {
+          setReplyOptions(result.replyOptions);
+        }
+      });
+    }
+  }, []);
+  const handleSave = () => {
+    if (chrome && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.set({ replyOptions }, () => {
+        alert("Settings saved!");
+      });
+    } else {
+      alert("chrome.storage is not available.");
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { padding: "20px", fontFamily: "Arial" }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Twitter Auto Reply Settings" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: "10px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "replyOptions", children: "Number of Reply Options:" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          id: "replyOptions",
+          type: "number",
+          min: "1",
+          value: replyOptions,
+          onChange: (e) => setReplyOptions(Number(e.target.value)),
+          style: { marginLeft: "10px", width: "60px" }
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "button",
+      {
+        onClick: handleSave,
+        style: {
+          padding: "6px 12px",
+          border: "none",
+          backgroundColor: "#1da1f2",
+          color: "#fff",
+          borderRadius: "4px",
+          cursor: "pointer"
+        },
+        children: "Save Settings"
+      }
+    )
+  ] });
+}
+
+console.log("Popup entry loaded");
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  const root = client.createRoot(rootElement);
+  root.render(
+    /* @__PURE__ */ jsxRuntimeExports.jsx(React.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) })
+  );
+} else {
+  console.error("No element with id 'root' found in popup.html");
+}
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
 //# sourceMappingURL=popup.js.map
