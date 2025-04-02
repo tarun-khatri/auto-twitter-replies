@@ -488,6 +488,10 @@ const BACKEND_URL = "http://localhost:8000";
 function TwitterReplyGenerator() {
   const [loading, setLoading] = reactExports.useState(false);
   const [replyOptionsData, setReplyOptionsData] = reactExports.useState(null);
+<<<<<<< HEAD
+=======
+  const [tweetDialogElement, setTweetDialogElement] = reactExports.useState(null);
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
   const getOriginalTweetText = () => {
     let tweetElement = document.querySelector("article div[lang]");
     if (!tweetElement) {
@@ -496,7 +500,11 @@ function TwitterReplyGenerator() {
     return tweetElement ? tweetElement.innerText : "";
   };
   const generateReplyOptions = async () => {
+<<<<<<< HEAD
     let replyOptions = 1;
+=======
+    let replyOptions = 3;
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
     if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
       await new Promise((resolve) => {
         chrome.storage.local.get(["replyOptions"], (result) => {
@@ -521,6 +529,11 @@ function TwitterReplyGenerator() {
       });
       const data = await response.json();
       if (data.replies && data.replies.length > 0) {
+<<<<<<< HEAD
+=======
+        const modal = document.querySelector("div[role='dialog']");
+        setTweetDialogElement(modal);
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
         setReplyOptionsData(data.replies);
       } else {
         alert("No reply generated.");
@@ -535,9 +548,14 @@ function TwitterReplyGenerator() {
     setReplyOptionsData(null);
   };
   const insertReply = (reply) => {
+<<<<<<< HEAD
     const modal = document.querySelector("div[role='dialog']");
     if (modal) {
       const textArea = modal.querySelector("div[data-testid='tweetTextarea_0']");
+=======
+    if (tweetDialogElement) {
+      const textArea = tweetDialogElement.querySelector("div[data-testid='tweetTextarea_0']");
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
       if (textArea) {
         textArea.focus();
         document.execCommand("insertText", false, reply);
@@ -600,6 +618,7 @@ function TwitterReplyGenerator() {
       clearInterval(interval);
     };
   }, []);
+<<<<<<< HEAD
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: replyOptionsData && /* @__PURE__ */ jsxRuntimeExports.jsx(
     ReplyOptionsOverlay,
     {
@@ -608,6 +627,19 @@ function TwitterReplyGenerator() {
       onCancel: removeOverlay
     }
   ) });
+=======
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    loading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "loading-indicator", children: "Generating replies..." }),
+    replyOptionsData && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ReplyOptionsOverlay,
+      {
+        replies: replyOptionsData,
+        onSelect: handleOverlaySelect,
+        onCancel: removeOverlay
+      }
+    )
+  ] });
+>>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
 }
 const container = document.createElement("div");
 document.body.appendChild(container);
