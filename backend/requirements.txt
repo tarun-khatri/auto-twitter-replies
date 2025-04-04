@@ -3,11 +3,7 @@ uvicorn
 python-dotenv
 requests
 emoji
-<<<<<<< HEAD
 google-genai
 pymongo
 firebase-admin
 beautifulsoup4
-=======
-google-genai
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
