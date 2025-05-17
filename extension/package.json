@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "A browser extension to generate human-like Twitter replies using GPT-J-6B",
     "scripts": {
-<<<<<<< HEAD
         "build:popup": "vite build --config vite.config.popup.js",
         "build:content": "vite build --config vite.config.content.js",
         "build": "npm run build:popup && npm run build:content",
@@ -12,26 +11,12 @@
     "dependencies": {
         "firebase": "^11.6.0",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.2.0",
+        "react-icons": "^5.5.0"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^4.0.0",
-        "vite": "^4.0.0"
+        "vite": "^4.0.0",
+        "vite-plugin-html": "^3.2.2"
     }
 }
-=======
-      "build:popup": "vite build --config vite.config.popup.js",
-      "build:content": "vite build --config vite.config.content.js",
-      "build": "npm run build:popup && npm run build:content",
-      "dev": "vite"
-    },
-    "dependencies": {
-      "react": "^18.2.0",
-      "react-dom": "^18.2.0"
-    },
-    "devDependencies": {
-      "@vitejs/plugin-react": "^4.0.0",
-      "vite": "^4.0.0"
-    }
-  }
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a

@@ -1,150 +1,103 @@
-<<<<<<< HEAD
-from fastapi import FastAPI, HTTPException, Header
-from config import PORT
-from auth import verify_firebase_token
-from scraper import fetch_user_tweets
-from tone_analysis import analyze_tone
-from reply_generator import generate_reply
-from database import store_user_data
-
-app = FastAPI(title="Twitter AI Reply Generator")
-
-@app.post("/analyze_user")
-def analyze_user(twitter_username: str, auth_token: str = Header(...)):
-    # Authenticate user
-    user_id = verify_firebase_token(auth_token)
-    
-    # Fetch tweets
-    tweets = fetch_user_tweets(twitter_username)
-    
-    # Analyze tone
-    tone_analysis = analyze_tone(tweets)
-    
-    # Store in DB
-    store_user_data(user_id, tweets, tone_analysis)
-    
-    return {"message": "User analysis complete", "tone": tone_analysis}
-
-@app.post("/generate_reply")
-def generate_tweet_reply(tweet_text: str, auth_token: str = Header(...)):
-    # Authenticate user
-    user_id = verify_firebase_token(auth_token)
-    
-    # Fetch user's tone from DB
-    user_data = db.users.find_one({"user_id": user_id})
-    if not user_data:
-        raise HTTPException(status_code=404, detail="User data not found")
-    
-    user_tone = user_data.get("tone_analysis", "neutral")
-    
-    # Generate replies
-    replies = generate_reply(user_tone, tweet_text)
-    
-    return {"replies": replies}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=PORT, reload=True)
-=======
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
-from fastapi.exception_handlers import http_exception_handler
-from pydantic import BaseModel
-import re, time
-import emoji  # Ensure emoji>=2.0.0 is installed
-from config import GEMINI_API_KEY, PORT
-
-# Import the Google GenAI client and types.
-from google import genai
-from google.genai import types
-
+# backend/main.py
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from database import db
+from reply_generator import generate_reply
+from users import router as users_router
+from config import PORT
+from scraper import fetch_user_tweets
 
 app = FastAPI(title="Twitter Reply Generator")
 
-# Set up CORS to allow all origins (for development)
+# CORS for local dev
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For production, replace "*" with allowed origins.
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Custom exception handler to attach CORS headers on error responses.
-@app.exception_handler(HTTPException)
-async def custom_http_exception_handler(request: Request, exc: HTTPException):
-    response = await http_exception_handler(request, exc)
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    return response
+app.include_router(users_router)
 
-# Input model for tweet prompt, now including a reply_options field.
-class TweetPrompt(BaseModel):
+@app.on_event("startup")
+def startup_db_check():
+    try:
+        db.command("ping")
+        print(f"✅ MongoDB connected to database: {db.name}")
+    except Exception as e:
+        print(f"❌ MongoDB connection error: {e}")
+
+class ReplyRequest(BaseModel):
+    user_id: str
     tweet_text: str
-    reply_options: int = 1  # Number of reply options to generate
 
-# Utility function to remove hashtags and emojis.
-def filter_reply(text: str) -> str:
-    # Remove hashtags (words starting with '#')
-    text = re.sub(r"#\S+", "", text)
-    # Remove emojis using emoji.replace_emoji
-    text = emoji.replace_emoji(text, replace='')
-    return text.strip()
-
-# Initialize the Gemini client.
-client = genai.Client(api_key=GEMINI_API_KEY)
-
-# Helper function with retry logic for the Gemini API.
-def query_gemini(prompt: str, retries: int = 3, delay: int = 5):
-    config = types.GenerateContentConfig(
-        max_output_tokens=60,
-        temperature=0.7
-    )
-    attempt = 0
-    last_error = None
-    while attempt < retries:
-        attempt += 1
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=[prompt],
-                config=config
-            )
-            # Expecting response with a "text" attribute.
-            if response and hasattr(response, "text"):
-                return response.text
-            else:
-                last_error = "Unexpected response format from Gemini API."
-        except Exception as e:
-            last_error = str(e)
-            print(f"Attempt {attempt} failed: {last_error}")
-        time.sleep(delay)
-    raise HTTPException(status_code=500, detail=f"Error from Gemini API after {retries} attempts: {last_error}")
-
-# Endpoint to generate human-like replies.
 @app.post("/generate_reply")
-def generate_reply(prompt: TweetPrompt):
-    # Construct the prompt.
-    input_prompt = (
-        f"Generate a human-like reply for the following tweet without using hashtags or emojis:\n\n"
-        f"Tweet: {prompt.tweet_text}\nReply:"
-    )
-    
-    # Determine how many replies to generate (at least 1).
-    num_options = prompt.reply_options if prompt.reply_options > 0 else 1
-    replies = []
-    for _ in range(num_options):
-        try:
-            generated_text = query_gemini(input_prompt)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
-        filtered_reply = filter_reply(generated_text)
-        replies.append(filtered_reply)
-        
-    return {"replies": replies}
+def generate_reply_endpoint(req: ReplyRequest):
+    user_doc = db.users.find_one({"user_id": req.user_id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not registered")
+    tone = user_doc.get("tone_summary")
+    if tone is None:
+        raise HTTPException(status_code=400, detail="Tone analysis not ready")
+    if tone == "":
+        tone = "neutral and friendly"
 
-# Run the server.
+    reply = generate_reply(
+        user_tone=tone,
+        tweet_text=req.tweet_text,
+        num_replies=1
+    )[0]
+    return {"reply": reply}
+
+@app.get("/users/{user_id}/profile")
+def get_user_profile(user_id: str):
+    user_doc = db.users.find_one({"user_id": user_id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not found")
+    # Return tone summary, tweet count, last scraped, and recent replies (if any)
+    return {
+        "tone_summary": user_doc.get("tone_summary", ""),
+        "tweet_count": user_doc.get("tweet_count", 0),
+        "last_scraped_at": user_doc.get("last_scraped_at", ""),
+        "recent_replies": user_doc.get("recent_replies", [])
+    }
+
+@app.post("/users/{user_id}/history")
+def add_reply_history(user_id: str, data: dict):
+    # data = {"tweet": ..., "reply": ...}
+    if not data.get("tweet") or not data.get("reply"):
+        raise HTTPException(status_code=400, detail="Missing tweet or reply")
+    db.users.update_one(
+        {"user_id": user_id},
+        {"$push": {"recent_replies": {"tweet": data["tweet"], "reply": data["reply"]}}}
+    )
+    return {"status": "ok"}
+
+@app.websocket("/ws/scrape/{username}")
+async def websocket_scrape(websocket: WebSocket, username: str):
+    await websocket.accept()
+    try:
+        tweets = fetch_user_tweets(username)
+        await websocket.send_json({
+            "status": "completed",
+            "tweets_found": len(tweets),
+            "tweets": tweets
+        })
+    except WebSocketDisconnect:
+        # client disconnected, nothing to do
+        pass
+    except Exception as e:
+        await websocket.send_json({
+            "status": "error",
+            "message": str(e),
+            "tweets_found": 0,
+            "tweets": []
+        })
+    finally:
+        await websocket.close()
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=PORT, reload=True)
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
+    uvicorn.run(app, host="0.0.0.0", port=PORT, reload=True)

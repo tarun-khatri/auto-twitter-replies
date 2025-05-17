@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, TwitterAuthProvider, signOut } from "firebase/auth";
+import {
+  getAuth,
+  signInWithRedirect,
+  getRedirectResult,
+  TwitterAuthProvider,
+  signOut,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -16,11 +22,22 @@ const provider = new TwitterAuthProvider();
 
 export const loginWithTwitter = async () => {
   try {
-    const result = await signInWithPopup(auth, provider);
-    return result.user;
+    // Use redirect method to avoid loading external scripts
+    await signInWithRedirect(auth, provider);
+    // No user is returned immediately; the redirect takes over.
   } catch (error) {
     console.error("Twitter login failed:", error);
     throw error;
+  }
+};
+
+export const handleRedirectResult = async () => {
+  try {
+    const result = await getRedirectResult(auth);
+    return result ? result.user : null;
+  } catch (error) {
+    console.error("Error handling redirect:", error);
+    return null;
   }
 };
 

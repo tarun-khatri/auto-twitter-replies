@@ -1,198 +1,173 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import ReplyOptionsOverlay from "./ReplyOptionsOverlay";
+import { FaMagic } from "react-icons/fa";
 
-const BACKEND_URL = "http://localhost:8000"; // Update if needed
-=======
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import ReplyOptionsOverlay from './ReplyOptionsOverlay';
+const BACKEND_URL = "http://localhost:8000";
 
-const BACKEND_URL = "http://localhost:8000"; // Adjust if needed
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
-
-function TwitterReplyGenerator() {
+export default function TwitterReplyGenerator() {
   const [loading, setLoading] = useState(false);
   const [replyOptionsData, setReplyOptionsData] = useState(null);
-<<<<<<< HEAD
-=======
-  const [tweetDialogElement, setTweetDialogElement] = useState(null);
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
 
-  const getOriginalTweetText = () => {
-    let tweetElement = document.querySelector("article div[lang]");
-    if (!tweetElement) {
-      tweetElement = document.querySelector("div[data-testid='tweetText']");
-    }
-    return tweetElement ? tweetElement.innerText : "";
-  };
-
-  const generateReplyOptions = async () => {
-<<<<<<< HEAD
-    let replyOptions = 1;
-    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
-      await new Promise((resolve) => {
-        chrome.storage.local.get(["replyOptions"], (result) => {
-=======
-    // Read replyOptions from chrome.storage; default to 3 if unavailable.
-    let replyOptions = 3;
-    if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
-      await new Promise((resolve) => {
-        chrome.storage.local.get(['replyOptions'], (result) => {
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
-          if (result && result.replyOptions) {
-            replyOptions = result.replyOptions;
-          }
-          resolve();
-        });
-      });
-    }
-    const tweetText = getOriginalTweetText();
-    if (!tweetText) {
-      alert("Unable to detect tweet text on the page.");
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await fetch(`${BACKEND_URL}/generate_reply`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-<<<<<<< HEAD
-        body: JSON.stringify({ tweet_text: tweetText, reply_options: replyOptions }),
-      });
-      const data = await response.json();
-      if (data.replies && data.replies.length > 0) {
-=======
-        body: JSON.stringify({ tweet_text: tweetText, reply_options: replyOptions })
-      });
-      const data = await response.json();
-      if (data.replies && data.replies.length > 0) {
-        // Store the current tweet dialog element when we generate replies
-        const modal = document.querySelector("div[role='dialog']");
-        setTweetDialogElement(modal);
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
-        setReplyOptionsData(data.replies);
-      } else {
-        alert("No reply generated.");
-      }
-    } catch (error) {
-      console.error("Error generating reply:", error);
-      alert("Error generating reply. Check console for details.");
-    }
-    setLoading(false);
-  };
-
-  const removeOverlay = () => {
-    setReplyOptionsData(null);
-  };
-
-  const insertReply = (reply) => {
-<<<<<<< HEAD
-    const modal = document.querySelector("div[role='dialog']");
-    if (modal) {
-      const textArea = modal.querySelector("div[data-testid='tweetTextarea_0']");
-      if (textArea) {
-        textArea.focus();
-        document.execCommand("insertText", false, reply);
-=======
-    if (tweetDialogElement) {
-      const textArea = tweetDialogElement.querySelector("div[data-testid='tweetTextarea_0']");
-      if (textArea) {
-        textArea.focus();
-        document.execCommand('insertText', false, reply);
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
-      } else {
-        alert("Reply box not found in modal. Please paste the reply manually: " + reply);
-      }
-    } else {
-      alert("Reply modal not found. Please paste the reply manually: " + reply);
-    }
-  };
-
-  const handleOverlaySelect = (reply) => {
-    insertReply(reply);
-    removeOverlay();
-  };
-
-<<<<<<< HEAD
-=======
-  // Inject the auto-reply button into the reply modal.
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
-  const injectButton = () => {
-    const modal = document.querySelector("div[role='dialog']");
-    if (modal) {
-      if (modal.querySelector("#generate-reply-button")) return;
-      let toolbar = modal.querySelector("div[data-testid='toolBar']");
-      if (!toolbar) {
-        const italicButton = modal.querySelector("button[aria-label^='Italic']");
-        if (italicButton) toolbar = italicButton.parentElement;
-      }
-      if (toolbar && !toolbar.querySelector("#generate-reply-button")) {
-        const btn = document.createElement("button");
-        btn.id = "generate-reply-button";
-        btn.title = "Auto Reply";
-        btn.style.width = "24px";
-        btn.style.height = "24px";
-        btn.style.border = "none";
-        btn.style.background = "transparent";
-        btn.style.cursor = "pointer";
-        btn.style.marginRight = "4px";
-        btn.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="rgb(29,155,240)">
-                           <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h8.25"/>
-                         </svg>`;
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          generateReplyOptions();
-        });
-        toolbar.insertBefore(btn, toolbar.firstChild);
-        console.log("Auto-reply button injected.");
-      }
-    }
-  };
-
-  useEffect(() => {
-    injectButton();
-    const observer = new MutationObserver(() => {
-      requestAnimationFrame(() => {
-        injectButton();
+  // Fetch logged-in user ID (support both login and manual username)
+  const getUserId = () => {
+    return new Promise(resolve => {
+      chrome.storage.local.get(['twitterUser'], res => {
+        // Use username if present, else uid
+        const user = res.twitterUser;
+        if (user) {
+          resolve(user.uid || user.username || null);
+        } else {
+          resolve(null);
+        }
       });
     });
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-    const interval = setInterval(injectButton, 1000);
-    return () => {
-      observer.disconnect();
-      clearInterval(interval);
-    };
+  };
+
+  // Get tweet text from the correct context
+  const getOriginalTweetText = (btnEvent) => {
+    // 1. If in a reply modal, get the tweet text from the modal
+    const modal = document.querySelector("div[role='dialog']");
+    if (modal) {
+      // Twitter/X modal: the tweet being replied to is usually the first article in the modal
+      const tweet = modal.querySelector("article");
+      if (tweet) {
+        const textEl = tweet.querySelector("div[lang]") || tweet.querySelector("div[data-testid='tweetText']");
+        if (textEl) return textEl.innerText;
+      }
+    }
+    // 2. If inline, find the closest tweet article to the clicked button
+    if (btnEvent && btnEvent.target) {
+      let el = btnEvent.target;
+      while (el && el.nodeType === 1 && !el.closest('[data-testid="tweet"]')) {
+        el = el.parentElement;
+      }
+      const tweet = el ? el.closest('article') : null;
+      if (tweet) {
+        const textEl = tweet.querySelector("div[lang]") || tweet.querySelector("div[data-testid='tweetText']");
+        if (textEl) return textEl.innerText;
+      }
+    }
+    // 3. Fallback: first tweet on page
+    const fallback = document.querySelector("article div[lang]") || document.querySelector("div[data-testid='tweetText']");
+    return fallback ? fallback.innerText : '';
+  };
+
+  // Insert generated reply
+  const insertReply = (reply) => {
+    const modal = document.querySelector("div[role='dialog']");
+    if (!modal) return alert(`Reply modal not found. Paste manually: ${reply}`);
+    const textarea = modal.querySelector("div[data-testid='tweetTextarea_0']");
+    if (textarea) {
+      textarea.focus();
+      document.execCommand('insertText', false, reply);
+    }
+  };
+
+  // Call backend
+  const generateReply = (btnEvent) => {
+    try {
+      if (!window.chrome || !chrome.storage || !chrome.storage.local) {
+        alert('Extension context invalidated. Please reload the page and try again.');
+        return;
+      }
+      chrome.storage.local.get(['twitterUser', 'toneReady'], function(res) {
+        if (!res || typeof res !== 'object') {
+          alert('Extension context invalidated. Please reload the page and try again.');
+          return;
+        }
+        let user, userId, toneReady;
+        try {
+          user = res.twitterUser;
+          userId = user ? (user.uid || user.username) : null;
+          toneReady = !!res.toneReady;
+        } catch (e) {
+          alert('Extension context invalidated. Please reload the page and try again.');
+          return;
+        }
+        const tweetText = getOriginalTweetText(btnEvent);
+        console.log('[AI Reply] Fetched tweet text:', tweetText);
+        if (!userId) return alert('Please log in or enter a username first');
+        if (!toneReady) return alert("Your profile is still being analyzed – please try again in a minute.");
+        if (!tweetText) return alert('Cannot detect tweet text');
+        setLoading(true);
+        fetch(`${BACKEND_URL}/generate_reply`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, tweet_text: tweetText })
+        })
+          .then(res => {
+            if (!res.ok) return res.text().then(t => { throw new Error(t); });
+            return res.json();
+          })
+          .then(({ reply }) => {
+            insertReply(reply);
+            // Save to history
+            return fetch(`${BACKEND_URL}/users/${userId}/history`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ tweet: tweetText, reply })
+            });
+          })
+          .catch(err => {
+            console.error(err);
+            alert(`Error: ${err.message}`);
+          })
+          .finally(() => setLoading(false));
+      });
+    } catch (e) {
+      alert('Extension context invalidated. Please reload the page and try again.');
+    }
+  };
+
+  // Unified injection for modal + inline tweets
+  function injectButtons() {
+    // Inline tweet toolbars
+    document.querySelectorAll('[data-testid="tweet"] [role="group"]').forEach(toolbar => {
+      if (toolbar.querySelector('.our-ai-button')) return;
+      const btn = document.createElement('div');
+      btn.className = 'our-ai-button';
+      btn.title = 'AI Reply';
+      btn.style.cssText = 'display:flex;align-items:center;cursor:pointer;margin:0 8px;';
+      btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4l10-12-4-4L4 16v4zm0 0l4-4m0 0l8-8" stroke="#9333EA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="5" r="2" fill="#9333EA"/></svg>`;
+      btn.onclick = e => { e.stopPropagation(); generateReply(e); };
+      toolbar.appendChild(btn);
+    });
+
+    // Reply modal toolbar
+    document.querySelectorAll("div[role='dialog'] div[data-testid='toolBar']").forEach(toolbar => {
+      if (toolbar.querySelector('.our-ai-modal-button')) return;
+      const btn = document.createElement('div');
+      btn.className = 'our-ai-modal-button';
+      btn.title = 'AI Reply';
+      btn.style.cssText = 'width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9333EA;background:rgba(255,255,255,0.9);border-radius:50%;box-shadow:0 2px 8px rgba(147,51,234,0.08);transition:background 0.2s;';
+      btn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4l10-12-4-4L4 16v4zm0 0l4-4m0 0l8-8" stroke="#9333EA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="5" r="2" fill="#9333EA"/></svg>`;
+      btn.onclick = e => { e.stopPropagation(); generateReply(e); };
+      toolbar.insertBefore(btn, toolbar.firstChild);
+    });
+  }
+
+  useEffect(() => {
+    injectButtons();
+    const obs = new MutationObserver(injectButtons);
+    obs.observe(document.body, { childList: true, subtree: true });
+    return () => obs.disconnect();
   }, []);
 
   return (
-    <>
-<<<<<<< HEAD
-=======
-      {loading && (
-        <div className="loading-indicator">
-          Generating replies...
-        </div>
-      )}
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
-      {replyOptionsData && (
-        <ReplyOptionsOverlay
-          replies={replyOptionsData}
-          onSelect={handleOverlaySelect}
-          onCancel={removeOverlay}
-        />
-      )}
-    </>
+    replyOptionsData && <ReplyOptionsOverlay replies={replyOptionsData} onSelect={insertReply} onCancel={() => setReplyOptionsData(null)} />
   );
 }
 
-const container = document.createElement("div");
+// Suppress 'Extension context invalidated' errors globally
+window.addEventListener('unhandledrejection', function(event) {
+  if (event.reason && event.reason.message && event.reason.message.includes('Extension context invalidated')) {
+    event.preventDefault();
+    alert('Extension context lost. Please reload the page and try again.');
+  }
+});
+
+// Mount into the page
+const container = document.createElement('div');
 document.body.appendChild(container);
 const root = ReactDOM.createRoot(container);
-<<<<<<< HEAD
 root.render(<TwitterReplyGenerator />);
-=======
-root.render(<TwitterReplyGenerator />);
->>>>>>> 083b62acd7d35feb658e84bf523707acd348233a
