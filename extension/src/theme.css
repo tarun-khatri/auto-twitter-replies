@@ -1,0 +1,160 @@
+/* Global extension popup theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+  --navy-bg: #0B0F1E;
+  --card-grad-start: #1E1E3A;
+  --card-grad-end: #392F5A;
+  --text-secondary: #A0A4B8;
+  --text-primary: #FFFFFF;
+  --accent-start: #8C3EFF;
+  --accent-end: #D159FF;
+  --radius: 12px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--navy-bg);
+  color: var(--text-secondary);
+}
+
+/* Mini header bar */
+.header-bar {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: var(--navy-bg);
+  font-size: 14px;
+}
+.header-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-left: 12px;
+  transition: color 150ms ease;
+}
+.header-links a:hover { color: var(--text-primary); text-decoration: underline; }
+
+/* Gradient card */
+.verve-card {
+  position: relative;
+  border-radius: var(--radius);
+  padding: 24px;
+  background: linear-gradient(180deg, var(--card-grad-start) 0%, var(--card-grad-end) 100%);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+/* noise overlay */
+.verve-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFUlEQVQI12P4//8/Azbw////GQAI/gO9n2OwAAAAAElFTkSuQmCC");
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* Buttons */
+.verve-btn {
+  background: linear-gradient(90deg, var(--accent-start) 0%, var(--accent-end) 100%);
+  border: none;
+  color: #fff !important;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 24px;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.verve-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 8px rgba(140,62,255,0.6);
+}
+
+.verve-btn-outline {
+  background: transparent;
+  border: 1px solid var(--accent-start);
+  color: var(--accent-start) !important;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 24px;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.verve-btn-outline:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 8px rgba(140,62,255,0.4);
+  background: rgba(140,62,255,0.1);
+}
+
+/* Inputs */
+.verve-input {
+  background: var(--card-grad-start);
+  border: 1px solid var(--card-grad-end);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 15px;
+  color: #fff;
+}
+.verve-input::placeholder { color: #6B6F87; }
+.verve-input:focus {
+  outline: none;
+  border-color: var(--accent-end);
+  box-shadow: 0 0 0 2px rgba(140,62,255,0.4);
+  transition: border-color 200ms ease;
+}
+
+/* Typography helpers */
+.h-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin: 0 0 12px 0;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -450px 0; }
+  100% { background-position: 450px 0; }
+}
+.skeleton {
+  height: 80px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, #2E2E4F 0px, #1E1E3A 40px, #2E2E4F 80px);
+  background-size: 600px 100%;
+  animation: shimmer 1.5s infinite;
+} 
+
+/* Hide unwanted number input arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Mantine Slider customization */
+.mantine-Slider-track {
+  background: linear-gradient(90deg, var(--accent-start) 0%, var(--accent-end) 100%);
+}
+.mantine-Slider-thumb {
+  border: 2px solid #fff;
+  background: var(--navy-bg);
+  width: 18px;
+  height: 18px;
+}
+
+/* 12-column grid helper */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+}
+
+/* Card vertical spacing helper */
+.stack-24 > * + * {
+  margin-top: 24px !important;
+} 

@@ -17,7 +17,7 @@ def _filter_text(text: str) -> str:
     return text.strip()
 
 
-def generate_reply(user_tone: str, tweet_text: str, num_replies: int = 1) -> list[str]:
+def generate_reply(user_tone: str, tweet_text: str, num_replies: int = 1, tweet_author: str | None = None) -> list[str]:
     """
     Generate human-like replies using Gemini. If user_tone is empty or contains a placeholder
     asking for tweets, fall back to a generic reply prompt.
@@ -47,14 +47,20 @@ def generate_reply(user_tone: str, tweet_text: str, num_replies: int = 1) -> lis
         )
     else:
         prompt = (
-            "You are an expert at writing authentic, human-like Twitter replies.\n"
-            "The user's typical tone, style, and personality are as follows:\n"
-            f"{user_tone}\n\n"
-            "Write a reply to the following tweet, strictly matching the user's tone, style, and behavior.\n"
-            "- The reply must sound natural and human, as if written by the user.\n"
-            "- Do not include any hashtags, emojis, or filler/introductory phrases.\n"
-            "- Only output the reply text, nothing else.\n\n"
-            f"Tweet:\n{tweet_text}"
+            "You are a senior social-media copywriter with 15 years of experience crafting viral Twitter/X replies.\n"
+            "Your job is to ghost-write on behalf of the user.\n"
+            "\n"
+            "User’s tone, style & personality summary:\n"
+            f"{user_tone}\n"
+            "\n"
+            "Write ONE concise reply to the tweet below that meets ALL of these rules:\n"
+            "1. The reply must read as if the user themselves wrote it – perfectly reflecting their voice and quirks.\n"
+            "2. Inject a smart insight, witty hook, or fresh perspective that encourages engagement / virality.\n"
+            "3. Keep it under 250 characters and make every word count (no rambling).\n"
+            "4. Do NOT use greetings, hashtags, emojis, or filler phrases.\n"
+            "5. Output ONLY the reply text – no quotation, no prefix, no suffix.\n"
+            "\n"
+            f"Tweet by @{tweet_author or 'user'}:\n{tweet_text}"
         )
 
     replies = []

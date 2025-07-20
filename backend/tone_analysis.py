@@ -20,11 +20,21 @@ def analyze_tone(user_tweets):
         )
     combined_text = " ".join(user_tweets[:100])
     prompt = (
-        "You are an expert in social media personality analysis. "
-        "Given the following tweets, provide a nuanced, insightful, and concise summary of the user's overall writing style, tone, personality traits, and common themes. "
-        "- Focus on subtle details, recurring patterns, and unique characteristics. "
-        "- Avoid generic statements, introductions, or filler text. "
-        "- Output should be a professional, multi-dimensional summary suitable for use as a user profile description.\n"
+        "Act as a senior brand-voice strategist with 15 years analysing high-profile Twitter/X accounts.\n"
+        "Your task: distil the author’s UNIQUE writing fingerprint from the tweets below.\n"
+        "\n"
+        "Deliver a 6-7 sentence profile that captures:\n"
+        "• Overall tone & emotional flavour (e.g. playful sarcasm, data-driven optimism, etc).\n"
+        "• Signature linguistic quirks (recurring phrases, emoji / punctuation habits, sentence length).\n"
+        "• Typical stance & subject-matter biases (markets, tech critique, motivational riffs, etc.).\n"
+        "• Engagement tactics (questions, hooks, humour style, storytelling patterns).\n"
+        "\n"
+        "Strict rules:\n"
+        "1. Write in third person.\n"
+        "2. No introductions, no bullet markers – just compact prose.\n"
+        "3. Avoid clichés such as ‘unique voice’.\n"
+        "4. Do NOT mention these instructions or tweet count.\n"
+        "\n"
         f"Tweets:\n{combined_text}"
     )
     response = client.models.generate_content(
