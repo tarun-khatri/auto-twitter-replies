@@ -66,12 +66,13 @@ const Header = () => {
               )}
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
-            <SignedIn>
-              <button className="group bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 hover:scale-105 shadow-lg hover:shadow-indigo-500/25">
-                <Chrome size={20} />
-                <span className="group-hover:tracking-wide transition-all duration-300">Add to Chrome</span>
-              </button>
-            </SignedIn>
+            <a
+              href="https://chrome.google.com/webstore/category/extensions" // placeholder link
+              target="_blank"
+              className="text-sm font-medium text-indigo-400 hover:text-white border border-indigo-500/60 rounded-full px-4 py-1.5 transition-all duration-300 hover:bg-indigo-600/20"
+            >
+              Install
+            </a>
           </div>
 
           <div className="md:hidden">
@@ -92,10 +93,13 @@ const Header = () => {
             <a href="#how-it-works" className="block px-4 py-3 text-gray-300 hover:text-white font-medium rounded-lg hover:bg-gray-800/50 transition-all duration-300">How it Works</a>
             <a href="#pricing" className="block px-4 py-3 text-gray-300 hover:text-white font-medium rounded-lg hover:bg-gray-800/50 transition-all duration-300">Pricing</a>
             <a href="#faq" className="block px-4 py-3 text-gray-300 hover:text-white font-medium rounded-lg hover:bg-gray-800/50 transition-all duration-300">FAQ</a>
-            <button className="w-full mt-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300">
-              <Chrome size={20} />
-              Add to Chrome
-            </button>
+            <a
+              href="https://chrome.google.com/webstore/category/extensions"
+              target="_blank"
+              className="block w-full mt-4 text-center text-indigo-400 hover:text-white border border-indigo-500/60 rounded-full px-6 py-3 font-semibold hover:bg-indigo-600/20 transition-all duration-300"
+            >
+              Install
+            </a>
           </div>
         </div>
       )}

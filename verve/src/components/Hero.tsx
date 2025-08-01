@@ -58,7 +58,7 @@ const Hero = () => {
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '1s'}}></div>
                 <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-rose-gold rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '2s'}}></div>
               </div>
-              <span className="text-sm font-medium">Trusted by 10,000+ users</span>
+              <span className="text-sm font-medium">Trusted by 103+ users</span>
             </div>
             <div className="flex items-center gap-1">
               {[1, 2, 3, 4, 5].map((star) => (

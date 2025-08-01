@@ -488,7 +488,6 @@ const BACKEND_URL = "http://localhost:8000" ;
 const ORIGINS = [
   // dev origins first
   "http://localhost:5173",
-  "http://localhost:3000",
   "http://127.0.0.1:5173",
   // prod origins
   "https://app.verve.dev",
@@ -553,6 +552,62 @@ function TwitterReplyGenerator() {
   const [loading, setLoading] = reactExports.useState(false);
   const [replyOptionsData, setReplyOptionsData] = reactExports.useState(null);
   const getTweetInfo = (btnEvent) => {
+    const extractImages = (tweetElement) => {
+      console.log("[IMAGE EXTRACTION] Starting image extraction from tweet element:", tweetElement);
+      const tweetImages = tweetElement.querySelectorAll('img[src*="pbs.twimg.com/media/"]');
+      const profileImages = tweetElement.querySelectorAll('img[src*="pbs.twimg.com/profile_images/"]');
+      const mediaContainerImages = tweetElement.querySelectorAll('[data-testid="tweetPhoto"] img, [data-testid="mediaPhoto"] img, [data-testid="media"] img, .css-1dbjc4n img[src*="pbs.twimg.com"]');
+      const picLinks = tweetElement.querySelectorAll('a[href*="pic.x.com"]');
+      const tweetText = tweetElement.textContent || "";
+      const words = tweetText.split(/\s+/);
+      console.log("[IMAGE EXTRACTION] Words in tweet:", words.filter((word) => word.includes("pic.x.com")));
+      const PIC_URL_REGEX = /https:\/\/pic\.x\.com\/([a-zA-Z0-9]{10})/g;
+      const picUrlMatches = [];
+      words.forEach((word) => {
+        let match;
+        while ((match = PIC_URL_REGEX.exec(word)) !== null) {
+          picUrlMatches.push(`https://pic.x.com/${match[1]}`);
+        }
+      });
+      console.log("[IMAGE EXTRACTION] Found", tweetImages.length, "tweet images,", profileImages.length, "profile images,", mediaContainerImages.length, "media container images,", picLinks.length, "pic.x.com links, and", picUrlMatches.length, "pic.x.com URLs in text");
+      if (picUrlMatches.length > 0) {
+        console.log("[IMAGE EXTRACTION] pic.x.com URLs found in text:", picUrlMatches);
+      }
+      const allTweetImages = [...tweetImages, ...mediaContainerImages];
+      let imageUrls2 = Array.from(allTweetImages).map((img, index) => {
+        console.log(`[IMAGE EXTRACTION] Tweet image ${index + 1}:`, img.src);
+        return img.src;
+      }).filter((src) => src && src.includes("pbs.twimg.com") && !src.includes("profile_images/")).map((src) => {
+        const originalUrl = src.replace(/&name=\w+/, "&name=orig");
+        console.log("[IMAGE EXTRACTION] Converted URL:", src, "->", originalUrl);
+        return originalUrl;
+      });
+      if (imageUrls2.length === 0 && (picLinks.length > 0 || picUrlMatches.length > 0)) {
+        console.log("[IMAGE EXTRACTION] No direct images found, processing pic.x.com URLs...");
+        const allPicUrls = [
+          ...Array.from(picLinks).map((link) => link.href),
+          ...picUrlMatches
+        ].filter((url) => url && url.includes("pic.x.com"));
+        const uniquePicUrls = [...new Set(allPicUrls)];
+        const picUrls = uniquePicUrls.map((href) => {
+          const picIdRaw = href.split("pic.x.com/")[1];
+          const matchId = picIdRaw.match(/[a-zA-Z0-9]{10}/);
+          if (!matchId) {
+            console.warn("[IMAGE EXTRACTION] Could not parse pic.x.com id from:", href);
+            return null;
+          }
+          const cleanPicId = matchId[0];
+          console.log("[IMAGE EXTRACTION] Original picId:", picIdRaw, "-> Cleaned picId:", cleanPicId);
+          const convertedUrl = `https://pbs.twimg.com/media/${cleanPicId}?format=jpg&name=orig`;
+          console.log("[IMAGE EXTRACTION] Converting pic.x.com URL:", href, "->", convertedUrl);
+          return convertedUrl;
+        });
+        imageUrls2 = picUrls;
+      }
+      console.log("[IMAGE EXTRACTION] Final tweet image URLs:", imageUrls2);
+      console.log("[IMAGE EXTRACTION] Tweet element HTML structure:", tweetElement.innerHTML.substring(0, 500) + "...");
+      return imageUrls2;
+    };
     const modal = document.querySelector("div[role='dialog']");
     if (modal) {
       const tweet = modal.querySelector("article");
@@ -564,7 +619,8 @@ function TwitterReplyGenerator() {
           if (s.textContent.startsWith("@"))
             handle2 = s.textContent;
         });
-        return { text: text2, handle: handle2 };
+        const imageUrls2 = extractImages(tweet);
+        return { text: text2, handle: handle2, imageUrls: imageUrls2, tweetElement: tweet };
       }
     }
     if (btnEvent && btnEvent.target) {
@@ -581,7 +637,8 @@ function TwitterReplyGenerator() {
           if (s.textContent.startsWith("@"))
             handle2 = s.textContent;
         });
-        return { text: text2, handle: handle2 };
+        const imageUrls2 = extractImages(tweet);
+        return { text: text2, handle: handle2, imageUrls: imageUrls2, tweetElement: tweet };
       }
     }
     const fallbackEl = document.querySelector("article div[lang]") || document.querySelector("div[data-testid='tweetText']");
@@ -591,16 +648,43 @@ function TwitterReplyGenerator() {
       if (s.textContent.startsWith("@"))
         handle = s.textContent;
     });
-    return { text, handle };
+    const firstTweet = document.querySelector("article");
+    const imageUrls = firstTweet ? extractImages(firstTweet) : [];
+    return { text, handle, imageUrls, tweetElement: firstTweet };
   };
-  const insertReply = (reply) => {
-    const modal = document.querySelector("div[role='dialog']");
+  let lastTweetElement = null;
+  const waitForModal = () => new Promise((resolve) => {
+    const check = () => {
+      const m = document.querySelector("div[role='dialog']");
+      if (m)
+        return resolve(m);
+      setTimeout(check, 100);
+    };
+    check();
+  });
+  const insertReply = async (reply) => {
+    let modal = document.querySelector("div[role='dialog']");
+    if (!modal && lastTweetElement) {
+      const replyBtn = lastTweetElement.querySelector('[data-testid="reply"]');
+      if (replyBtn) {
+        replyBtn.click();
+        try {
+          modal = await Promise.race([
+            waitForModal(),
+            new Promise((resolve) => setTimeout(() => resolve(null), 2e3))
+          ]);
+        } catch {
+        }
+      }
+    }
     if (!modal)
       return alert(`Reply modal not found. Paste manually: ${reply}`);
     const textarea = modal.querySelector("div[data-testid='tweetTextarea_0']");
     if (textarea) {
       textarea.focus();
       document.execCommand("insertText", false, reply);
+    } else {
+      alert(`Could not find textarea. Paste manually: ${reply}`);
     }
   };
   const generateReply = (btnEvent) => {
@@ -623,26 +707,38 @@ function TwitterReplyGenerator() {
           alert("Extension context invalidated. Please reload the page and try again.");
           return;
         }
-        const { text: tweetText, handle } = getTweetInfo(btnEvent);
-        console.log("[AI Reply] Fetched tweet text:", tweetText, "handle:", handle);
+        const { text: tweetText, handle, imageUrls, tweetElement } = getTweetInfo(btnEvent);
+        lastTweetElement = tweetElement || null;
+        console.log("[AI Reply] Fetched tweet text:", tweetText, "handle:", handle, "images:", imageUrls);
+        console.log("[AI Reply] Image URLs count:", imageUrls ? imageUrls.length : 0);
         if (!userId)
           return alert("Please log in or enter a username first");
-        if (!toneReady)
-          return alert("Your profile is still being analyzed – please try again in a minute.");
         if (!tweetText)
           return alert("Cannot detect tweet text");
         setLoading(true);
         try {
-          const payloadBody = { tweet_text: handle ? `${handle} | ${tweetText}` : tweetText };
+          const payloadBody = {
+            tweet_text: handle ? `${handle} | ${tweetText}` : tweetText,
+            image_urls: imageUrls || []
+          };
+          console.log("[AI Reply] Sending payload to backend:", payloadBody);
           const replyRes = await fetchWithFreshToken(`${BACKEND_URL}/generate_reply`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payloadBody)
           });
+          if (replyRes.status === 429) {
+            chrome.storage?.local.set({ quotaRemaining: 0 });
+            alert("Daily quota exceeded! Upgrade to Verve Pro for unlimited replies at getverve.xyz/pricing");
+            return;
+          }
           if (!replyRes.ok)
             throw new Error(await replyRes.text());
-          const { reply } = await replyRes.json();
-          insertReply(reply);
+          const { reply, remaining_quota } = await replyRes.json();
+          if (typeof remaining_quota === "number") {
+            chrome.storage?.local.set({ quotaRemaining: remaining_quota });
+          }
+          await insertReply(reply);
           await fetchWithFreshToken(`${BACKEND_URL}/users/me/history`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

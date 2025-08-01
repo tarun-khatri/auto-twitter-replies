@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
@@ -8,8 +9,9 @@ import Pricing from './components/Pricing';
 import Benefits from './components/Benefits';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
+import XLogin from './pages/X-login';
 
-function App() {
+function HomePage() {
   return (
     <div className="min-h-screen bg-gray-900">
       <Header />
@@ -22,6 +24,17 @@ function App() {
       <FAQ />
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/X-login" element={<XLogin />} />
+      </Routes>
+    </Router>
   );
 }
 

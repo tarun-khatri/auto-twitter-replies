@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Title, Text, Button } from '@mantine/core';
+import { Card, Title, Text, Button, Badge } from '@mantine/core';
 import TwitterLogin from './TwitterLogin';
 import RecentRepliesCard from './RecentRepliesCard';
 import SummaryCard from './SummaryCard';
+import UpgradeCard from './UpgradeCard';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'https://api.verve.dev';
 const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://app.verve.dev';
 
-const ORIGINS = [SITE_URL, 'http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'https://getverve.xyz'];
+const ORIGINS = [SITE_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://getverve.xyz'];
 
 async function getClerkToken() {
   return new Promise((resolve) => {
@@ -36,7 +37,10 @@ export default function App() {
     <Card className="verve-card" radius="md" style={{ padding: '12px 16px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
       <Title order={2} className="h-title" style={{ fontSize: 20, margin: 0 }}>getverve.xyz</Title>
       <div style={{ display:'flex', gap:8, alignItems:'center' }}>
-        <Text size="xs" weight={600} style={{ background:'#10B98120', color:'#10B981', padding:'2px 8px', borderRadius:6 }}>Free</Text>
+        <Text size="xs" weight={600} style={{ background:'#10B98120', color:'#10B981', padding:'2px 8px', borderRadius:6 }}>{plan}</Text>
+        {typeof remainingQuota === 'number' && (
+          <Badge color={remainingQuota > 5 ? 'green' : 'yellow'} variant="light">{Math.max(0, remainingQuota)}/15</Badge>
+        )}
         <Button size="xs" variant="gradient" gradient={{ from: 'violet', to: 'indigo', deg: 45 }} style={{ animation:'pulse 2s infinite' }} onClick={() => chrome.tabs?.create({ url: 'https://app.verve.dev/upgrade' })}>
           Upgrade
         </Button>
@@ -47,6 +51,8 @@ export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [recentHistory, setRecentHistory] = useState([]);
   const [profileInfo, setProfileInfo] = useState(null);
+  const [remainingQuota, setRemainingQuota] = useState(undefined);
+  const [plan, setPlan] = useState('FREE');
 
   // On mount: determine if the Clerk session cookie exists → authenticated
   useEffect(() => {
@@ -66,6 +72,8 @@ export default function App() {
           });
           console.log('[Verve][App] /users/me status', res.status);
           if (res.ok) {
+            const data = await res.json();
+            setPlan(data.plan || 'FREE');
             setIsAuthenticated(true);
             if (chrome?.storage?.local) chrome.storage.local.set({ clerkToken: token });
           } else {
@@ -81,8 +89,8 @@ export default function App() {
 
   // Debug: log key state changes
   useEffect(() => {
-    console.log('[Verve][App] State', { authChecked, isAuthenticated, loggedInUser });
-  }, [authChecked, isAuthenticated, loggedInUser]);
+    console.log('[Verve][App] State', { authChecked, isAuthenticated, loggedInUser, remainingQuota, plan });
+  }, [authChecked, isAuthenticated, loggedInUser, remainingQuota, plan]);
 
   // NEW: fetch profile & history whenever auth + loggedInUser are ready (covers popup reopen)
   useEffect(() => {
@@ -108,6 +116,11 @@ export default function App() {
         setProfileInfo(data);
         const recent = data.recent_replies || [];
         setRecentHistory(recent);
+        // Set quota from profile response
+        if (typeof data.remaining_quota === 'number') {
+          setRemainingQuota(data.remaining_quota);
+          chrome.storage?.local.set({ quotaRemaining: data.remaining_quota });
+        }
         chrome.storage?.local.set({ lastProfile: data, recentHistory: recent });
       } catch (e) {
         console.error('[Verve][App] profile fetch error', e);
@@ -118,9 +131,10 @@ export default function App() {
   // Load cached history & profile and listen for changes
   useEffect(() => {
     function syncFromStorage() {
-      chrome.storage?.local.get(['recentHistory','lastProfile'], ({ recentHistory, lastProfile }) => {
+      chrome.storage?.local.get(['recentHistory','lastProfile','quotaRemaining'], ({ recentHistory, lastProfile, quotaRemaining }) => {
         if (recentHistory) setRecentHistory(recentHistory);
         if (lastProfile) setProfileInfo(lastProfile);
+        if (typeof quotaRemaining === 'number') setRemainingQuota(quotaRemaining);
       });
     }
     syncFromStorage();
@@ -128,6 +142,7 @@ export default function App() {
       if (area !== 'local') return;
       if (changes.recentHistory) setRecentHistory(changes.recentHistory.newValue || []);
       if (changes.lastProfile) setProfileInfo(changes.lastProfile.newValue || null);
+      if (changes.quotaRemaining) setRemainingQuota(changes.quotaRemaining.newValue);
     };
     chrome.storage?.onChanged.addListener(listener);
     return () => chrome.storage?.onChanged.removeListener(listener);
@@ -159,6 +174,7 @@ export default function App() {
 
       {loggedInUser && (
         <>
+          {plan === 'FREE' && remainingQuota <= 0 && <UpgradeCard />}
           {profileInfo && <SummaryCard profile={profileInfo} />}
           {recentHistory.length > 0 && <RecentRepliesCard history={recentHistory} />}
 

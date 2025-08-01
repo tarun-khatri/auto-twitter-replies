@@ -4077,12 +4077,12 @@ const ScrollAreaCorner = reactExports.forwardRef((props, ref) => {
   return hasCorner ? /* @__PURE__ */ jsxRuntimeExports.jsx(Corner, { ...props, ref }) : null;
 });
 
-const defaultProps$C = {
+const defaultProps$F = {
   scrollHideDelay: 1e3,
   type: "hover"
 };
 const ScrollAreaRoot = reactExports.forwardRef((_props, ref) => {
-  const props = useProps("ScrollAreaRoot", defaultProps$C, _props);
+  const props = useProps("ScrollAreaRoot", defaultProps$F, _props);
   const { type, scrollHideDelay, scrollbars, ...others } = props;
   const [scrollArea, setScrollArea] = reactExports.useState(null);
   const [viewport, setViewport] = reactExports.useState(null);
@@ -4730,14 +4730,14 @@ const ScrollAreaViewport = reactExports.forwardRef(
 );
 ScrollAreaViewport.displayName = "@mantine/core/ScrollAreaViewport";
 
-var classes$j = {"root":"m_d57069b5","viewport":"m_c0783ff9","viewportInner":"m_f8f631dd","scrollbar":"m_c44ba933","thumb":"m_d8b5e363","corner":"m_21657268"};
+var classes$l = {"root":"m_d57069b5","viewport":"m_c0783ff9","viewportInner":"m_f8f631dd","scrollbar":"m_c44ba933","thumb":"m_d8b5e363","corner":"m_21657268"};
 
-const defaultProps$B = {
+const defaultProps$E = {
   scrollHideDelay: 1e3,
   type: "hover",
   scrollbars: "xy"
 };
-const varsResolver$l = createVarsResolver(
+const varsResolver$n = createVarsResolver(
   (_, { scrollbarSize, overscrollBehavior }) => ({
     root: {
       "--scrollarea-scrollbar-size": rem(scrollbarSize),
@@ -4746,7 +4746,7 @@ const varsResolver$l = createVarsResolver(
   })
 );
 const ScrollArea = factory((_props, ref) => {
-  const props = useProps("ScrollArea", defaultProps$B, _props);
+  const props = useProps("ScrollArea", defaultProps$E, _props);
   const {
     classNames,
     className,
@@ -4774,14 +4774,14 @@ const ScrollArea = factory((_props, ref) => {
   const getStyles = useStyles({
     name: "ScrollArea",
     props,
-    classes: classes$j,
+    classes: classes$l,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$l
+    varsResolver: varsResolver$n
   });
   const localViewportRef = reactExports.useRef(null);
   const combinedViewportRef = useMergeRefs([viewportRef, localViewportRef]);
@@ -4893,7 +4893,7 @@ const ScrollAreaAutosize = factory((props, ref) => {
     onBottomReached,
     onTopReached,
     ...others
-  } = useProps("ScrollAreaAutosize", defaultProps$B, props);
+  } = useProps("ScrollAreaAutosize", defaultProps$E, props);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { ...others, ref, style: [{ display: "flex", overflow: "auto" }, style], children: /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { style: { display: "flex", flexDirection: "column", flex: 1 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
     ScrollArea,
     {
@@ -4917,19 +4917,19 @@ const ScrollAreaAutosize = factory((props, ref) => {
     }
   ) }) });
 });
-ScrollArea.classes = classes$j;
+ScrollArea.classes = classes$l;
 ScrollAreaAutosize.displayName = "@mantine/core/ScrollAreaAutosize";
-ScrollAreaAutosize.classes = classes$j;
+ScrollAreaAutosize.classes = classes$l;
 ScrollArea.Autosize = ScrollAreaAutosize;
 
-var classes$i = {"root":"m_87cf2631"};
+var classes$k = {"root":"m_87cf2631"};
 
-const defaultProps$A = {
+const defaultProps$D = {
   __staticSelector: "UnstyledButton"
 };
 const UnstyledButton = polymorphicFactory(
   (_props, ref) => {
-    const props = useProps("UnstyledButton", defaultProps$A, _props);
+    const props = useProps("UnstyledButton", defaultProps$D, _props);
     const {
       className,
       component = "button",
@@ -4943,7 +4943,7 @@ const UnstyledButton = polymorphicFactory(
     const getStyles = useStyles({
       name: __staticSelector,
       props,
-      classes: classes$i,
+      classes: classes$k,
       className,
       style,
       classNames,
@@ -4962,18 +4962,18 @@ const UnstyledButton = polymorphicFactory(
     );
   }
 );
-UnstyledButton.classes = classes$i;
+UnstyledButton.classes = classes$k;
 UnstyledButton.displayName = "@mantine/core/UnstyledButton";
 
-var classes$h = {"root":"m_515a97f8"};
+var classes$j = {"root":"m_515a97f8"};
 
-const defaultProps$z = {};
+const defaultProps$C = {};
 const VisuallyHidden = factory((_props, ref) => {
-  const props = useProps("VisuallyHidden", defaultProps$z, _props);
+  const props = useProps("VisuallyHidden", defaultProps$C, _props);
   const { classNames, className, style, styles, unstyled, vars, ...others } = props;
   const getStyles = useStyles({
     name: "VisuallyHidden",
-    classes: classes$h,
+    classes: classes$j,
     props,
     className,
     style,
@@ -4983,20 +4983,20 @@ const VisuallyHidden = factory((_props, ref) => {
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { component: "span", ref, ...getStyles("root"), ...others });
 });
-VisuallyHidden.classes = classes$h;
+VisuallyHidden.classes = classes$j;
 VisuallyHidden.displayName = "@mantine/core/VisuallyHidden";
 
-var classes$g = {"root":"m_1b7284a3"};
+var classes$i = {"root":"m_1b7284a3"};
 
-const defaultProps$y = {};
-const varsResolver$k = createVarsResolver((_, { radius, shadow }) => ({
+const defaultProps$B = {};
+const varsResolver$m = createVarsResolver((_, { radius, shadow }) => ({
   root: {
     "--paper-radius": radius === void 0 ? void 0 : getRadius(radius),
     "--paper-shadow": getShadow(shadow)
   }
 }));
 const Paper = polymorphicFactory((_props, ref) => {
-  const props = useProps("Paper", defaultProps$y, _props);
+  const props = useProps("Paper", defaultProps$B, _props);
   const {
     classNames,
     className,
@@ -5014,14 +5014,14 @@ const Paper = polymorphicFactory((_props, ref) => {
   const getStyles = useStyles({
     name: "Paper",
     props,
-    classes: classes$g,
+    classes: classes$i,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$k
+    varsResolver: varsResolver$m
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Box,
@@ -5034,15 +5034,15 @@ const Paper = polymorphicFactory((_props, ref) => {
     }
   );
 });
-Paper.classes = classes$g;
+Paper.classes = classes$i;
 Paper.displayName = "@mantine/core/Paper";
 
-var classes$f = {"root":"m_9814e45f"};
+var classes$h = {"root":"m_9814e45f"};
 
-const defaultProps$x = {
+const defaultProps$A = {
   zIndex: getDefaultZIndex("modal")
 };
-const varsResolver$j = createVarsResolver(
+const varsResolver$l = createVarsResolver(
   (_, { gradient, color, backgroundOpacity, blur, radius, zIndex }) => ({
     root: {
       "--overlay-bg": gradient || (color !== void 0 || backgroundOpacity !== void 0) && rgba(color || "#000", backgroundOpacity ?? 0.6) || void 0,
@@ -5053,7 +5053,7 @@ const varsResolver$j = createVarsResolver(
   })
 );
 const Overlay = polymorphicFactory((_props, ref) => {
-  const props = useProps("Overlay", defaultProps$x, _props);
+  const props = useProps("Overlay", defaultProps$A, _props);
   const {
     classNames,
     className,
@@ -5076,18 +5076,18 @@ const Overlay = polymorphicFactory((_props, ref) => {
   const getStyles = useStyles({
     name: "Overlay",
     props,
-    classes: classes$f,
+    classes: classes$h,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$j
+    varsResolver: varsResolver$l
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { ref, ...getStyles("root"), mod: [{ center, fixed }, mod], ...others, children });
 });
-Overlay.classes = classes$f;
+Overlay.classes = classes$h;
 Overlay.displayName = "@mantine/core/Overlay";
 
 function createPortalNode(props) {
@@ -5121,9 +5121,9 @@ function getTargetNode({
   }
   return createPortalNode(others);
 }
-const defaultProps$w = {};
+const defaultProps$z = {};
 const Portal = factory((props, ref) => {
-  const { children, target, reuseTargetNode, ...others } = useProps("Portal", defaultProps$w, props);
+  const { children, target, reuseTargetNode, ...others } = useProps("Portal", defaultProps$z, props);
   const [mounted, setMounted] = reactExports.useState(false);
   const nodeRef = reactExports.useRef(null);
   useIsomorphicEffect(() => {
@@ -5454,23 +5454,23 @@ FocusTrap.displayName = "@mantine/core/FocusTrap";
 FocusTrapInitialFocus.displayName = "@mantine/core/FocusTrapInitialFocus";
 FocusTrap.InitialFocus = FocusTrapInitialFocus;
 
-var classes$e = {"root":"m_5ae2e3c","barsLoader":"m_7a2bd4cd","bar":"m_870bb79","bars-loader-animation":"m_5d2b3b9d","dotsLoader":"m_4e3f22d7","dot":"m_870c4af","loader-dots-animation":"m_aac34a1","ovalLoader":"m_b34414df","oval-loader-animation":"m_f8e89c4b"};
+var classes$g = {"root":"m_5ae2e3c","barsLoader":"m_7a2bd4cd","bar":"m_870bb79","bars-loader-animation":"m_5d2b3b9d","dotsLoader":"m_4e3f22d7","dot":"m_870c4af","loader-dots-animation":"m_aac34a1","ovalLoader":"m_b34414df","oval-loader-animation":"m_f8e89c4b"};
 
-const Bars = reactExports.forwardRef(({ className, ...others }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Box, { component: "span", className: clsx(classes$e.barsLoader, className), ...others, ref, children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$e.bar }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$e.bar }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$e.bar })
+const Bars = reactExports.forwardRef(({ className, ...others }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Box, { component: "span", className: clsx(classes$g.barsLoader, className), ...others, ref, children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$g.bar }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$g.bar }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$g.bar })
 ] }));
 Bars.displayName = "@mantine/core/Bars";
 
-const Dots = reactExports.forwardRef(({ className, ...others }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Box, { component: "span", className: clsx(classes$e.dotsLoader, className), ...others, ref, children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$e.dot }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$e.dot }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$e.dot })
+const Dots = reactExports.forwardRef(({ className, ...others }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Box, { component: "span", className: clsx(classes$g.dotsLoader, className), ...others, ref, children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$g.dot }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$g.dot }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: classes$g.dot })
 ] }));
 Dots.displayName = "@mantine/core/Dots";
 
-const Oval = reactExports.forwardRef(({ className, ...others }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { component: "span", className: clsx(classes$e.ovalLoader, className), ...others, ref }));
+const Oval = reactExports.forwardRef(({ className, ...others }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { component: "span", className: clsx(classes$g.ovalLoader, className), ...others, ref }));
 Oval.displayName = "@mantine/core/Oval";
 
 const defaultLoaders = {
@@ -5478,18 +5478,18 @@ const defaultLoaders = {
   oval: Oval,
   dots: Dots
 };
-const defaultProps$v = {
+const defaultProps$y = {
   loaders: defaultLoaders,
   type: "oval"
 };
-const varsResolver$i = createVarsResolver((theme, { size, color }) => ({
+const varsResolver$k = createVarsResolver((theme, { size, color }) => ({
   root: {
     "--loader-size": getSize(size, "loader-size"),
     "--loader-color": color ? getThemeColor(color, theme) : void 0
   }
 }));
 const Loader = factory((_props, ref) => {
-  const props = useProps("Loader", defaultProps$v, _props);
+  const props = useProps("Loader", defaultProps$y, _props);
   const {
     size,
     color,
@@ -5508,14 +5508,14 @@ const Loader = factory((_props, ref) => {
   const getStyles = useStyles({
     name: "Loader",
     props,
-    classes: classes$e,
+    classes: classes$g,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$i
+    varsResolver: varsResolver$k
   });
   if (children) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { ...getStyles("root"), ref, ...others, children });
@@ -5533,7 +5533,7 @@ const Loader = factory((_props, ref) => {
   );
 });
 Loader.defaultLoaders = defaultLoaders;
-Loader.classes = classes$e;
+Loader.classes = classes$g;
 Loader.displayName = "@mantine/core/Loader";
 
 const CloseIcon = reactExports.forwardRef(
@@ -5560,12 +5560,12 @@ const CloseIcon = reactExports.forwardRef(
 );
 CloseIcon.displayName = "@mantine/core/CloseIcon";
 
-var classes$d = {"root":"m_86a44da5","root--subtle":"m_220c80f2"};
+var classes$f = {"root":"m_86a44da5","root--subtle":"m_220c80f2"};
 
-const defaultProps$u = {
+const defaultProps$x = {
   variant: "subtle"
 };
-const varsResolver$h = createVarsResolver((_, { size, radius, iconSize }) => ({
+const varsResolver$j = createVarsResolver((_, { size, radius, iconSize }) => ({
   root: {
     "--cb-size": getSize(size, "cb-size"),
     "--cb-radius": radius === void 0 ? void 0 : getRadius(radius),
@@ -5573,7 +5573,7 @@ const varsResolver$h = createVarsResolver((_, { size, radius, iconSize }) => ({
   }
 }));
 const CloseButton = polymorphicFactory((_props, ref) => {
-  const props = useProps("CloseButton", defaultProps$u, _props);
+  const props = useProps("CloseButton", defaultProps$x, _props);
   const {
     iconSize,
     children,
@@ -5597,12 +5597,12 @@ const CloseButton = polymorphicFactory((_props, ref) => {
     props,
     className,
     style,
-    classes: classes$d,
+    classes: classes$f,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$h
+    varsResolver: varsResolver$j
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     UnstyledButton,
@@ -5621,23 +5621,23 @@ const CloseButton = polymorphicFactory((_props, ref) => {
     }
   );
 });
-CloseButton.classes = classes$d;
+CloseButton.classes = classes$f;
 CloseButton.displayName = "@mantine/core/CloseButton";
 
 function filterFalsyChildren(children) {
   return reactExports.Children.toArray(children).filter(Boolean);
 }
 
-var classes$c = {"root":"m_4081bf90"};
+var classes$e = {"root":"m_4081bf90"};
 
-const defaultProps$t = {
+const defaultProps$w = {
   preventGrowOverflow: true,
   gap: "md",
   align: "center",
   justify: "flex-start",
   wrap: "wrap"
 };
-const varsResolver$g = createVarsResolver(
+const varsResolver$i = createVarsResolver(
   (_, { grow, preventGrowOverflow, gap, align, justify, wrap }, { childWidth }) => ({
     root: {
       "--group-child-width": grow && preventGrowOverflow ? childWidth : void 0,
@@ -5649,7 +5649,7 @@ const varsResolver$g = createVarsResolver(
   })
 );
 const Group = factory((_props, ref) => {
-  const props = useProps("Group", defaultProps$t, _props);
+  const props = useProps("Group", defaultProps$w, _props);
   const {
     classNames,
     className,
@@ -5680,12 +5680,12 @@ const Group = factory((_props, ref) => {
     stylesCtx,
     className,
     style,
-    classes: classes$c,
+    classes: classes$e,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$g
+    varsResolver: varsResolver$i
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Box,
@@ -5700,7 +5700,7 @@ const Group = factory((_props, ref) => {
     }
   );
 });
-Group.classes = classes$c;
+Group.classes = classes$e;
 Group.displayName = "@mantine/core/Group";
 
 const [ModalBaseProvider, useModalBaseContext] = createSafeContext(
@@ -5846,7 +5846,7 @@ function useModalBodyId() {
   return ctx.getBodyId();
 }
 
-var classes$b = {"title":"m_615af6c9","header":"m_b5489c3c","inner":"m_60c222c7","content":"m_fd1ab0aa","close":"m_606cb269","body":"m_5df29311"};
+var classes$d = {"title":"m_615af6c9","header":"m_b5489c3c","inner":"m_60c222c7","content":"m_fd1ab0aa","close":"m_606cb269","body":"m_5df29311"};
 
 const ModalBaseBody = reactExports.forwardRef(
   ({ className, ...others }, ref) => {
@@ -5858,7 +5858,7 @@ const ModalBaseBody = reactExports.forwardRef(
         ref,
         ...others,
         id: bodyId,
-        className: clsx({ [classes$b.body]: !ctx.unstyled }, className)
+        className: clsx({ [classes$d.body]: !ctx.unstyled }, className)
       }
     );
   }
@@ -5877,7 +5877,7 @@ const ModalBaseCloseButton = reactExports.forwardRef(
           ctx.onClose();
           onClick?.(event);
         },
-        className: clsx({ [classes$b.close]: !ctx.unstyled }, className),
+        className: clsx({ [classes$d.close]: !ctx.unstyled }, className),
         unstyled: ctx.unstyled
       }
     );
@@ -5907,7 +5907,7 @@ const ModalBaseContent = reactExports.forwardRef(
           "div",
           {
             ...innerProps,
-            className: clsx({ [classes$b.inner]: !ctx.unstyled }, innerProps.className),
+            className: clsx({ [classes$d.inner]: !ctx.unstyled }, innerProps.className),
             children: /* @__PURE__ */ jsxRuntimeExports.jsx(FocusTrap, { active: ctx.opened && ctx.trapFocus, innerRef: ref, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               Paper,
               {
@@ -5919,7 +5919,7 @@ const ModalBaseContent = reactExports.forwardRef(
                 "aria-describedby": ctx.bodyMounted ? ctx.getBodyId() : void 0,
                 "aria-labelledby": ctx.titleMounted ? ctx.getTitleId() : void 0,
                 style: [style, transitionStyles],
-                className: clsx({ [classes$b.content]: !ctx.unstyled }, className),
+                className: clsx({ [classes$d.content]: !ctx.unstyled }, className),
                 unstyled: ctx.unstyled,
                 children: others.children
               }
@@ -5940,7 +5940,7 @@ const ModalBaseHeader = reactExports.forwardRef(
       {
         component: "header",
         ref,
-        className: clsx({ [classes$b.header]: !ctx.unstyled }, className),
+        className: clsx({ [classes$d.header]: !ctx.unstyled }, className),
         ...others
       }
     );
@@ -6007,7 +6007,7 @@ const ModalBaseTitle = reactExports.forwardRef(
       {
         component: "h2",
         ref,
-        className: clsx({ [classes$b.title]: !ctx.unstyled }, className),
+        className: clsx({ [classes$d.title]: !ctx.unstyled }, className),
         ...others,
         id
       }
@@ -6024,9 +6024,9 @@ const [InputContext, useInputContext] = createOptionalContext({
   size: "sm"
 });
 
-const defaultProps$s = {};
+const defaultProps$v = {};
 const InputClearButton = factory((_props, ref) => {
-  const props = useProps("InputClearButton", defaultProps$s, _props);
+  const props = useProps("InputClearButton", defaultProps$v, _props);
   const { size, variant, vars, classNames, styles, ...others } = props;
   const ctx = useInputContext();
   const { resolvedClassNames, resolvedStyles } = useResolvedStylesApi({
@@ -6058,16 +6058,16 @@ const [InputWrapperProvider, useInputWrapperContext] = createOptionalContext({
   labelId: void 0
 });
 
-var classes$a = {"wrapper":"m_6c018570","input":"m_8fb7ebe7","section":"m_82577fc2","placeholder":"m_88bacfd0","root":"m_46b77525","label":"m_8fdc1311","required":"m_78a94662","error":"m_8f816625","description":"m_fe47ce59"};
+var classes$c = {"wrapper":"m_6c018570","input":"m_8fb7ebe7","section":"m_82577fc2","placeholder":"m_88bacfd0","root":"m_46b77525","label":"m_8fdc1311","required":"m_78a94662","error":"m_8f816625","description":"m_fe47ce59"};
 
-const defaultProps$r = {};
-const varsResolver$f = createVarsResolver((_, { size }) => ({
+const defaultProps$u = {};
+const varsResolver$h = createVarsResolver((_, { size }) => ({
   description: {
     "--input-description-size": size === void 0 ? void 0 : `calc(${getFontSize(size)} - ${rem(2)})`
   }
 }));
 const InputDescription = factory((_props, ref) => {
-  const props = useProps("InputDescription", defaultProps$r, _props);
+  const props = useProps("InputDescription", defaultProps$u, _props);
   const {
     classNames,
     className,
@@ -6080,12 +6080,12 @@ const InputDescription = factory((_props, ref) => {
     __inheritStyles = true,
     variant,
     ...others
-  } = useProps("InputDescription", defaultProps$r, props);
+  } = useProps("InputDescription", defaultProps$u, props);
   const ctx = useInputWrapperContext();
   const _getStyles = useStyles({
     name: ["InputWrapper", __staticSelector],
     props,
-    classes: classes$a,
+    classes: classes$c,
     className,
     style,
     classNames,
@@ -6093,7 +6093,7 @@ const InputDescription = factory((_props, ref) => {
     unstyled,
     rootSelector: "description",
     vars,
-    varsResolver: varsResolver$f
+    varsResolver: varsResolver$h
   });
   const getStyles = __inheritStyles && ctx?.getStyles || _getStyles;
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -6108,17 +6108,17 @@ const InputDescription = factory((_props, ref) => {
     }
   );
 });
-InputDescription.classes = classes$a;
+InputDescription.classes = classes$c;
 InputDescription.displayName = "@mantine/core/InputDescription";
 
-const defaultProps$q = {};
-const varsResolver$e = createVarsResolver((_, { size }) => ({
+const defaultProps$t = {};
+const varsResolver$g = createVarsResolver((_, { size }) => ({
   error: {
     "--input-error-size": size === void 0 ? void 0 : `calc(${getFontSize(size)} - ${rem(2)})`
   }
 }));
 const InputError = factory((_props, ref) => {
-  const props = useProps("InputError", defaultProps$q, _props);
+  const props = useProps("InputError", defaultProps$t, _props);
   const {
     classNames,
     className,
@@ -6135,7 +6135,7 @@ const InputError = factory((_props, ref) => {
   const _getStyles = useStyles({
     name: ["InputWrapper", __staticSelector],
     props,
-    classes: classes$a,
+    classes: classes$c,
     className,
     style,
     classNames,
@@ -6143,7 +6143,7 @@ const InputError = factory((_props, ref) => {
     unstyled,
     rootSelector: "error",
     vars,
-    varsResolver: varsResolver$e
+    varsResolver: varsResolver$g
   });
   const ctx = useInputWrapperContext();
   const getStyles = __inheritStyles && ctx?.getStyles || _getStyles;
@@ -6159,20 +6159,20 @@ const InputError = factory((_props, ref) => {
     }
   );
 });
-InputError.classes = classes$a;
+InputError.classes = classes$c;
 InputError.displayName = "@mantine/core/InputError";
 
-const defaultProps$p = {
+const defaultProps$s = {
   labelElement: "label"
 };
-const varsResolver$d = createVarsResolver((_, { size }) => ({
+const varsResolver$f = createVarsResolver((_, { size }) => ({
   label: {
     "--input-label-size": getFontSize(size),
     "--input-asterisk-color": void 0
   }
 }));
 const InputLabel = factory((_props, ref) => {
-  const props = useProps("InputLabel", defaultProps$p, _props);
+  const props = useProps("InputLabel", defaultProps$s, _props);
   const {
     classNames,
     className,
@@ -6190,11 +6190,11 @@ const InputLabel = factory((_props, ref) => {
     variant,
     mod,
     ...others
-  } = useProps("InputLabel", defaultProps$p, props);
+  } = useProps("InputLabel", defaultProps$s, props);
   const _getStyles = useStyles({
     name: ["InputWrapper", __staticSelector],
     props,
-    classes: classes$a,
+    classes: classes$c,
     className,
     style,
     classNames,
@@ -6202,7 +6202,7 @@ const InputLabel = factory((_props, ref) => {
     unstyled,
     rootSelector: "label",
     vars,
-    varsResolver: varsResolver$d
+    varsResolver: varsResolver$f
   });
   const ctx = useInputWrapperContext();
   const getStyles = ctx?.getStyles || _getStyles;
@@ -6230,12 +6230,12 @@ const InputLabel = factory((_props, ref) => {
     }
   );
 });
-InputLabel.classes = classes$a;
+InputLabel.classes = classes$c;
 InputLabel.displayName = "@mantine/core/InputLabel";
 
-const defaultProps$o = {};
+const defaultProps$r = {};
 const InputPlaceholder = factory((_props, ref) => {
-  const props = useProps("InputPlaceholder", defaultProps$o, _props);
+  const props = useProps("InputPlaceholder", defaultProps$r, _props);
   const {
     classNames,
     className,
@@ -6248,11 +6248,11 @@ const InputPlaceholder = factory((_props, ref) => {
     error,
     mod,
     ...others
-  } = useProps("InputPlaceholder", defaultProps$o, props);
+  } = useProps("InputPlaceholder", defaultProps$r, props);
   const getStyles = useStyles({
     name: ["InputPlaceholder", __staticSelector],
     props,
-    classes: classes$a,
+    classes: classes$c,
     className,
     style,
     classNames,
@@ -6272,7 +6272,7 @@ const InputPlaceholder = factory((_props, ref) => {
     }
   );
 });
-InputPlaceholder.classes = classes$a;
+InputPlaceholder.classes = classes$c;
 InputPlaceholder.displayName = "@mantine/core/InputPlaceholder";
 
 function getInputOffsets(inputWrapperOrder, { hasDescription, hasError }) {
@@ -6284,12 +6284,12 @@ function getInputOffsets(inputWrapperOrder, { hasDescription, hasError }) {
   return { offsetBottom, offsetTop };
 }
 
-const defaultProps$n = {
+const defaultProps$q = {
   labelElement: "label",
   inputContainer: (children) => children,
   inputWrapperOrder: ["label", "description", "input", "error"]
 };
-const varsResolver$c = createVarsResolver((_, { size }) => ({
+const varsResolver$e = createVarsResolver((_, { size }) => ({
   label: {
     "--input-label-size": getFontSize(size),
     "--input-asterisk-color": void 0
@@ -6302,7 +6302,7 @@ const varsResolver$c = createVarsResolver((_, { size }) => ({
   }
 }));
 const InputWrapper = factory((_props, ref) => {
-  const props = useProps("InputWrapper", defaultProps$n, _props);
+  const props = useProps("InputWrapper", defaultProps$q, _props);
   const {
     classNames,
     className,
@@ -6333,14 +6333,14 @@ const InputWrapper = factory((_props, ref) => {
   const getStyles = useStyles({
     name: ["InputWrapper", __staticSelector],
     props: __stylesApiProps || props,
-    classes: classes$a,
+    classes: classes$c,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$c
+    varsResolver: varsResolver$e
   });
   const sharedProps = {
     size,
@@ -6432,17 +6432,17 @@ const InputWrapper = factory((_props, ref) => {
     }
   );
 });
-InputWrapper.classes = classes$a;
+InputWrapper.classes = classes$c;
 InputWrapper.displayName = "@mantine/core/InputWrapper";
 
-const defaultProps$m = {
+const defaultProps$p = {
   variant: "default",
   leftSectionPointerEvents: "none",
   rightSectionPointerEvents: "none",
   withAria: true,
   withErrorStyles: true
 };
-const varsResolver$b = createVarsResolver((_, props, ctx) => ({
+const varsResolver$d = createVarsResolver((_, props, ctx) => ({
   wrapper: {
     "--input-margin-top": ctx.offsetTop ? "calc(var(--mantine-spacing-xs) / 2)" : void 0,
     "--input-margin-bottom": ctx.offsetBottom ? "calc(var(--mantine-spacing-xs) / 2)" : void 0,
@@ -6457,7 +6457,7 @@ const varsResolver$b = createVarsResolver((_, props, ctx) => ({
   }
 }));
 const Input = polymorphicFactory((_props, ref) => {
-  const props = useProps("Input", defaultProps$m, _props);
+  const props = useProps("Input", defaultProps$p, _props);
   const {
     classNames,
     className,
@@ -6500,7 +6500,7 @@ const Input = polymorphicFactory((_props, ref) => {
   const getStyles = useStyles({
     name: ["Input", __staticSelector],
     props: __stylesApiProps || props,
-    classes: classes$a,
+    classes: classes$c,
     className,
     style,
     classNames,
@@ -6509,7 +6509,7 @@ const Input = polymorphicFactory((_props, ref) => {
     stylesCtx,
     rootSelector: "wrapper",
     vars,
-    varsResolver: varsResolver$b
+    varsResolver: varsResolver$d
   });
   const ariaAttributes = withAria ? {
     required,
@@ -6581,7 +6581,7 @@ const Input = polymorphicFactory((_props, ref) => {
     }
   ) });
 });
-Input.classes = classes$a;
+Input.classes = classes$c;
 Input.Wrapper = InputWrapper;
 Input.Label = InputLabel;
 Input.Error = InputError;
@@ -6664,18 +6664,18 @@ function useInputProps(component, defaultProps, _props) {
   };
 }
 
-const defaultProps$l = {
+const defaultProps$o = {
   __staticSelector: "InputBase",
   withAria: true
 };
 const InputBase = polymorphicFactory((props, ref) => {
-  const { inputProps, wrapperProps, ...others } = useInputProps("InputBase", defaultProps$l, props);
+  const { inputProps, wrapperProps, ...others } = useInputProps("InputBase", defaultProps$o, props);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Input.Wrapper, { ...wrapperProps, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { ...inputProps, ...others, ref }) });
 });
 InputBase.classes = { ...Input.classes, ...Input.Wrapper.classes };
 InputBase.displayName = "@mantine/core/InputBase";
 
-var classes$9 = {"root":"m_b6d8b162"};
+var classes$b = {"root":"m_b6d8b162"};
 
 function getTextTruncate(truncate) {
   if (truncate === "start") {
@@ -6686,10 +6686,10 @@ function getTextTruncate(truncate) {
   }
   return void 0;
 }
-const defaultProps$k = {
+const defaultProps$n = {
   inherit: false
 };
-const varsResolver$a = createVarsResolver(
+const varsResolver$c = createVarsResolver(
   (theme, { variant, lineClamp, gradient, size, color }) => ({
     root: {
       "--text-fz": getFontSize(size),
@@ -6701,7 +6701,7 @@ const varsResolver$a = createVarsResolver(
   })
 );
 const Text = polymorphicFactory((_props, ref) => {
-  const props = useProps("Text", defaultProps$k, _props);
+  const props = useProps("Text", defaultProps$n, _props);
   const {
     lineClamp,
     truncate,
@@ -6724,14 +6724,14 @@ const Text = polymorphicFactory((_props, ref) => {
   const getStyles = useStyles({
     name: ["Text", __staticSelector],
     props,
-    classes: classes$9,
+    classes: classes$b,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$a
+    varsResolver: varsResolver$c
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Box,
@@ -6754,12 +6754,12 @@ const Text = polymorphicFactory((_props, ref) => {
     }
   );
 });
-Text.classes = classes$9;
+Text.classes = classes$b;
 Text.displayName = "@mantine/core/Text";
 
-var classes$8 = {"root":"m_5f75b09e","body":"m_5f6e695e","labelWrapper":"m_d3ea56bb","label":"m_8ee546b8","description":"m_328f68c0","error":"m_8e8a99cc"};
+var classes$a = {"root":"m_5f75b09e","body":"m_5f6e695e","labelWrapper":"m_d3ea56bb","label":"m_8ee546b8","description":"m_328f68c0","error":"m_8e8a99cc"};
 
-const InlineInputClasses = classes$8;
+const InlineInputClasses = classes$a;
 const InlineInput = reactExports.forwardRef(
   ({
     __staticSelector,
@@ -6789,7 +6789,7 @@ const InlineInput = reactExports.forwardRef(
       props: __stylesApiProps,
       className,
       style,
-      classes: classes$8,
+      classes: classes$a,
       classNames,
       styles,
       unstyled
@@ -6846,10 +6846,10 @@ function InputsGroupFieldset({ children, role }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { role, "aria-labelledby": ctx.labelId, "aria-describedby": ctx.describedBy, children });
 }
 
-var classes$7 = {"root":"m_347db0ec","root--dot":"m_fbd81e3d","label":"m_5add502a","section":"m_91fdda9b"};
+var classes$9 = {"root":"m_347db0ec","root--dot":"m_fbd81e3d","label":"m_5add502a","section":"m_91fdda9b"};
 
-const defaultProps$j = {};
-const varsResolver$9 = createVarsResolver(
+const defaultProps$m = {};
+const varsResolver$b = createVarsResolver(
   (theme, { radius, color, gradient, variant, size, autoContrast }) => {
     const colors = theme.variantColorResolver({
       color: color || theme.primaryColor,
@@ -6873,7 +6873,7 @@ const varsResolver$9 = createVarsResolver(
   }
 );
 const Badge = polymorphicFactory((_props, ref) => {
-  const props = useProps("Badge", defaultProps$j, _props);
+  const props = useProps("Badge", defaultProps$m, _props);
   const {
     classNames,
     className,
@@ -6897,14 +6897,14 @@ const Badge = polymorphicFactory((_props, ref) => {
   const getStyles = useStyles({
     name: "Badge",
     props,
-    classes: classes$7,
+    classes: classes$9,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$9
+    varsResolver: varsResolver$b
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     Box,
@@ -6930,19 +6930,19 @@ const Badge = polymorphicFactory((_props, ref) => {
     }
   );
 });
-Badge.classes = classes$7;
+Badge.classes = classes$9;
 Badge.displayName = "@mantine/core/Badge";
 
-var classes$6 = {"root":"m_77c9d27d","inner":"m_80f1301b","label":"m_811560b9","section":"m_a74036a","loader":"m_a25b86ee","group":"m_80d6d844","groupSection":"m_70be2a01"};
+var classes$8 = {"root":"m_77c9d27d","inner":"m_80f1301b","label":"m_811560b9","section":"m_a74036a","loader":"m_a25b86ee","group":"m_80d6d844","groupSection":"m_70be2a01"};
 
-const defaultProps$i = {
+const defaultProps$l = {
   orientation: "horizontal"
 };
-const varsResolver$8 = createVarsResolver((_, { borderWidth }) => ({
+const varsResolver$a = createVarsResolver((_, { borderWidth }) => ({
   group: { "--button-border-width": rem(borderWidth) }
 }));
 const ButtonGroup = factory((_props, ref) => {
-  const props = useProps("ButtonGroup", defaultProps$i, _props);
+  const props = useProps("ButtonGroup", defaultProps$l, _props);
   const {
     className,
     style,
@@ -6955,18 +6955,18 @@ const ButtonGroup = factory((_props, ref) => {
     variant,
     mod,
     ...others
-  } = useProps("ButtonGroup", defaultProps$i, _props);
+  } = useProps("ButtonGroup", defaultProps$l, _props);
   const getStyles = useStyles({
     name: "ButtonGroup",
     props,
-    classes: classes$6,
+    classes: classes$8,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$8,
+    varsResolver: varsResolver$a,
     rootSelector: "group"
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -6981,11 +6981,11 @@ const ButtonGroup = factory((_props, ref) => {
     }
   );
 });
-ButtonGroup.classes = classes$6;
+ButtonGroup.classes = classes$8;
 ButtonGroup.displayName = "@mantine/core/ButtonGroup";
 
-const defaultProps$h = {};
-const varsResolver$7 = createVarsResolver(
+const defaultProps$k = {};
+const varsResolver$9 = createVarsResolver(
   (theme, { radius, color, gradient, variant, autoContrast, size }) => {
     const colors = theme.variantColorResolver({
       color: color || theme.primaryColor,
@@ -7008,7 +7008,7 @@ const varsResolver$7 = createVarsResolver(
   }
 );
 const ButtonGroupSection = factory((_props, ref) => {
-  const props = useProps("ButtonGroupSection", defaultProps$h, _props);
+  const props = useProps("ButtonGroupSection", defaultProps$k, _props);
   const {
     className,
     style,
@@ -7021,23 +7021,23 @@ const ButtonGroupSection = factory((_props, ref) => {
     radius,
     autoContrast,
     ...others
-  } = useProps("ButtonGroupSection", defaultProps$h, _props);
+  } = useProps("ButtonGroupSection", defaultProps$k, _props);
   const getStyles = useStyles({
     name: "ButtonGroupSection",
     props,
-    classes: classes$6,
+    classes: classes$8,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$7,
+    varsResolver: varsResolver$9,
     rootSelector: "groupSection"
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { ...getStyles("groupSection"), ref, variant, ...others });
 });
-ButtonGroupSection.classes = classes$6;
+ButtonGroupSection.classes = classes$8;
 ButtonGroupSection.displayName = "@mantine/core/ButtonGroupSection";
 
 const loaderTransition = {
@@ -7046,8 +7046,8 @@ const loaderTransition = {
   common: { transformOrigin: "center" },
   transitionProperty: "transform, opacity"
 };
-const defaultProps$g = {};
-const varsResolver$6 = createVarsResolver(
+const defaultProps$j = {};
+const varsResolver$8 = createVarsResolver(
   (theme, { radius, color, gradient, variant, size, justify, autoContrast }) => {
     const colors = theme.variantColorResolver({
       color: color || theme.primaryColor,
@@ -7073,7 +7073,7 @@ const varsResolver$6 = createVarsResolver(
   }
 );
 const Button = polymorphicFactory((_props, ref) => {
-  const props = useProps("Button", defaultProps$g, _props);
+  const props = useProps("Button", defaultProps$j, _props);
   const {
     style,
     vars,
@@ -7100,14 +7100,14 @@ const Button = polymorphicFactory((_props, ref) => {
   const getStyles = useStyles({
     name: "Button",
     props,
-    classes: classes$6,
+    classes: classes$8,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$6
+    varsResolver: varsResolver$8
   });
   const hasLeftSection = !!leftSection;
   const hasRightSection = !!rightSection;
@@ -7148,7 +7148,7 @@ const Button = polymorphicFactory((_props, ref) => {
     }
   );
 });
-Button.classes = classes$6;
+Button.classes = classes$8;
 Button.displayName = "@mantine/core/Button";
 Button.Group = ButtonGroup;
 Button.GroupSection = ButtonGroupSection;
@@ -7157,11 +7157,11 @@ const [CardProvider, useCardContext] = createSafeContext(
   "Card component was not found in tree"
 );
 
-var classes$5 = {"root":"m_e615b15f","section":"m_599a2148"};
+var classes$7 = {"root":"m_e615b15f","section":"m_599a2148"};
 
-const defaultProps$f = {};
+const defaultProps$i = {};
 const CardSection = polymorphicFactory((_props, ref) => {
-  const props = useProps("CardSection", defaultProps$f, _props);
+  const props = useProps("CardSection", defaultProps$i, _props);
   const { classNames, className, style, styles, vars, withBorder, inheritPadding, mod, ...others } = props;
   const ctx = useCardContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -7174,29 +7174,29 @@ const CardSection = polymorphicFactory((_props, ref) => {
     }
   );
 });
-CardSection.classes = classes$5;
+CardSection.classes = classes$7;
 CardSection.displayName = "@mantine/core/CardSection";
 
-const defaultProps$e = {};
-const varsResolver$5 = createVarsResolver((_, { padding }) => ({
+const defaultProps$h = {};
+const varsResolver$7 = createVarsResolver((_, { padding }) => ({
   root: {
     "--card-padding": getSpacing(padding)
   }
 }));
 const Card = polymorphicFactory((_props, ref) => {
-  const props = useProps("Card", defaultProps$e, _props);
+  const props = useProps("Card", defaultProps$h, _props);
   const { classNames, className, style, styles, unstyled, vars, children, padding, ...others } = props;
   const getStyles = useStyles({
     name: "Card",
     props,
-    classes: classes$5,
+    classes: classes$7,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$5
+    varsResolver: varsResolver$7
   });
   const _children = reactExports.Children.toArray(children);
   const content = _children.map((child, index) => {
@@ -7210,16 +7210,16 @@ const Card = polymorphicFactory((_props, ref) => {
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(CardProvider, { value: { getStyles }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Paper, { ref, unstyled, ...getStyles("root"), ...others, children: content }) });
 });
-Card.classes = classes$5;
+Card.classes = classes$7;
 Card.displayName = "@mantine/core/Card";
 Card.Section = CardSection;
 
-var classes$4 = {"root":"m_3eebeb36","label":"m_9e365f20"};
+var classes$6 = {"root":"m_3eebeb36","label":"m_9e365f20"};
 
-const defaultProps$d = {
+const defaultProps$g = {
   orientation: "horizontal"
 };
-const varsResolver$4 = createVarsResolver((theme, { color, variant, size }) => ({
+const varsResolver$6 = createVarsResolver((theme, { color, variant, size }) => ({
   root: {
     "--divider-color": color ? getThemeColor(color, theme) : void 0,
     "--divider-border-style": variant,
@@ -7227,7 +7227,7 @@ const varsResolver$4 = createVarsResolver((theme, { color, variant, size }) => (
   }
 }));
 const Divider = factory((_props, ref) => {
-  const props = useProps("Divider", defaultProps$d, _props);
+  const props = useProps("Divider", defaultProps$g, _props);
   const {
     classNames,
     className,
@@ -7244,7 +7244,7 @@ const Divider = factory((_props, ref) => {
   } = props;
   const getStyles = useStyles({
     name: "Divider",
-    classes: classes$4,
+    classes: classes$6,
     props,
     className,
     style,
@@ -7252,7 +7252,7 @@ const Divider = factory((_props, ref) => {
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$4
+    varsResolver: varsResolver$6
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Box,
@@ -7266,18 +7266,106 @@ const Divider = factory((_props, ref) => {
     }
   );
 });
-Divider.classes = classes$4;
+Divider.classes = classes$6;
 Divider.displayName = "@mantine/core/Divider";
+
+const [ListProvider, useListContext] = createSafeContext(
+  "List component was not found in tree"
+);
+
+var classes$5 = {"root":"m_abbac491","item":"m_abb6bec2","itemWrapper":"m_75cd9f71","itemIcon":"m_60f83e5b"};
+
+const defaultProps$f = {};
+const ListItem = factory((_props, ref) => {
+  const props = useProps("ListItem", defaultProps$f, _props);
+  const { classNames, className, style, styles, vars, icon, children, mod, ...others } = props;
+  const ctx = useListContext();
+  const _icon = icon || ctx.icon;
+  const stylesApiProps = { classNames, styles };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Box,
+    {
+      ...ctx.getStyles("item", { ...stylesApiProps, className, style }),
+      component: "li",
+      mod: [{ "with-icon": !!_icon, centered: ctx.center }, mod],
+      ref,
+      ...others,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { ...ctx.getStyles("itemWrapper", stylesApiProps), children: [
+        _icon && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { ...ctx.getStyles("itemIcon", stylesApiProps), children: _icon }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { ...ctx.getStyles("itemLabel", stylesApiProps), children })
+      ] })
+    }
+  );
+});
+ListItem.classes = classes$5;
+ListItem.displayName = "@mantine/core/ListItem";
+
+const defaultProps$e = {
+  type: "unordered"
+};
+const varsResolver$5 = createVarsResolver((_, { size, spacing }) => ({
+  root: {
+    "--list-fz": getFontSize(size),
+    "--list-lh": getLineHeight(size),
+    "--list-spacing": getSpacing(spacing)
+  }
+}));
+const List = factory((_props, ref) => {
+  const props = useProps("List", defaultProps$e, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    children,
+    type,
+    withPadding,
+    icon,
+    spacing,
+    center,
+    listStyleType,
+    mod,
+    ...others
+  } = props;
+  const getStyles = useStyles({
+    name: "List",
+    classes: classes$5,
+    props,
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver: varsResolver$5
+  });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(ListProvider, { value: { center, icon, getStyles }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Box,
+    {
+      ...getStyles("root", { style: { listStyleType } }),
+      component: type === "unordered" ? "ul" : "ol",
+      mod: [{ "with-padding": withPadding }, mod],
+      ref,
+      ...others,
+      children
+    }
+  ) });
+});
+List.classes = classes$5;
+List.displayName = "@mantine/core/List";
+List.Item = ListItem;
 
 const [ModalProvider, useModalContext] = createSafeContext(
   "Modal component was not found in tree"
 );
 
-var classes$3 = {"root":"m_9df02822","content":"m_54c44539","inner":"m_1f958f16","header":"m_d0e2b9cd"};
+var classes$4 = {"root":"m_9df02822","content":"m_54c44539","inner":"m_1f958f16","header":"m_d0e2b9cd"};
 
-const defaultProps$c = {};
+const defaultProps$d = {};
 const ModalBody = factory((_props, ref) => {
-  const props = useProps("ModalBody", defaultProps$c, _props);
+  const props = useProps("ModalBody", defaultProps$d, _props);
   const { classNames, className, style, styles, vars, ...others } = props;
   const ctx = useModalContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -7289,12 +7377,12 @@ const ModalBody = factory((_props, ref) => {
     }
   );
 });
-ModalBody.classes = classes$3;
+ModalBody.classes = classes$4;
 ModalBody.displayName = "@mantine/core/ModalBody";
 
-const defaultProps$b = {};
+const defaultProps$c = {};
 const ModalCloseButton = factory((_props, ref) => {
-  const props = useProps("ModalCloseButton", defaultProps$b, _props);
+  const props = useProps("ModalCloseButton", defaultProps$c, _props);
   const { classNames, className, style, styles, vars, ...others } = props;
   const ctx = useModalContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -7306,12 +7394,12 @@ const ModalCloseButton = factory((_props, ref) => {
     }
   );
 });
-ModalCloseButton.classes = classes$3;
+ModalCloseButton.classes = classes$4;
 ModalCloseButton.displayName = "@mantine/core/ModalCloseButton";
 
-const defaultProps$a = {};
+const defaultProps$b = {};
 const ModalContent = factory((_props, ref) => {
-  const props = useProps("ModalContent", defaultProps$a, _props);
+  const props = useProps("ModalContent", defaultProps$b, _props);
   const { classNames, className, style, styles, vars, children, __hidden, ...others } = props;
   const ctx = useModalContext();
   const Scroll = ctx.scrollAreaComponent || NativeScrollArea;
@@ -7337,12 +7425,12 @@ const ModalContent = factory((_props, ref) => {
     }
   );
 });
-ModalContent.classes = classes$3;
+ModalContent.classes = classes$4;
 ModalContent.displayName = "@mantine/core/ModalContent";
 
-const defaultProps$9 = {};
+const defaultProps$a = {};
 const ModalHeader = factory((_props, ref) => {
-  const props = useProps("ModalHeader", defaultProps$9, _props);
+  const props = useProps("ModalHeader", defaultProps$a, _props);
   const { classNames, className, style, styles, vars, ...others } = props;
   const ctx = useModalContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -7354,12 +7442,12 @@ const ModalHeader = factory((_props, ref) => {
     }
   );
 });
-ModalHeader.classes = classes$3;
+ModalHeader.classes = classes$4;
 ModalHeader.displayName = "@mantine/core/ModalHeader";
 
-const defaultProps$8 = {};
+const defaultProps$9 = {};
 const ModalOverlay = factory((_props, ref) => {
-  const props = useProps("ModalOverlay", defaultProps$8, _props);
+  const props = useProps("ModalOverlay", defaultProps$9, _props);
   const { classNames, className, style, styles, vars, ...others } = props;
   const ctx = useModalContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -7371,10 +7459,10 @@ const ModalOverlay = factory((_props, ref) => {
     }
   );
 });
-ModalOverlay.classes = classes$3;
+ModalOverlay.classes = classes$4;
 ModalOverlay.displayName = "@mantine/core/ModalOverlay";
 
-const defaultProps$7 = {
+const defaultProps$8 = {
   __staticSelector: "Modal",
   closeOnClickOutside: true,
   withinPortal: true,
@@ -7387,7 +7475,7 @@ const defaultProps$7 = {
   transitionProps: { duration: 200, transition: "fade-down" },
   yOffset: "5dvh"
 };
-const varsResolver$3 = createVarsResolver(
+const varsResolver$4 = createVarsResolver(
   (_, { radius, size, yOffset, xOffset }) => ({
     root: {
       "--modal-radius": radius === void 0 ? void 0 : getRadius(radius),
@@ -7398,7 +7486,7 @@ const varsResolver$3 = createVarsResolver(
   })
 );
 const ModalRoot = factory((_props, ref) => {
-  const props = useProps("ModalRoot", defaultProps$7, _props);
+  const props = useProps("ModalRoot", defaultProps$8, _props);
   const {
     classNames,
     className,
@@ -7417,7 +7505,7 @@ const ModalRoot = factory((_props, ref) => {
   } = props;
   const getStyles = useStyles({
     name: __staticSelector,
-    classes: classes$3,
+    classes: classes$4,
     props,
     className,
     style,
@@ -7425,7 +7513,7 @@ const ModalRoot = factory((_props, ref) => {
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$3
+    varsResolver: varsResolver$4
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(ModalProvider, { value: { yOffset, scrollAreaComponent, getStyles, fullScreen }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
     ModalBase,
@@ -7440,7 +7528,7 @@ const ModalRoot = factory((_props, ref) => {
     }
   ) });
 });
-ModalRoot.classes = classes$3;
+ModalRoot.classes = classes$4;
 ModalRoot.displayName = "@mantine/core/ModalRoot";
 
 const [ModalStackProvider, useModalStackContext] = createOptionalContext();
@@ -7469,9 +7557,9 @@ function ModalStack({ children }) {
 }
 ModalStack.displayName = "@mantine/core/ModalStack";
 
-const defaultProps$6 = {};
+const defaultProps$7 = {};
 const ModalTitle = factory((_props, ref) => {
-  const props = useProps("ModalTitle", defaultProps$6, _props);
+  const props = useProps("ModalTitle", defaultProps$7, _props);
   const { classNames, className, style, styles, vars, ...others } = props;
   const ctx = useModalContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -7483,10 +7571,10 @@ const ModalTitle = factory((_props, ref) => {
     }
   );
 });
-ModalTitle.classes = classes$3;
+ModalTitle.classes = classes$4;
 ModalTitle.displayName = "@mantine/core/ModalTitle";
 
-const defaultProps$5 = {
+const defaultProps$6 = {
   closeOnClickOutside: true,
   withinPortal: true,
   lockScroll: true,
@@ -7512,7 +7600,7 @@ const Modal = factory((_props, ref) => {
     stackId,
     zIndex,
     ...others
-  } = useProps("Modal", defaultProps$5, _props);
+  } = useProps("Modal", defaultProps$6, _props);
   const ctx = useModalStackContext();
   const hasHeader = !!title || withCloseButton;
   const stackProps = ctx && stackId ? {
@@ -7562,7 +7650,7 @@ const Modal = factory((_props, ref) => {
     }
   );
 });
-Modal.classes = classes$3;
+Modal.classes = classes$4;
 Modal.displayName = "@mantine/core/Modal";
 Modal.Root = ModalRoot;
 Modal.Overlay = ModalOverlay;
@@ -7573,19 +7661,19 @@ Modal.Title = ModalTitle;
 Modal.CloseButton = ModalCloseButton;
 Modal.Stack = ModalStack;
 
-var classes$2 = {"root":"m_a513464","icon":"m_a4ceffb","loader":"m_b0920b15","body":"m_a49ed24","title":"m_3feedf16","description":"m_3d733a3a","closeButton":"m_919a4d88"};
+var classes$3 = {"root":"m_a513464","icon":"m_a4ceffb","loader":"m_b0920b15","body":"m_a49ed24","title":"m_3feedf16","description":"m_3d733a3a","closeButton":"m_919a4d88"};
 
-const defaultProps$4 = {
+const defaultProps$5 = {
   withCloseButton: true
 };
-const varsResolver$2 = createVarsResolver((theme, { radius, color }) => ({
+const varsResolver$3 = createVarsResolver((theme, { radius, color }) => ({
   root: {
     "--notification-radius": radius === void 0 ? void 0 : getRadius(radius),
     "--notification-color": color ? getThemeColor(color, theme) : void 0
   }
 }));
 const Notification = factory((_props, ref) => {
-  const props = useProps("Notification", defaultProps$4, _props);
+  const props = useProps("Notification", defaultProps$5, _props);
   const {
     className,
     color,
@@ -7611,7 +7699,7 @@ const Notification = factory((_props, ref) => {
   } = props;
   const getStyles = useStyles({
     name: "Notification",
-    classes: classes$2,
+    classes: classes$3,
     props,
     className,
     style,
@@ -7619,7 +7707,7 @@ const Notification = factory((_props, ref) => {
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$2
+    varsResolver: varsResolver$3
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     Box,
@@ -7652,16 +7740,16 @@ const Notification = factory((_props, ref) => {
     }
   );
 });
-Notification.classes = classes$2;
+Notification.classes = classes$3;
 Notification.displayName = "@mantine/core/Notification";
 
 const SwitchGroupContext = reactExports.createContext(null);
 const SwitchGroupProvider = SwitchGroupContext.Provider;
 const useSwitchGroupContext = () => reactExports.useContext(SwitchGroupContext);
 
-const defaultProps$3 = {};
+const defaultProps$4 = {};
 const SwitchGroup = factory((props, ref) => {
-  const { value, defaultValue, onChange, size, wrapperProps, children, readOnly, ...others } = useProps("SwitchGroup", defaultProps$3, props);
+  const { value, defaultValue, onChange, size, wrapperProps, children, readOnly, ...others } = useProps("SwitchGroup", defaultProps$4, props);
   const [_value, setValue] = useUncontrolled({
     value,
     defaultValue,
@@ -7690,12 +7778,12 @@ const SwitchGroup = factory((props, ref) => {
 SwitchGroup.classes = Input.Wrapper.classes;
 SwitchGroup.displayName = "@mantine/core/SwitchGroup";
 
-var classes$1 = {"root":"m_5f93f3bb","input":"m_926b4011","track":"m_9307d992","thumb":"m_93039a1d","trackLabel":"m_8277e082"};
+var classes$2 = {"root":"m_5f93f3bb","input":"m_926b4011","track":"m_9307d992","thumb":"m_93039a1d","trackLabel":"m_8277e082"};
 
-const defaultProps$2 = {
+const defaultProps$3 = {
   labelPosition: "right"
 };
-const varsResolver$1 = createVarsResolver((theme, { radius, color, size }) => ({
+const varsResolver$2 = createVarsResolver((theme, { radius, color, size }) => ({
   root: {
     "--switch-radius": radius === void 0 ? void 0 : getRadius(radius),
     "--switch-height": getSize(size, "switch-height"),
@@ -7707,7 +7795,7 @@ const varsResolver$1 = createVarsResolver((theme, { radius, color, size }) => ({
   }
 }));
 const Switch = factory((_props, ref) => {
-  const props = useProps("Switch", defaultProps$2, _props);
+  const props = useProps("Switch", defaultProps$3, _props);
   const {
     classNames,
     className,
@@ -7741,14 +7829,14 @@ const Switch = factory((_props, ref) => {
   const getStyles = useStyles({
     name: "Switch",
     props,
-    classes: classes$1,
+    classes: classes$2,
     className,
     style,
     classNames,
     styles,
     unstyled,
     vars,
-    varsResolver: varsResolver$1
+    varsResolver: varsResolver$2
   });
   const { styleProps, rest } = extractStyleProps(others);
   const uuid = useId(id);
@@ -7820,17 +7908,60 @@ const Switch = factory((_props, ref) => {
     }
   );
 });
-Switch.classes = { ...classes$1, ...InlineInputClasses };
+Switch.classes = { ...classes$2, ...InlineInputClasses };
 Switch.displayName = "@mantine/core/Switch";
 Switch.Group = SwitchGroup;
 
-const defaultProps$1 = {};
+const defaultProps$2 = {};
 const TextInput = factory((props, ref) => {
-  const _props = useProps("TextInput", defaultProps$1, props);
+  const _props = useProps("TextInput", defaultProps$2, props);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(InputBase, { component: "input", ref, ..._props, __staticSelector: "TextInput" });
 });
 TextInput.classes = InputBase.classes;
 TextInput.displayName = "@mantine/core/TextInput";
+
+var classes$1 = {"root":"m_7341320d"};
+
+const defaultProps$1 = {};
+const varsResolver$1 = createVarsResolver(
+  (theme, { size, radius, variant, gradient, color, autoContrast }) => {
+    const colors = theme.variantColorResolver({
+      color: color || theme.primaryColor,
+      theme,
+      gradient,
+      variant: variant || "filled",
+      autoContrast
+    });
+    return {
+      root: {
+        "--ti-size": getSize(size, "ti-size"),
+        "--ti-radius": radius === void 0 ? void 0 : getRadius(radius),
+        "--ti-bg": color || variant ? colors.background : void 0,
+        "--ti-color": color || variant ? colors.color : void 0,
+        "--ti-bd": color || variant ? colors.border : void 0
+      }
+    };
+  }
+);
+const ThemeIcon = factory((_props, ref) => {
+  const props = useProps("ThemeIcon", defaultProps$1, _props);
+  const { classNames, className, style, styles, unstyled, vars, autoContrast, ...others } = props;
+  const getStyles = useStyles({
+    name: "ThemeIcon",
+    classes: classes$1,
+    props,
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver: varsResolver$1
+  });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { ref, ...getStyles("root"), ...others });
+});
+ThemeIcon.classes = classes$1;
+ThemeIcon.displayName = "@mantine/core/ThemeIcon";
 
 const headings = ["h1", "h2", "h3", "h4", "h5", "h6"];
 const sizes = ["xs", "sm", "md", "lg", "xl"];
@@ -8102,6 +8233,15 @@ var IconBrandX = createReactComponent("brand-x", "IconBrandX", [
   ["path", { d: "M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772", key: "svg-1" }]
 ]);
 
+/**
+ * @tabler/icons-react v2.47.0 - MIT
+ */
+
+
+var IconCheck = createReactComponent("check", "IconCheck", [
+  ["path", { d: "M5 12l5 5l10 -10", key: "svg-0" }]
+]);
+
 function createStore(initialState) {
   let state = initialState;
   let initialized = false;
@@ -8188,7 +8328,6 @@ function fetchUserProfileWithToken(token) {
 }
 const ORIGINS$1 = [
   "http://localhost:5173",
-  "http://localhost:3000",
   "http://127.0.0.1:5173",
   "https://app.verve.dev",
   "https://getverve.xyz"
@@ -8294,7 +8433,7 @@ function TwitterLogin({ onLogin, onHistory, onProfile }) {
   const login = () => {
     setMsg("Opening login window…");
     const popup = window.open(
-      "http://localhost:3000?start=true",
+      " http://localhost:5173/X-login?start=true",
       "twitterAuth",
       "width=600,height=700"
     );
@@ -8476,9 +8615,30 @@ function SummaryCard({ profile }) {
   ] });
 }
 
+function UpgradeCard() {
+  const features = [
+    "Unlimited personalized replies",
+    "Advanced tone analysis",
+    "Image context analysis",
+    "Account mimicking",
+    "Priority support"
+  ];
+  const openUpgrade = () => {
+    if (chrome?.tabs)
+      chrome.tabs.create({ url: "https://getverve.xyz/pricing" });
+    else
+      window.open("https://getverve.xyz/pricing", "_blank");
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "verve-card", radius: "md", mt: 16, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", mb: 12, children: "Upgrade to Verve Pro" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(List, { spacing: "xs", size: "sm", mb: 12, icon: /* @__PURE__ */ jsxRuntimeExports.jsx(ThemeIcon, { color: "violet", size: 18, children: /* @__PURE__ */ jsxRuntimeExports.jsx(IconCheck, { size: 14 }) }), children: features.map((f) => /* @__PURE__ */ jsxRuntimeExports.jsx(List.Item, { children: f }, f)) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { fullWidth: true, variant: "gradient", gradient: { from: "violet", to: "indigo", deg: 45 }, onClick: openUpgrade, children: "Upgrade Now" })
+  ] });
+}
+
 const API_BASE = "http://localhost:8000" ;
 const SITE_URL = "http://localhost:5173" ;
-const ORIGINS = [SITE_URL, "http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "https://getverve.xyz"];
+const ORIGINS = [SITE_URL, "http://localhost:5173", "http://127.0.0.1:5173", "https://getverve.xyz"];
 async function getClerkToken() {
   return new Promise((resolve) => {
     if (typeof chrome === "undefined" || !chrome.cookies) {
@@ -8505,13 +8665,19 @@ function App() {
   const HeaderCard = () => /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "verve-card", radius: "md", style: { padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", style: { fontSize: 20, margin: 0 }, children: "getverve.xyz" }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 8, alignItems: "center" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { size: "xs", weight: 600, style: { background: "#10B98120", color: "#10B981", padding: "2px 8px", borderRadius: 6 }, children: "Free" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { size: "xs", weight: 600, style: { background: "#10B98120", color: "#10B981", padding: "2px 8px", borderRadius: 6 }, children: plan }),
+      typeof remainingQuota === "number" && /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { color: remainingQuota > 5 ? "green" : "yellow", variant: "light", children: [
+        Math.max(0, remainingQuota),
+        "/15"
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { size: "xs", variant: "gradient", gradient: { from: "violet", to: "indigo", deg: 45 }, style: { animation: "pulse 2s infinite" }, onClick: () => chrome.tabs?.create({ url: "https://app.verve.dev/upgrade" }), children: "Upgrade" })
     ] })
   ] });
   const [loggedInUser, setLoggedInUser] = reactExports.useState(null);
   const [recentHistory, setRecentHistory] = reactExports.useState([]);
   const [profileInfo, setProfileInfo] = reactExports.useState(null);
+  const [remainingQuota, setRemainingQuota] = reactExports.useState(void 0);
+  const [plan, setPlan] = reactExports.useState("FREE");
   reactExports.useEffect(() => {
     const styleEl = document.createElement("style");
     styleEl.textContent = `@keyframes pulse {0%{box-shadow:0 0 0 0 rgba(167,139,250,.7);}70%{box-shadow:0 0 0 6px rgba(167,139,250,0);}100%{box-shadow:0 0 0 0 rgba(167,139,250,0);}}`;
@@ -8526,6 +8692,8 @@ function App() {
           });
           console.log("[Verve][App] /users/me status", res.status);
           if (res.ok) {
+            const data = await res.json();
+            setPlan(data.plan || "FREE");
             setIsAuthenticated(true);
             if (chrome?.storage?.local)
               chrome.storage.local.set({ clerkToken: token });
@@ -8541,8 +8709,8 @@ function App() {
     })();
   }, []);
   reactExports.useEffect(() => {
-    console.log("[Verve][App] State", { authChecked, isAuthenticated, loggedInUser });
-  }, [authChecked, isAuthenticated, loggedInUser]);
+    console.log("[Verve][App] State", { authChecked, isAuthenticated, loggedInUser, remainingQuota, plan });
+  }, [authChecked, isAuthenticated, loggedInUser, remainingQuota, plan]);
   reactExports.useEffect(() => {
     if (!isAuthenticated || !loggedInUser)
       return;
@@ -8566,6 +8734,10 @@ function App() {
         setProfileInfo(data);
         const recent = data.recent_replies || [];
         setRecentHistory(recent);
+        if (typeof data.remaining_quota === "number") {
+          setRemainingQuota(data.remaining_quota);
+          chrome.storage?.local.set({ quotaRemaining: data.remaining_quota });
+        }
         chrome.storage?.local.set({ lastProfile: data, recentHistory: recent });
       } catch (e) {
         console.error("[Verve][App] profile fetch error", e);
@@ -8574,11 +8746,13 @@ function App() {
   }, [isAuthenticated, loggedInUser]);
   reactExports.useEffect(() => {
     function syncFromStorage() {
-      chrome.storage?.local.get(["recentHistory", "lastProfile"], ({ recentHistory: recentHistory2, lastProfile }) => {
+      chrome.storage?.local.get(["recentHistory", "lastProfile", "quotaRemaining"], ({ recentHistory: recentHistory2, lastProfile, quotaRemaining }) => {
         if (recentHistory2)
           setRecentHistory(recentHistory2);
         if (lastProfile)
           setProfileInfo(lastProfile);
+        if (typeof quotaRemaining === "number")
+          setRemainingQuota(quotaRemaining);
       });
     }
     syncFromStorage();
@@ -8589,6 +8763,8 @@ function App() {
         setRecentHistory(changes.recentHistory.newValue || []);
       if (changes.lastProfile)
         setProfileInfo(changes.lastProfile.newValue || null);
+      if (changes.quotaRemaining)
+        setRemainingQuota(changes.quotaRemaining.newValue);
     };
     chrome.storage?.onChanged.addListener(listener);
     return () => chrome.storage?.onChanged.removeListener(listener);
@@ -8602,6 +8778,7 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(TwitterLogin, { onLogin: setLoggedInUser, onHistory: setRecentHistory, onProfile: setProfileInfo })
     ] }),
     loggedInUser && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      plan === "FREE" && remainingQuota <= 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeCard, {}),
       profileInfo && /* @__PURE__ */ jsxRuntimeExports.jsx(SummaryCard, { profile: profileInfo }),
       recentHistory.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(RecentRepliesCard, { history: recentHistory }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { fullWidth: true, color: "red", variant: "outline", mt: 16, onClick: () => {

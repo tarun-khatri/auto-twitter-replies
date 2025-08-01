@@ -8,3 +8,4 @@ pymongo
 firebase-admin
 beautifulsoup4
 pyjwt[crypto]
+Pillow

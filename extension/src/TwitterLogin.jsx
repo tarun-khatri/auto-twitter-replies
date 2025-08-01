@@ -29,7 +29,6 @@ function fetchUserProfileWithToken(token) {
 
 const ORIGINS = [
   'http://localhost:5173',
-  'http://localhost:3000',
   'http://127.0.0.1:5173',
   'https://app.verve.dev',
   'https://getverve.xyz'
@@ -142,7 +141,7 @@ export default function TwitterLogin({ onLogin, onHistory, onProfile }) {
   const login = () => {
     setMsg('Opening login window…');
     const popup = window.open(
-      'http://localhost:3000?start=true',
+      ' http://localhost:5173/X-login?start=true',
       'twitterAuth',
       'width=600,height=700'
     );

@@ -5,12 +5,15 @@ from pydantic import BaseModel
 from fastapi import Depends
 from clerk_auth import verify_clerk_token
 from database import db
-from reply_generator import generate_reply
+from reply_generator import generate_reply, generate_reply_with_images
 from users import router as users_router
 from profiles import router as profiles_router
 from config import PORT
 from scraper import fetch_user_tweets
-from datetime import date
+from datetime import date, datetime, timezone
+import tempfile
+import requests
+import os
 
 app = FastAPI(title="Twitter Reply Generator")
 
@@ -36,25 +39,44 @@ def startup_db_check():
 
 class ReplyRequest(BaseModel):
     tweet_text: str
+    image_urls: list[str] = []
 
-FREE_DAILY_LIMIT = 50
+FREE_DAILY_LIMIT = 15
 
 @app.post("/generate_reply")
 def generate_reply_endpoint(
     req: ReplyRequest,
     clerk_uid: str = Depends(verify_clerk_token)
 ):
+    print(f"[GENERATE_REPLY] Request received from clerk_uid: {clerk_uid}")
+    print(f"[GENERATE_REPLY] Tweet text: {req.tweet_text[:100]}...")
+    print(f"[GENERATE_REPLY] Image URLs count: {len(req.image_urls)}")
+    if req.image_urls:
+        print(f"[GENERATE_REPLY] Image URLs: {req.image_urls}")
+    
     # 1. get user and enforce daily quota
     user_doc = db.users.find_one({"clerk_uid": clerk_uid})
     if not user_doc:
+        print(f"[GENERATE_REPLY] User not found for clerk_uid: {clerk_uid}")
         raise HTTPException(status_code=404, detail="User not found")
+    
+    print(f"[GENERATE_REPLY] User found: {user_doc.get('username', 'unknown')}")
 
-    today = date.today().isoformat()
-    if user_doc.get("last_quota_date") != today:
-        db.users.update_one({"_id": user_doc["_id"]}, {"$set": {"last_quota_date": today, "quota_used_today": 0}})
+    # Get current UTC date
+    today_utc = datetime.now(timezone.utc).date().isoformat()
+    last_quota_date = user_doc.get("last_quota_date")
+    current_used = user_doc.get("quota_used_today", 0)
+    
+    print(f"[QUOTA DEBUG] Today UTC: {today_utc}, Last quota date: {last_quota_date}, Current used: {current_used}")
+    
+    # Reset quota if it's a new UTC day (midnight UTC)
+    if last_quota_date != today_utc:
+        print(f"[QUOTA RESET] New UTC day - resetting quota to 0")
+        db.users.update_one({"_id": user_doc["_id"]}, {"$set": {"last_quota_date": today_utc, "quota_used_today": 0}})
         user_doc["quota_used_today"] = 0
+        current_used = 0
 
-    if user_doc.get("plan", "FREE") == "FREE" and user_doc.get("quota_used_today", 0) >= FREE_DAILY_LIMIT:
+    if user_doc.get("plan", "FREE") == "FREE" and current_used >= FREE_DAILY_LIMIT:
         raise HTTPException(status_code=429, detail="Daily quota exceeded")
 
     # 2. fetch active profile
@@ -72,13 +94,75 @@ def generate_reply_endpoint(
     if tone == "":
         tone = "neutral and friendly"
 
-    # 3. generate reply
-    reply = generate_reply(user_tone=tone, tweet_text=req.tweet_text, num_replies=1)[0]
+    # 3. generate reply (with images if available)
+    print(f"[GENERATE_REPLY] Starting reply generation...")
+    temp_images = []
+    try:
+        if req.image_urls:
+            print(f"[GENERATE_REPLY] Processing {len(req.image_urls)} images...")
+            # Download images to temporary files
+            for i, url in enumerate(req.image_urls):
+                try:
+                    print(f"[IMAGE DOWNLOAD] Attempting to download image {i+1}/{len(req.image_urls)}: {url}")
+                    response = requests.get(url, headers={
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                    }, timeout=10)
+                    response.raise_for_status()
+                    
+                    # Create temporary file
+                    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
+                    temp_file.write(response.content)
+                    temp_file.close()
+                    temp_images.append(temp_file.name)
+                    
+                    print(f"[IMAGE SUCCESS] Downloaded image {i+1}/{len(req.image_urls)}: {url} -> {temp_file.name} ({len(response.content)} bytes)")
+                except Exception as e:
+                    print(f"[IMAGE ERROR] Failed to download image {url}: {e}")
+                    continue
+            
+            if temp_images:
+                print(f"[GENERATE_REPLY] Successfully downloaded {len(temp_images)} images, using multimodal AI")
+                # Generate reply with images using multimodal AI
+                reply = generate_reply_with_images(
+                    user_tone=tone, 
+                    tweet_text=req.tweet_text, 
+                    image_paths=temp_images,
+                    num_replies=1
+                )[0]
+                print(f"[GENERATE_REPLY] Multimodal reply generated: {reply[:100]}...")
+            else:
+                print(f"[GENERATE_REPLY] No images downloaded successfully, falling back to text-only")
+                # Fallback to text-only if image download failed
+                reply = generate_reply(user_tone=tone, tweet_text=req.tweet_text, num_replies=1)[0]
+                print(f"[GENERATE_REPLY] Text-only reply generated: {reply[:100]}...")
+        else:
+            print(f"[GENERATE_REPLY] No images provided, using text-only generation")
+            # No images, use text-only generation
+            reply = generate_reply(user_tone=tone, tweet_text=req.tweet_text, num_replies=1)[0]
+            print(f"[GENERATE_REPLY] Text-only reply generated: {reply[:100]}...")
+    except Exception as e:
+        print(f"[GENERATE_REPLY ERROR] Exception during reply generation: {e}")
+        # Fallback to text-only generation
+        reply = generate_reply(user_tone=tone, tweet_text=req.tweet_text, num_replies=1)[0]
+        print(f"[GENERATE_REPLY] Fallback reply generated: {reply[:100]}...")
+    finally:
+        # Clean up temporary image files
+        print(f"[IMAGE CLEANUP] Cleaning up {len(temp_images)} temporary files...")
+        for temp_file in temp_images:
+            try:
+                if os.path.exists(temp_file):
+                    os.unlink(temp_file)
+                    print(f"[IMAGE CLEANUP] Deleted: {temp_file}")
+            except Exception as e:
+                print(f"[IMAGE CLEANUP ERROR] Failed to delete {temp_file}: {e}")
 
-    # 4. increment quota
+    # 4. increment quota and calculate remaining
+    current_used = user_doc.get("quota_used_today", 0)
+    new_used = current_used + 1
+    print(f"[QUOTA DEBUG] Clerk: {clerk_uid}, Current used: {current_used}, New used: {new_used}, Remaining: {max(0, FREE_DAILY_LIMIT - new_used)}")
     db.users.update_one({"_id": user_doc["_id"]}, {"$inc": {"quota_used_today": 1}})
 
-    remaining = max(0, FREE_DAILY_LIMIT - (user_doc.get("quota_used_today", 0) + 1))
+    remaining = max(0, FREE_DAILY_LIMIT - new_used)
 
     return {"reply": reply, "remaining_quota": remaining}
 
@@ -137,3 +221,5 @@ async def websocket_scrape(websocket: WebSocket, username: str):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=PORT, reload=True)
+    
+#   uvicorn main:app --host 0.0.0.0 --port 8000 --reload

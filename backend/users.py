@@ -2,7 +2,7 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, date, timezone
 from profiles import _scrape_and_analyze
 from database import db
 from clerk_auth import verify_clerk_token
@@ -46,12 +46,28 @@ def get_my_profile(clerk_uid: str = Depends(verify_clerk_token)):
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
 
+    # Calculate remaining quota for FREE users using UTC
+    remaining_quota = None
+    if user_doc.get("plan", "FREE") == "FREE":
+        today_utc = datetime.now(timezone.utc).date().isoformat()
+        last_quota_date = user_doc.get("last_quota_date")
+        
+        # If it's a new UTC day, quota should be 15 (will be reset on next request)
+        if last_quota_date != today_utc:
+            remaining_quota = 15
+            print(f"[PROFILE DEBUG] Clerk: {clerk_uid}, New UTC day, Quota: 15")
+        else:
+            used = user_doc.get("quota_used_today", 0)
+            remaining_quota = max(0, 15 - used)
+            print(f"[PROFILE DEBUG] Clerk: {clerk_uid}, Used: {used}, Quota: {remaining_quota}")
+
     return {
         "tone_summary": profile.get("tone_summary", ""),
         "tweet_count": profile.get("tweet_count", 0),
         "last_scraped_at": profile.get("last_scraped_at", ""),
         "recent_replies": profile.get("recent_replies", []),
         "handle": profile.get("handle"),
+        "remaining_quota": remaining_quota,
     }
 
 @router.post("/me/history")
