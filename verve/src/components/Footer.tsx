@@ -61,7 +61,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-700/50 mt-16 pt-10 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 font-medium">
-            © 2024 Verve. All rights reserved.
+            © 2025 Verve. All rights reserved.
           </p>
           <div className="flex items-center gap-4 mt-6 md:mt-0 text-gray-400 font-medium">
             <span className="italic">Made for creators who want to stand out</span>

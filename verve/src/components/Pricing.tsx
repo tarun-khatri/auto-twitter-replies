@@ -1,5 +1,6 @@
 import React from 'react';
 import { Check, Chrome, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const plans = [
   {
@@ -8,7 +9,7 @@ const plans = [
     period: "forever",
     description: "Perfect for getting started",
     features: [
-      "5 personalized replies per day",
+      "15 personalized replies per day",
       "Basic tone analysis",
       "Text post analysis",
       "Chrome extension"
@@ -22,12 +23,12 @@ const plans = [
     period: "month",
     description: "For serious creators and professionals",
     features: [
+      "Everything in Free",
       "Unlimited personalized replies",
       "Advanced tone analysis",
       "Image context analysis",
       "Account mimicking",
       "Priority support",
-      "Analytics dashboard",
       "Custom tone profiles"
     ],
     cta: "Upgrade to Pro",
@@ -53,6 +54,20 @@ const plans = [
 ];
 
 const Pricing = () => {
+  const navigate = useNavigate();
+
+  const handleCtaClick = (cta: string) => {
+    if (cta === "Upgrade to Pro") {
+      navigate('/pricing');
+    } else if (cta === "Get Started Free") {
+      // Handle free signup
+      console.log("Get Started Free clicked");
+    } else if (cta === "Contact Sales") {
+      // Handle contact sales
+      console.log("Contact Sales clicked");
+    }
+  };
+
   return (
     <section id="pricing" className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-800 to-gray-900 noise-overlay">
       <div className="max-w-7xl mx-auto">
@@ -104,6 +119,7 @@ const Pricing = () => {
               </ul>
 
               <button 
+                onClick={() => handleCtaClick(plan.cta)}
                 className={`group w-full py-4 px-6 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105 ${
                   plan.popular
                     ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:via-purple-700 hover:to-rose-gold text-white shadow-lg hover:shadow-indigo-500/25'

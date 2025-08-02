@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
-import ReplyOptionsOverlay from "./ReplyOptionsOverlay";
 import { FaMagic } from "react-icons/fa";
 
 const BACKEND_URL = import.meta.env.VITE_API_URL || 'https://api.verve.dev';
@@ -477,7 +476,7 @@ export default function TwitterReplyGenerator() {
           </div>
         </div>
       )}
-      {replyOptionsData && <ReplyOptionsOverlay replies={replyOptionsData} onSelect={insertReply} onCancel={() => setReplyOptionsData(null)} />}
+      
     </>
   );
 }

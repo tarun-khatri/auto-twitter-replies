@@ -1,77 +1,140 @@
 import React from 'react';
-import { Search, Brain, MessageCircle, Image } from 'lucide-react';
+import { User, Download, Link, Brain, MessageSquare, ArrowRight, Sparkles } from 'lucide-react';
 
 const steps = [
   {
-    icon: Search,
-    title: "Connect Your Account",
-    description: "Link your account or enter any public profile. Verve analyzes 1000+ past tweets to understand your unique voice and engagement patterns.",
-    features: ["Private account login", "Public profile analysis", "Secure data handling"]
+    number: "01",
+    icon: User,
+    title: "Signup/Login",
+    description: "Create your account on our website",
+    color: "from-blue-500 to-cyan-500",
+    bgColor: "from-blue-500/10 to-cyan-500/10",
+    borderColor: "border-blue-500/30"
   },
   {
+    number: "02", 
+    icon: Download,
+    title: "Download Extension",
+    description: "Get the Chrome extension",
+    color: "from-purple-500 to-pink-500",
+    bgColor: "from-purple-500/10 to-pink-500/10",
+    borderColor: "border-purple-500/30"
+  },
+  {
+    number: "03",
+    icon: Link,
+    title: "Connect X Account",
+    description: "Link your X or enter public account to mimic",
+    color: "from-green-500 to-emerald-500",
+    bgColor: "from-green-500/10 to-emerald-500/10",
+    borderColor: "border-green-500/30"
+  },
+  {
+    number: "04",
     icon: Brain,
-    title: "Advanced Tone Analysis",
-    description: "Our advanced system studies your writing patterns, humor style, emoji usage, and topic preferences to create a 94% accurate digital voice profile.",
-    features: ["Writing pattern recognition", "Humor style detection", "Topic-specific tone mapping"]
+    title: "Analyze Tone",
+    description: "AI analyzes the account's writing style",
+    color: "from-orange-500 to-red-500",
+    bgColor: "from-orange-500/10 to-red-500/10",
+    borderColor: "border-orange-500/30"
   },
   {
-    icon: MessageCircle,
-    title: "Smart Reply Generation",
-    description: "Get contextually perfect replies in under 2 seconds that match your personality. Achieve 47% higher engagement with authentic responses.",
-    features: ["One-click replies", "Image context analysis", "Real-time generation"]
+    number: "05",
+    icon: MessageSquare,
+    title: "Generate Replies",
+    description: "Get personalized replies instantly",
+    color: "from-indigo-500 to-purple-500",
+    bgColor: "from-indigo-500/10 to-purple-500/10",
+    borderColor: "border-indigo-500/30"
   }
 ];
 
 const HowItWorks = () => {
   return (
-    <section id="how-it-works" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-900 noise-overlay">
-      <div className="max-w-7xl mx-auto">
+    <section id="how-it-works" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-900 noise-overlay relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20">
+          <div className="inline-flex items-center px-6 py-3 bg-indigo-500/10 backdrop-blur-sm border border-indigo-500/30 rounded-full text-indigo-400 text-sm font-medium mb-8 animate-fade-in">
+            <Sparkles size={16} className="mr-2" />
+            Simple 5-Step Process
+          </div>
           <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6 tracking-wide">
             How Verve Works
           </h2>
           <p className="font-sans text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Three simple steps to unlock 5x faster growth with personalized replies
+            From signup to personalized replies in under 2 minutes
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-12">
-          {steps.map((step, index) => (
-            <div key={index} className="relative">
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-16 left-full w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-transparent z-0 transform translate-x-6 rounded-full"></div>
-              )}
-              
-              <div className="relative bg-gray-800/40 backdrop-blur-md border border-gray-600/50 rounded-3xl p-10 hover:border-indigo-500/50 transition-all duration-500 h-full hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/10 animate-slide-up" style={{animationDelay: `${index * 0.2}s`}}>
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 rounded-3xl opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative">
-                  <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl mb-8 mx-auto shadow-lg hover:scale-110 hover:rotate-3 transition-all duration-300">
-                    <step.icon size={36} className="text-white" />
+        {/* Horizontal Steps Container */}
+        <div className="relative">
+          {/* Connection Line */}
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gray-600/30 to-transparent transform -translate-y-1/2 z-0"></div>
+          
+          {/* Steps Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 relative z-10">
+            {steps.map((step, index) => (
+              <div key={index} className="relative group">
+                {/* Connection Arrow */}
+                {index < steps.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-2 transform -translate-y-1/2 z-20">
+                    <div className="w-8 h-8 bg-gray-800/80 backdrop-blur-sm border border-gray-600/50 rounded-full flex items-center justify-center">
+                      <ArrowRight size={16} className="text-gray-400 group-hover:text-indigo-400 transition-colors duration-300" />
+                    </div>
+                  </div>
+                )}
+                
+                {/* Step Card */}
+                <div className={`relative bg-gray-800/40 backdrop-blur-md border ${step.borderColor} rounded-3xl p-8 h-full transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl group-hover:border-opacity-60 animate-slide-up`} 
+                     style={{animationDelay: `${index * 0.15}s`}}>
+                  
+                  {/* Gradient Overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${step.bgColor} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                  
+                  <div className="relative">
+                    {/* Step Number */}
+                    <div className="absolute -top-4 -right-4 w-12 h-12 bg-gray-900 border-2 border-gray-600 rounded-full flex items-center justify-center">
+                      <span className="text-xs font-bold text-gray-400">{step.number}</span>
+                    </div>
+                    
+                    {/* Icon */}
+                    <div className={`w-16 h-16 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                      <step.icon size={28} className="text-white" />
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="space-y-4">
+                      <h3 className="font-serif text-xl font-bold text-white tracking-wide group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-indigo-400 group-hover:to-purple-400 group-hover:bg-clip-text transition-all duration-300">
+                        {step.title}
+                      </h3>
+                      <p className="font-sans text-gray-300 leading-relaxed text-sm">
+                        {step.description}
+                      </p>
+                    </div>
+                    
+                    {/* Hover Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
                 </div>
-                
-                <div className="text-center mb-8 relative">
-                  <h3 className="font-serif text-2xl font-bold text-white mb-4 tracking-wide">{step.title}</h3>
-                  <p className="font-sans text-gray-300 leading-relaxed text-lg">{step.description}</p>
-                </div>
-
-                <div className="space-y-3 relative">
-                  {step.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center gap-3 text-gray-400 font-medium">
-                      <div className="w-2 h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full animate-pulse" style={{animationDelay: `${featureIndex * 0.2}s`}}></div>
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
+        {/* Bottom CTA */}
         <div className="mt-20 text-center animate-fade-in" style={{animationDelay: '0.8s'}}>
-          <div className="inline-flex items-center px-8 py-4 bg-indigo-500/10 backdrop-blur-sm border border-indigo-500/30 rounded-full text-indigo-400 font-medium hover:bg-indigo-500/20 transition-all duration-300">
-            <Image size={20} className="mr-3" />
-            Pro Tip: Verve analyzes images in posts for 23% better context understanding
+          <div className="inline-flex items-center gap-4 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 backdrop-blur-sm border border-indigo-500/30 rounded-2xl px-8 py-6 shadow-xl">
+            <div className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <Sparkles size={24} className="text-white" />
+            </div>
+            <div className="text-left">
+              <p className="text-white font-semibold text-lg">Ready to Transform Your Engagement?</p>
+              <p className="text-gray-400 text-sm">Join 100+ creators already growing 5x faster</p>
+            </div>
           </div>
         </div>
       </div>

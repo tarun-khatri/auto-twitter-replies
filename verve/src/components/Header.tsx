@@ -33,14 +33,16 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0">
-            <div className="flex items-center gap-3">
+            <button 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center gap-3 hover:scale-105 transition-transform duration-300"
+            >
               <img 
                 src="/ChatGPT_Image_Jul_14__2025__02_20_20_AM-removebg-preview.png" 
                 alt="Verve Logo" 
                 className="h-8 w-auto"
               />
-              <h1 className="font-serif text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent tracking-wide">Verve</h1>
-            </div>
+            </button>
           </div>
           
           <nav className="hidden md:block">

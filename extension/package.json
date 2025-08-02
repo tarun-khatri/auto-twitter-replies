@@ -6,6 +6,8 @@
         "build:popup": "vite build --config vite.config.popup.js",
         "build:content": "vite build --config vite.config.content.js",
         "build": "npm run build:popup && npm run build:content",
+        "build:extension": "npm run build && npm run package",
+        "package": "node scripts/package.js",
         "dev": "vite"
     },
     "dependencies": {

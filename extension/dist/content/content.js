@@ -448,42 +448,6 @@ var m = reactDomExports;
   client.hydrateRoot = m.hydrateRoot;
 }
 
-const ReplyOptionsOverlay$1 = '';
-
-const ReplyOptionsOverlay = ({ replies, onSelect, onCancel }) => {
-  const panelRef = reactExports.useRef(null);
-  const optionsContainerRef = reactExports.useRef(null);
-  reactExports.useEffect(() => {
-    const positionOverlay = () => {
-      const modal = document.querySelector("div[role='dialog']");
-      if (modal && panelRef.current) {
-        const modalRect = modal.getBoundingClientRect();
-        const rightPosition = window.innerWidth - (modalRect.left + modalRect.width + 20);
-        panelRef.current.style.position = "fixed";
-        panelRef.current.style.top = "120px";
-        panelRef.current.style.right = `${rightPosition}px`;
-        panelRef.current.style.zIndex = "10001";
-      }
-    };
-    positionOverlay();
-    window.addEventListener("resize", positionOverlay);
-    return () => window.removeEventListener("resize", positionOverlay);
-  }, [replies.length]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overlay-container", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "overlay-panel", ref: panelRef, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overlay-header", children: "Choose Your Reply" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "replies-box", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "options-container", ref: optionsContainerRef, children: replies.map((reply, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        className: "reply-option-button",
-        onClick: () => onSelect(reply),
-        children: reply
-      },
-      index
-    )) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "cancel-button", onClick: onCancel, children: "Cancel" })
-  ] }) });
-};
-
 const BACKEND_URL = "http://localhost:8000" ;
 const ORIGINS = [
   // dev origins first
@@ -550,7 +514,7 @@ async function fetchWithFreshToken(url, opts = {}) {
 }
 function TwitterReplyGenerator() {
   const [loading, setLoading] = reactExports.useState(false);
-  const [replyOptionsData, setReplyOptionsData] = reactExports.useState(null);
+  reactExports.useState(null);
   const getTweetInfo = (btnEvent) => {
     const extractImages = (tweetElement) => {
       console.log("[IMAGE EXTRACTION] Starting image extraction from tweet element:", tweetElement);
@@ -841,49 +805,46 @@ function TwitterReplyGenerator() {
     obs.observe(document.body, { childList: true, subtree: true });
     return () => obs.disconnect();
   }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    loading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: "rgba(0, 0, 0, 0.5)",
-      backdropFilter: "blur(4px)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 1e4,
-      animation: "fadeIn 0.2s ease"
-    }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
-      background: "white",
-      padding: "1.5rem",
-      borderRadius: "1rem",
-      boxShadow: "0 4px 24px rgba(0, 0, 0, 0.1)",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: "1rem",
-      maxWidth: "90%",
-      width: "320px"
-    }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-        width: "48px",
-        height: "48px",
-        border: "3px solid #7C3AED",
-        borderTopColor: "transparent",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite"
-      } }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
-        color: "#1F2937",
-        fontSize: "1rem",
-        fontWeight: "500",
-        textAlign: "center"
-      }, children: "Generating your reply..." })
-    ] }) }),
-    replyOptionsData && /* @__PURE__ */ jsxRuntimeExports.jsx(ReplyOptionsOverlay, { replies: replyOptionsData, onSelect: insertReply, onCancel: () => setReplyOptionsData(null) })
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: loading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(0, 0, 0, 0.5)",
+    backdropFilter: "blur(4px)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1e4,
+    animation: "fadeIn 0.2s ease"
+  }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+    background: "white",
+    padding: "1.5rem",
+    borderRadius: "1rem",
+    boxShadow: "0 4px 24px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "1rem",
+    maxWidth: "90%",
+    width: "320px"
+  }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      width: "48px",
+      height: "48px",
+      border: "3px solid #7C3AED",
+      borderTopColor: "transparent",
+      borderRadius: "50%",
+      animation: "spin 1s linear infinite"
+    } }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      color: "#1F2937",
+      fontSize: "1rem",
+      fontWeight: "500",
+      textAlign: "center"
+    }, children: "Generating your reply..." })
+  ] }) }) });
 }
 window.addEventListener("unhandledrejection", function(event) {
   if (event.reason && event.reason.message && event.reason.message.includes("Extension context invalidated")) {
