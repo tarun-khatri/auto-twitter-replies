@@ -1,6 +1,8 @@
 import { Card, Title, List, ThemeIcon, Button } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
 
+const MAIN_SITE_URL = import.meta.env.VITE_MAIN_SITE_URL || 'https://getverve.xyz';
+
 export default function UpgradeCard() {
   const features = [
     'Unlimited personalized replies',
@@ -10,8 +12,8 @@ export default function UpgradeCard() {
     'Priority support',
   ];
   const openUpgrade = () => {
-    if (chrome?.tabs) chrome.tabs.create({ url: 'https://getverve.xyz/pricing' });
-    else window.open('https://getverve.xyz/pricing', '_blank');
+    if (chrome?.tabs) chrome.tabs.create({ url: `${MAIN_SITE_URL}/pricing` });
+    else window.open(`${MAIN_SITE_URL}/pricing`, '_blank');
   };
   return (
     <Card className="verve-card" radius="md" mt={16}>

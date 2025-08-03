@@ -14,7 +14,7 @@ const Header = () => {
       if (!isSignedIn) return;
       try {
         const token = await getToken();
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://api.verve.dev'}/users/me`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
@@ -40,7 +40,7 @@ const Header = () => {
               <img 
                 src="/ChatGPT_Image_Jul_14__2025__02_20_20_AM-removebg-preview.png" 
                 alt="Verve Logo" 
-                className="h-8 w-auto"
+                className="h-24 w-auto"
               />
             </button>
           </div>
@@ -57,7 +57,9 @@ const Header = () => {
           <div className="hidden md:flex items-center gap-6">
             <SignedOut>
               <SignInButton mode="modal">
-                <span className="text-gray-300 hover:text-white font-medium">Sign&nbsp;in</span>
+                <button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold px-6 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                  Sign In
+                </button>
               </SignInButton>
             </SignedOut>
             <SignedIn>
@@ -67,14 +69,15 @@ const Header = () => {
                 </span>
               )}
               <UserButton afterSignOutUrl="/" />
+              <a
+                href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chrome.google.com/webstore/category/extensions"}
+                target="_blank"
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold px-6 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
+              >
+                <Chrome size={16} />
+                Install Extension
+              </a>
             </SignedIn>
-            <a
-              href="https://chrome.google.com/webstore/category/extensions" // placeholder link
-              target="_blank"
-              className="text-sm font-medium text-indigo-400 hover:text-white border border-indigo-500/60 rounded-full px-4 py-1.5 transition-all duration-300 hover:bg-indigo-600/20"
-            >
-              Install
-            </a>
           </div>
 
           <div className="md:hidden">
@@ -95,13 +98,25 @@ const Header = () => {
             <a href="#how-it-works" className="block px-4 py-3 text-gray-300 hover:text-white font-medium rounded-lg hover:bg-gray-800/50 transition-all duration-300">How it Works</a>
             <a href="#pricing" className="block px-4 py-3 text-gray-300 hover:text-white font-medium rounded-lg hover:bg-gray-800/50 transition-all duration-300">Pricing</a>
             <a href="#faq" className="block px-4 py-3 text-gray-300 hover:text-white font-medium rounded-lg hover:bg-gray-800/50 transition-all duration-300">FAQ</a>
-            <a
-              href="https://chrome.google.com/webstore/category/extensions"
-              target="_blank"
-              className="block w-full mt-4 text-center text-indigo-400 hover:text-white border border-indigo-500/60 rounded-full px-6 py-3 font-semibold hover:bg-indigo-600/20 transition-all duration-300"
-            >
-              Install
-            </a>
+            <SignedOut>
+              <div className="mt-4">
+                <SignInButton mode="modal">
+                  <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </div>
+            </SignedOut>
+            <SignedIn>
+              <a
+                href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chrome.google.com/webstore/category/extensions"}
+                target="_blank"
+                className="block w-full mt-4 text-center bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+              >
+                <Chrome size={16} />
+                Install Extension
+              </a>
+            </SignedIn>
           </div>
         </div>
       )}

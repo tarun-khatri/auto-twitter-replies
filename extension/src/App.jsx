@@ -7,8 +7,9 @@ import UpgradeCard from './UpgradeCard';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'https://api.verve.dev';
 const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://app.verve.dev';
+const MAIN_SITE_URL = import.meta.env.VITE_MAIN_SITE_URL || 'https://getverve.xyz';
 
-const ORIGINS = [SITE_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://getverve.xyz'];
+const ORIGINS = [SITE_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', MAIN_SITE_URL];
 
 async function getClerkToken() {
   return new Promise((resolve) => {
@@ -35,13 +36,13 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const HeaderCard = () => (
     <Card className="verve-card" radius="md" style={{ padding: '12px 16px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-      <Title order={2} className="h-title" style={{ fontSize: 20, margin: 0 }}>getverve.xyz</Title>
+      <Title order={2} className="h-title" style={{ fontSize: 20, margin: 0 }}>{MAIN_SITE_URL.replace('https://', '')}</Title>
       <div style={{ display:'flex', gap:8, alignItems:'center' }}>
         <Text size="xs" weight={600} style={{ background:'#10B98120', color:'#10B981', padding:'2px 8px', borderRadius:6 }}>{plan}</Text>
         {typeof remainingQuota === 'number' && (
           <Badge color={remainingQuota > 5 ? 'green' : 'yellow'} variant="light">{Math.max(0, remainingQuota)}/15</Badge>
         )}
-        <Button size="xs" variant="gradient" gradient={{ from: 'violet', to: 'indigo', deg: 45 }} style={{ animation:'pulse 2s infinite' }} onClick={() => chrome.tabs?.create({ url: 'https://app.verve.dev/upgrade' })}>
+        <Button size="xs" variant="gradient" gradient={{ from: 'violet', to: 'indigo', deg: 45 }} style={{ animation:'pulse 2s infinite' }} onClick={() => chrome.tabs?.create({ url: `${MAIN_SITE_URL}/pricing` })}>
           Upgrade
         </Button>
       </div>

@@ -17,6 +17,7 @@ import { showNotification } from '@mantine/notifications';
 // Base REST & WS endpoints – fall back to production API if not provided at build
 const API_BASE = import.meta.env.VITE_API_URL || 'https://api.verve.dev';
 const WS_BASE = API_BASE.replace(/^http/, 'ws');
+const MAIN_SITE_URL = import.meta.env.VITE_MAIN_SITE_URL || 'https://getverve.xyz';
 
 function fetchUserProfileWithToken(token) {
   return fetch(`${API_BASE}/users/me/profile`, {
@@ -31,7 +32,7 @@ const ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'https://app.verve.dev',
-  'https://getverve.xyz'
+  MAIN_SITE_URL
 ];
 
 function getClerkTokenFallback() {

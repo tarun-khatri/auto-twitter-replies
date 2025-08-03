@@ -8317,6 +8317,7 @@ function showNotification(notification, store = notificationsStore) {
 
 const API_BASE$1 = "http://localhost:8000" ;
 const WS_BASE = API_BASE$1.replace(/^http/, "ws");
+const MAIN_SITE_URL$2 = "https://getverve.xyz" ;
 function fetchUserProfileWithToken(token) {
   return fetch(`${API_BASE$1}/users/me/profile`, {
     headers: { Authorization: `Bearer ${token}` }
@@ -8330,7 +8331,7 @@ const ORIGINS$1 = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "https://app.verve.dev",
-  "https://getverve.xyz"
+  MAIN_SITE_URL$2
 ];
 function getClerkTokenFallback() {
   return new Promise((resolve) => {
@@ -8615,6 +8616,7 @@ function SummaryCard({ profile }) {
   ] });
 }
 
+const MAIN_SITE_URL$1 = "https://getverve.xyz" ;
 function UpgradeCard() {
   const features = [
     "Unlimited personalized replies",
@@ -8625,9 +8627,9 @@ function UpgradeCard() {
   ];
   const openUpgrade = () => {
     if (chrome?.tabs)
-      chrome.tabs.create({ url: "https://getverve.xyz/pricing" });
+      chrome.tabs.create({ url: `${MAIN_SITE_URL$1}/pricing` });
     else
-      window.open("https://getverve.xyz/pricing", "_blank");
+      window.open(`${MAIN_SITE_URL$1}/pricing`, "_blank");
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "verve-card", radius: "md", mt: 16, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", mb: 12, children: "Upgrade to Verve Pro" }),
@@ -8638,7 +8640,8 @@ function UpgradeCard() {
 
 const API_BASE = "http://localhost:8000" ;
 const SITE_URL = "http://localhost:5173" ;
-const ORIGINS = [SITE_URL, "http://localhost:5173", "http://127.0.0.1:5173", "https://getverve.xyz"];
+const MAIN_SITE_URL = "https://getverve.xyz" ;
+const ORIGINS = [SITE_URL, "http://localhost:5173", "http://127.0.0.1:5173", MAIN_SITE_URL];
 async function getClerkToken() {
   return new Promise((resolve) => {
     if (typeof chrome === "undefined" || !chrome.cookies) {
@@ -8663,14 +8666,14 @@ function App() {
   const [authChecked, setAuthChecked] = reactExports.useState(false);
   const [isAuthenticated, setIsAuthenticated] = reactExports.useState(false);
   const HeaderCard = () => /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "verve-card", radius: "md", style: { padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", style: { fontSize: 20, margin: 0 }, children: "getverve.xyz" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", style: { fontSize: 20, margin: 0 }, children: MAIN_SITE_URL.replace("https://", "") }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 8, alignItems: "center" }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { size: "xs", weight: 600, style: { background: "#10B98120", color: "#10B981", padding: "2px 8px", borderRadius: 6 }, children: plan }),
       typeof remainingQuota === "number" && /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { color: remainingQuota > 5 ? "green" : "yellow", variant: "light", children: [
         Math.max(0, remainingQuota),
         "/15"
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { size: "xs", variant: "gradient", gradient: { from: "violet", to: "indigo", deg: 45 }, style: { animation: "pulse 2s infinite" }, onClick: () => chrome.tabs?.create({ url: "https://app.verve.dev/upgrade" }), children: "Upgrade" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { size: "xs", variant: "gradient", gradient: { from: "violet", to: "indigo", deg: 45 }, style: { animation: "pulse 2s infinite" }, onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL}/pricing` }), children: "Upgrade" })
     ] })
   ] });
   const [loggedInUser, setLoggedInUser] = reactExports.useState(null);

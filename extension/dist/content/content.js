@@ -449,13 +449,14 @@ var m = reactDomExports;
 }
 
 const BACKEND_URL = "http://localhost:8000" ;
+const MAIN_SITE_URL = "https://getverve.xyz" ;
 const ORIGINS = [
   // dev origins first
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   // prod origins
   "https://app.verve.dev",
-  "https://getverve.xyz"
+  MAIN_SITE_URL
 ];
 function getClerkToken() {
   return new Promise((resolve) => {
@@ -693,7 +694,7 @@ function TwitterReplyGenerator() {
           });
           if (replyRes.status === 429) {
             chrome.storage?.local.set({ quotaRemaining: 0 });
-            alert("Daily quota exceeded! Upgrade to Verve Pro for unlimited replies at getverve.xyz/pricing");
+            alert(`Daily quota exceeded! Upgrade to Verve Pro for unlimited replies at ${MAIN_SITE_URL}/pricing`);
             return;
           }
           if (!replyRes.ok)

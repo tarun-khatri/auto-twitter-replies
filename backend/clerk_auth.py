@@ -1,24 +1,19 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jwt import PyJWKClient, decode
-import os
-from dotenv import load_dotenv, find_dotenv
-
-# Ensure .env variables are loaded before we attempt to access them.
-load_dotenv(find_dotenv())
+from config import CLERK_JWKS_URL, CLERK_ALLOWED_ORIGINS
 
 # Lazily initialise JWKS client using the public JWKS url provided by Clerk.
-JWKS_URL = os.getenv("CLERK_JWKS_URL")
-if not JWKS_URL:
+if not CLERK_JWKS_URL:
     raise RuntimeError("CLERK_JWKS_URL env variable is required for Clerk auth")
 
 _allowed_origins = {
     origin.strip(): True
-    for origin in os.getenv("CLERK_ALLOWED_ORIGINS", "").split(",")
+    for origin in CLERK_ALLOWED_ORIGINS
     if origin.strip()
 }
 
-_jwks_client = PyJWKClient(JWKS_URL)
+_jwks_client = PyJWKClient(CLERK_JWKS_URL)
 _http_bearer = HTTPBearer()
 
 
