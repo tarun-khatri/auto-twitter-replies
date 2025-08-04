@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chrome, Mail, Shield, HelpCircle } from 'lucide-react';
+import { Chrome, Mail, Shield, HelpCircle, FileText, CreditCard } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -35,24 +35,36 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-serif text-white font-bold mb-6 text-lg tracking-wide">Support</h4>
+            <h4 className="font-serif text-white font-bold mb-6 text-lg tracking-wide">Support & Legal</h4>
             <ul className="space-y-3 text-gray-300">
               <li>
-                <a href="#" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
-                  <HelpCircle size={18} />
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                <a href="/contact" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
                   <Mail size={18} />
                   Contact Us
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                <a href="/contact" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                  <HelpCircle size={18} />
+                  Help Center
+                </a>
+              </li>
+              <li>
+                <a href="/privacy" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
                   <Shield size={18} />
                   Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a href="/terms" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                  <FileText size={18} />
+                  Terms of Service
+                </a>
+              </li>
+              <li>
+                <a href="/refund" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                  <CreditCard size={18} />
+                  Refund Policy
                 </a>
               </li>
             </ul>
@@ -65,6 +77,27 @@ const Footer = () => {
           </p>
           <div className="flex items-center gap-4 mt-6 md:mt-0 text-gray-400 font-medium">
             <span className="italic">Made for creators who want to stand out</span>
+          </div>
+        </div>
+
+        {/* Contact Information for Stripe Compliance */}
+        <div className="border-t border-gray-700/50 mt-8 pt-8">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <h5 className="text-white font-semibold mb-2">Customer Support</h5>
+              <p className="text-gray-400 text-sm">support@getverve.xyz</p>
+              <p className="text-gray-400 text-sm">24/7 Email Support</p>
+            </div>
+            <div>
+              <h5 className="text-white font-semibold mb-2">Business Hours</h5>
+              <p className="text-gray-400 text-sm">Monday - Friday</p>
+              <p className="text-gray-400 text-sm">9:00 AM - 6:00 PM EST</p>
+            </div>
+            <div>
+              <h5 className="text-white font-semibold mb-2">Response Time</h5>
+              <p className="text-gray-400 text-sm">Within 24 hours</p>
+              <p className="text-gray-400 text-sm">During business days</p>
+            </div>
           </div>
         </div>
       </div>
