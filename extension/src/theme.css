@@ -11,13 +11,17 @@
   --accent-start: #8C3EFF;
   --accent-end: #D159FF;
   --radius: 12px;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
 }
 
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: var(--navy-bg);
+  background: linear-gradient(180deg, var(--navy-bg) 0%, var(--card-grad-start) 100%);
   color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 /* Mini header bar */
@@ -30,13 +34,18 @@ body {
   background: var(--navy-bg);
   font-size: 14px;
 }
+
 .header-links a {
   color: var(--text-secondary);
   text-decoration: none;
   margin-left: 12px;
   transition: color 150ms ease;
 }
-.header-links a:hover { color: var(--text-primary); text-decoration: underline; }
+
+.header-links a:hover { 
+  color: var(--text-primary); 
+  text-decoration: underline; 
+}
 
 /* Gradient card */
 .verve-card {
@@ -44,33 +53,49 @@ body {
   border-radius: var(--radius);
   padding: 24px;
   background: linear-gradient(180deg, var(--card-grad-start) 0%, var(--card-grad-end) 100%);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  border: 1px solid rgba(140, 62, 255, 0.1);
   overflow: hidden;
+  transition: all 0.3s ease;
 }
+
+.verve-card:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  border-color: rgba(140, 62, 255, 0.2);
+}
+
 /* noise overlay */
 .verve-card::after {
   content: "";
   position: absolute;
   inset: 0;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFUlEQVQI12P4//8/Azbw////GQAI/gO9n2OwAAAAAElFTkSuQmCC");
-  opacity: 0.05;
+  opacity: 0.03;
   pointer-events: none;
 }
 
 /* Buttons */
 .verve-btn {
-  background: linear-gradient(90deg, var(--accent-start) 0%, var(--accent-end) 100%);
+  background: linear-gradient(135deg, var(--accent-start) 0%, var(--accent-end) 100%);
   border: none;
   color: #fff !important;
   border-radius: var(--radius);
   font-weight: 600;
-  font-size: 15px;
-  padding: 12px 24px;
-  transition: transform 150ms ease, box-shadow 150ms ease;
+  font-size: 14px;
+  padding: 14px 24px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(140, 62, 255, 0.3);
 }
+
 .verve-btn:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 8px rgba(140,62,255,0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(140, 62, 255, 0.4);
+}
+
+.verve-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(140, 62, 255, 0.3);
 }
 
 .verve-btn-outline {
@@ -79,41 +104,73 @@ body {
   color: var(--accent-start) !important;
   border-radius: var(--radius);
   font-weight: 600;
-  font-size: 15px;
-  padding: 12px 24px;
-  transition: transform 150ms ease, box-shadow 150ms ease;
+  font-size: 14px;
+  padding: 14px 24px;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
+
 .verve-btn-outline:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 8px rgba(140,62,255,0.4);
-  background: rgba(140,62,255,0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(140, 62, 255, 0.2);
+  background: rgba(140, 62, 255, 0.05);
+}
+
+.verve-btn-outline:active {
+  transform: translateY(0);
 }
 
 /* Inputs */
 .verve-input {
-  background: var(--card-grad-start);
-  border: 1px solid var(--card-grad-end);
+  background: rgba(30, 30, 58, 0.8);
+  border: 1px solid rgba(57, 47, 90, 0.6);
   border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 15px;
+  padding: 12px 16px;
+  font-size: 14px;
   color: #fff;
-}
-.verve-input::placeholder { color: #6B6F87; }
-.verve-input:focus {
+  transition: all 0.2s ease;
   outline: none;
+}
+
+.verve-input::placeholder { 
+  color: #6B6F87; 
+}
+
+.verve-input:focus {
   border-color: var(--accent-end);
-  box-shadow: 0 0 0 2px rgba(140,62,255,0.4);
-  transition: border-color 200ms ease;
+  box-shadow: 0 0 0 3px rgba(140, 62, 255, 0.2);
+  background: rgba(30, 30, 58, 0.9);
 }
 
 /* Typography helpers */
 .h-title {
   font-family: 'Playfair Display', serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.5px;
   margin: 0 0 12px 0;
+}
+
+/* Badge styles */
+.verve-badge {
+  background: var(--success);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.verve-badge.warning {
+  background: var(--warning);
+}
+
+.verve-badge.error {
+  background: var(--error);
 }
 
 /* Skeleton shimmer */
@@ -121,6 +178,7 @@ body {
   0% { background-position: -450px 0; }
   100% { background-position: 450px 0; }
 }
+
 .skeleton {
   height: 80px;
   border-radius: var(--radius);
@@ -140,6 +198,7 @@ input[type=number]::-webkit-outer-spin-button {
 .mantine-Slider-track {
   background: linear-gradient(90deg, var(--accent-start) 0%, var(--accent-end) 100%);
 }
+
 .mantine-Slider-thumb {
   border: 2px solid #fff;
   background: var(--navy-bg);
@@ -157,4 +216,45 @@ input[type=number]::-webkit-outer-spin-button {
 /* Card vertical spacing helper */
 .stack-24 > * + * {
   margin-top: 24px !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(30, 30, 58, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(140, 62, 255, 0.5);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 62, 255, 0.7);
+}
+
+/* Focus styles for accessibility */
+button:focus,
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--accent-start);
+  outline-offset: 2px;
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
 } 

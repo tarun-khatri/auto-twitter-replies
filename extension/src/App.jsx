@@ -31,69 +31,203 @@ async function getClerkToken() {
   });
 }
 
+async function validateSession(token) {
+  try {
+    const response = await fetch(`${API_BASE}/users/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('[Verve] Session validation error:', error);
+    return false;
+  }
+}
+
 export default function App() {
   const [authChecked, setAuthChecked] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [recentHistory, setRecentHistory] = useState([]);
+  const [profileInfo, setProfileInfo] = useState(null);
+  const [remainingQuota, setRemainingQuota] = useState(undefined);
+  const [plan, setPlan] = useState('FREE');
+  const [authError, setAuthError] = useState('');
+
   const HeaderCard = () => (
-    <Card className="verve-card" radius="md" style={{ padding: '12px 16px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-      <Title order={2} className="h-title" style={{ fontSize: 20, margin: 0 }}>{MAIN_SITE_URL.replace('https://', '')}</Title>
-      <div style={{ display:'flex', gap:8, alignItems:'center' }}>
-        <Text size="xs" weight={600} style={{ background:'#10B98120', color:'#10B981', padding:'2px 8px', borderRadius:6 }}>{plan}</Text>
+    <Card 
+      className="verve-card" 
+      radius="md" 
+      style={{ 
+        padding: '16px 20px', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '16px'
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <Title 
+          order={2} 
+          className="h-title" 
+          style={{ 
+            fontSize: '18px', 
+            margin: 0, 
+            color: '#FFFFFF',
+            fontWeight: '700'
+          }}
+        >
+          {MAIN_SITE_URL.replace('https://', '')}
+        </Title>
+      </div>
+      
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <Badge 
+          size="sm"
+          style={{ 
+            background: '#10B981', 
+            color: '#FFFFFF', 
+            fontWeight: '600',
+            fontSize: '11px',
+            padding: '4px 8px'
+          }}
+        >
+          {plan}
+        </Badge>
+        
         {typeof remainingQuota === 'number' && (
-          <Badge color={remainingQuota > 5 ? 'green' : 'yellow'} variant="light">{Math.max(0, remainingQuota)}/15</Badge>
+          <Badge 
+            size="sm"
+            style={{ 
+              background: remainingQuota > 5 ? '#10B981' : '#F59E0B', 
+              color: '#FFFFFF', 
+              fontWeight: '600',
+              fontSize: '11px',
+              padding: '4px 8px'
+            }}
+          >
+            {Math.max(0, remainingQuota)}/15
+          </Badge>
         )}
-        <Button size="xs" variant="gradient" gradient={{ from: 'violet', to: 'indigo', deg: 45 }} style={{ animation:'pulse 2s infinite' }} onClick={() => chrome.tabs?.create({ url: `${MAIN_SITE_URL}/pricing` })}>
+        
+        <Button 
+          size="xs" 
+          style={{ 
+            background: 'linear-gradient(135deg, #8C3EFF 0%, #D159FF 100%)',
+            color: '#FFFFFF',
+            fontWeight: '600',
+            fontSize: '11px',
+            padding: '6px 12px',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 2px 8px rgba(140, 62, 255, 0.3)'
+          }}
+          onClick={() => chrome.tabs?.create({ url: `${MAIN_SITE_URL}/pricing` })}
+        >
           Upgrade
         </Button>
       </div>
     </Card>
   );
 
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const [recentHistory, setRecentHistory] = useState([]);
-  const [profileInfo, setProfileInfo] = useState(null);
-  const [remainingQuota, setRemainingQuota] = useState(undefined);
-  const [plan, setPlan] = useState('FREE');
+  const clearAllData = () => {
+    chrome.storage?.local.remove(['clerkToken', 'twitterUser', 'toneReady', 'recentHistory', 'lastProfile', 'quotaRemaining'], () => {
+      setIsAuthenticated(false);
+      setLoggedInUser(null);
+      setRecentHistory([]);
+      setProfileInfo(null);
+      setRemainingQuota(undefined);
+      setPlan('FREE');
+      setAuthError('');
+    });
+  };
 
-  // On mount: determine if the Clerk session cookie exists → authenticated
-  useEffect(() => {
-    // inject pulse animation once
-    const styleEl = document.createElement('style');
-    styleEl.textContent = `@keyframes pulse {0%{box-shadow:0 0 0 0 rgba(167,139,250,.7);}70%{box-shadow:0 0 0 6px rgba(167,139,250,0);}100%{box-shadow:0 0 0 0 rgba(167,139,250,0);}}`;
-    document.head.appendChild(styleEl);
+  const checkAuthentication = async () => {
+    const token = await getClerkToken();
+    console.log('[Verve][App] getClerkToken →', token ? token.slice(0, 16) + '…' : 'null');
 
-    (async () => {
-      const token = await getClerkToken();
-      console.log('[Verve][App] getClerkToken →', token ? token.slice(0, 16) + '…' : 'null');
-
-      if (token) {
+    if (token) {
+      const isValid = await validateSession(token);
+      if (isValid) {
         try {
           const res = await fetch(`${API_BASE}/users/me`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-          console.log('[Verve][App] /users/me status', res.status);
           if (res.ok) {
             const data = await res.json();
             setPlan(data.plan || 'FREE');
             setIsAuthenticated(true);
+            setAuthError('');
             if (chrome?.storage?.local) chrome.storage.local.set({ clerkToken: token });
           } else {
-            if (chrome?.storage?.local) chrome.storage.local.remove('clerkToken');
+            clearAllData();
+            setAuthError('Session expired. Please login again.');
           }
         } catch (e) {
           console.error('[Verve][App] auth check error', e);
+          clearAllData();
+          setAuthError('Connection error. Please try again.');
+        }
+      } else {
+        clearAllData();
+        setAuthError('Session expired. Please login again.');
+      }
+    } else {
+      clearAllData();
+    }
+    setAuthChecked(true);
+  };
+
+  // On mount: check authentication
+  useEffect(() => {
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `@keyframes pulse {0%{box-shadow:0 0 0 0 rgba(167,139,250,.7);}70%{box-shadow:0 0 0 6px rgba(167,139,250,0);}100%{box-shadow:0 0 0 0 rgba(167,139,250,0);}}`;
+    document.head.appendChild(styleEl);
+
+    checkAuthentication();
+  }, []);
+
+  // Monitor cookie changes for real-time logout detection
+  useEffect(() => {
+    if (typeof chrome === 'undefined' || !chrome.cookies) return;
+
+    const handleCookieChange = (changeInfo) => {
+      if (changeInfo.cookie.name === '__session' && changeInfo.removed) {
+        console.log('[Verve] Session cookie removed, logging out');
+        clearAllData();
+        setAuthError('Logged out from website. Please login again.');
+      }
+    };
+
+    chrome.cookies.onChanged.addListener(handleCookieChange);
+    return () => chrome.cookies.onChanged.removeListener(handleCookieChange);
+  }, []);
+
+  // Periodic session validation (every 5 minutes)
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const interval = setInterval(async () => {
+      const token = await getClerkToken();
+      if (token) {
+        const isValid = await validateSession(token);
+        if (!isValid) {
+          clearAllData();
+          setAuthError('Session expired. Please login again.');
         }
       }
-      setAuthChecked(true);
-    })();
-  }, []);
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
 
   // Debug: log key state changes
   useEffect(() => {
-    console.log('[Verve][App] State', { authChecked, isAuthenticated, loggedInUser, remainingQuota, plan });
-  }, [authChecked, isAuthenticated, loggedInUser, remainingQuota, plan]);
+    console.log('[Verve][App] State', { authChecked, isAuthenticated, loggedInUser, remainingQuota, plan, authError });
+  }, [authChecked, isAuthenticated, loggedInUser, remainingQuota, plan, authError]);
 
-  // NEW: fetch profile & history whenever auth + loggedInUser are ready (covers popup reopen)
+  // Fetch profile & history whenever auth + loggedInUser are ready
   useEffect(() => {
     if (!isAuthenticated || !loggedInUser) return;
 
@@ -109,6 +243,11 @@ export default function App() {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {
+          if (res.status === 401) {
+            clearAllData();
+            setAuthError('Session expired. Please login again.');
+            return;
+          }
           console.warn('[Verve][App] /users/me/profile failed', res.status);
           return;
         }
@@ -117,7 +256,6 @@ export default function App() {
         setProfileInfo(data);
         const recent = data.recent_replies || [];
         setRecentHistory(recent);
-        // Set quota from profile response
         if (typeof data.remaining_quota === 'number') {
           setRemainingQuota(data.remaining_quota);
           chrome.storage?.local.set({ quotaRemaining: data.remaining_quota });
@@ -125,6 +263,7 @@ export default function App() {
         chrome.storage?.local.set({ lastProfile: data, recentHistory: recent });
       } catch (e) {
         console.error('[Verve][App] profile fetch error', e);
+        setAuthError('Connection error. Please try again.');
       }
     })();
   }, [isAuthenticated, loggedInUser]);
@@ -158,37 +297,199 @@ export default function App() {
   };
 
   return (
-    <div style={{ width: 320 }} className="stack-24">
+    <div style={{ 
+      width: 360, 
+      padding: '16px',
+      background: 'linear-gradient(180deg, #0B0F1E 0%, #1E1E3A 100%)',
+      minHeight: '100vh'
+    }}>
       <HeaderCard />
+      
       {!authChecked && (
-        <Card className="verve-card" radius="md"><Text>Loading…</Text></Card>
+        <Card 
+          className="verve-card" 
+          radius="md" 
+          style={{ 
+            padding: '24px',
+            textAlign: 'center'
+          }}
+        >
+          <Text style={{ color: '#A0A4B8', fontSize: '14px' }}>Loading…</Text>
+        </Card>
       )}
 
-      {/* If not logged in with Clerk, still allow TwitterLogin */}
-      {authChecked && (!isAuthenticated || !loggedInUser) && (
-        <Card className="verve-card" radius="md">
-          <Title order={2} className="h-title" mb={12}>Connect Your Account</Title>
-          <Text size="sm" color="#E0E0FF" mb={12}>Instantly craft premium, context-aware replies with AI.</Text>
+      {/* Show error message if authentication failed */}
+      {authChecked && authError && (
+        <Card 
+          className="verve-card" 
+          radius="md"
+          style={{ 
+            padding: '24px',
+            background: 'linear-gradient(180deg, #1E1E3A 0%, #392F5A 100%)',
+            border: '1px solid rgba(239, 68, 68, 0.3)'
+          }}
+        >
+          <Title 
+            order={3} 
+            style={{ 
+              fontSize: '16px',
+              marginBottom: '8px',
+              color: '#EF4444',
+              textAlign: 'center'
+            }}
+          >
+            Authentication Error
+          </Title>
+          <Text 
+            size="sm" 
+            style={{ 
+              color: '#A0A4B8', 
+              marginBottom: '16px',
+              textAlign: 'center',
+              fontSize: '13px',
+              lineHeight: '1.4'
+            }}
+          >
+            {authError}
+          </Text>
+          <Button 
+            fullWidth
+            style={{
+              background: 'linear-gradient(135deg, #8C3EFF 0%, #D159FF 100%)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontWeight: '600',
+              fontSize: '14px',
+              padding: '12px 24px',
+              borderRadius: '12px',
+              transition: 'all 0.2s ease'
+            }}
+            onClick={() => chrome.tabs?.create({ url: `${MAIN_SITE_URL}` })}
+          >
+            Login at {MAIN_SITE_URL.replace('https://', '')}
+          </Button>
+        </Card>
+      )}
+
+      {/* If not authenticated with Clerk, show login prompt */}
+      {authChecked && !isAuthenticated && !authError && (
+        <Card 
+          className="verve-card" 
+          radius="md"
+          style={{ 
+            padding: '24px',
+            background: 'linear-gradient(180deg, #1E1E3A 0%, #392F5A 100%)',
+            border: '1px solid rgba(140, 62, 255, 0.2)'
+          }}
+        >
+          <Title 
+            order={2} 
+            className="h-title" 
+            style={{ 
+              fontSize: '20px',
+              marginBottom: '8px',
+              color: '#FFFFFF',
+              textAlign: 'center'
+            }}
+          >
+            Please Login First
+          </Title>
+          <Text 
+            size="sm" 
+            style={{ 
+              color: '#A0A4B8', 
+              marginBottom: '20px',
+              textAlign: 'center',
+              fontSize: '13px',
+              lineHeight: '1.4'
+            }}
+          >
+            Login to your account on our website to use the extension.
+          </Text>
+          <Button 
+            fullWidth
+            style={{
+              background: 'linear-gradient(135deg, #8C3EFF 0%, #D159FF 100%)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontWeight: '600',
+              fontSize: '14px',
+              padding: '12px 24px',
+              borderRadius: '12px',
+              transition: 'all 0.2s ease'
+            }}
+            onClick={() => chrome.tabs?.create({ url: `${MAIN_SITE_URL}` })}
+          >
+            Login at {MAIN_SITE_URL.replace('https://', '')}
+          </Button>
+        </Card>
+      )}
+
+      {/* If authenticated but no Twitter user, show Twitter login */}
+      {authChecked && isAuthenticated && !loggedInUser && (
+        <Card 
+          className="verve-card" 
+          radius="md"
+          style={{ 
+            padding: '24px',
+            background: 'linear-gradient(180deg, #1E1E3A 0%, #392F5A 100%)',
+            border: '1px solid rgba(140, 62, 255, 0.2)'
+          }}
+        >
+          <Title 
+            order={2} 
+            className="h-title" 
+            style={{ 
+              fontSize: '20px',
+              marginBottom: '8px',
+              color: '#FFFFFF',
+              textAlign: 'center'
+            }}
+          >
+            Connect Your Twitter Account
+          </Title>
+          <Text 
+            size="sm" 
+            style={{ 
+              color: '#A0A4B8', 
+              marginBottom: '20px',
+              textAlign: 'center',
+              fontSize: '13px',
+              lineHeight: '1.4'
+            }}
+          >
+            Connect your Twitter account to start generating AI replies.
+          </Text>
           <TwitterLogin onLogin={setLoggedInUser} onHistory={setRecentHistory} onProfile={setProfileInfo} />
         </Card>
       )}
 
+      {/* If authenticated and Twitter user connected, show main interface */}
       {loggedInUser && (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {plan === 'FREE' && remainingQuota <= 0 && <UpgradeCard />}
           {profileInfo && <SummaryCard profile={profileInfo} />}
           {recentHistory.length > 0 && <RecentRepliesCard history={recentHistory} />}
 
           {/* Logout button */}
-          <Button fullWidth color="red" variant="outline" mt={16} onClick={() => {
-            // Clear local Twitter auth/context
-            chrome.storage?.local.remove(['twitterUser', 'toneReady'], () => {
-              setLoggedInUser(null);
-              setRecentHistory([]);
-              setProfileInfo(null);
-            });
-          }}>Logout</Button>
-        </>
+          <Button 
+            fullWidth 
+            style={{ 
+              background: 'transparent',
+              border: '1px solid #EF4444',
+              color: '#EF4444',
+              fontWeight: '600',
+              padding: '12px 24px',
+              borderRadius: '12px',
+              transition: 'all 0.2s ease'
+            }}
+            onClick={() => {
+              clearAllData();
+            }}
+          >
+            Logout
+          </Button>
+        </div>
       )}
     </div>
   );

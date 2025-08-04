@@ -8547,27 +8547,149 @@ function TwitterLogin({ onLogin, onHistory, onProfile }) {
     onHistory?.(history);
   }, [history]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    !user ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { fullWidth: true, className: "verve-btn", leftIcon: /* @__PURE__ */ jsxRuntimeExports.jsx(IconBrandX, { size: 18 }), onClick: login, children: "Login with X" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Divider, { label: "or", my: "md", labelPosition: "center" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleManualSubmit, style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 8 }, children: [
+    !user ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "16px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          fullWidth: true,
+          className: "verve-btn",
+          leftIcon: /* @__PURE__ */ jsxRuntimeExports.jsx(IconBrandX, { size: 18 }),
+          onClick: login,
+          style: {
+            background: "linear-gradient(135deg, #8C3EFF 0%, #D159FF 100%)",
+            border: "none",
+            color: "#FFFFFF",
+            fontWeight: "600",
+            fontSize: "14px",
+            padding: "14px 24px",
+            borderRadius: "12px",
+            transition: "all 0.2s ease",
+            boxShadow: "0 4px 12px rgba(140, 62, 255, 0.3)"
+          },
+          children: "Login with X"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        margin: "8px 0"
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+          flex: 1,
+          height: "1px",
+          background: "rgba(160, 164, 184, 0.2)"
+        } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { style: {
+          color: "#A0A4B8",
+          fontSize: "12px",
+          fontWeight: "500"
+        }, children: "or" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+          flex: 1,
+          height: "1px",
+          background: "rgba(160, 164, 184, 0.2)"
+        } })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleManualSubmit, style: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px"
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Text,
+            {
+              size: "sm",
+              style: {
+                color: "#FFFFFF",
+                fontWeight: "600",
+                marginBottom: "6px",
+                fontSize: "13px"
+              },
+              children: "Enter X (Twitter) Username *"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              className: "verve-input",
+              placeholder: "e.g. elonmusk",
+              value: manualUsername,
+              onChange: (e) => setManualUsername(e.currentTarget.value),
+              required: true,
+              style: {
+                width: "100%",
+                background: "rgba(30, 30, 58, 0.8)",
+                border: "1px solid rgba(57, 47, 90, 0.6)",
+                borderRadius: "8px",
+                padding: "12px 16px",
+                fontSize: "14px",
+                color: "#FFFFFF",
+                outline: "none",
+                transition: "all 0.2s ease"
+              }
+            }
+          )
+        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
-          TextInput,
+          Button,
           {
-            className: "verve-input",
-            label: "Enter X (Twitter) Username",
-            placeholder: "e.g. elonmusk",
-            value: manualUsername,
-            onChange: (e) => setManualUsername(e.currentTarget.value),
-            required: true
+            type: "submit",
+            className: "verve-btn-outline",
+            fullWidth: true,
+            style: {
+              background: "transparent",
+              border: "1px solid #8C3EFF",
+              color: "#8C3EFF",
+              fontWeight: "600",
+              fontSize: "14px",
+              padding: "14px 24px",
+              borderRadius: "12px",
+              transition: "all 0.2s ease",
+              marginTop: "4px"
+            },
+            children: "Analyze without login"
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "submit", className: "verve-btn-outline", fullWidth: true, children: "Analyze without login" }),
-        manualStatus && /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { size: "xs", color: "dimmed", mt: 4, children: manualStatus })
+        manualStatus && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Text,
+          {
+            size: "xs",
+            style: {
+              color: "#A0A4B8",
+              marginTop: "8px",
+              fontSize: "12px",
+              textAlign: "center"
+            },
+            children: manualStatus
+          }
+        )
       ] })
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Divider, { my: "sm" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Group, { position: "apart", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { color: "red", onClick: logout, children: "Logout" }) })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "12px" }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+        height: "1px",
+        background: "rgba(160, 164, 184, 0.2)",
+        margin: "8px 0"
+      } }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          color: "red",
+          onClick: logout,
+          style: {
+            background: "transparent",
+            border: "1px solid #EF4444",
+            color: "#EF4444",
+            fontWeight: "600",
+            fontSize: "14px",
+            padding: "12px 24px",
+            borderRadius: "12px",
+            transition: "all 0.2s ease"
+          },
+          children: "Logout"
+        }
+      )
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(Modal, { opened: isSettingsOpen, onClose: onSettingsClose, title: "Settings", centered: true, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Switch, { label: "Auto-copy replies", checked: settings.autoCopy, onChange: (e) => setSettings((s) => ({ ...s, autoCopy: e.target.checked })), mb: "md" }),
@@ -8662,58 +8784,192 @@ async function getClerkToken() {
     });
   });
 }
+async function validateSession(token) {
+  try {
+    const response = await fetch(`${API_BASE}/users/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.ok;
+  } catch (error) {
+    console.error("[Verve] Session validation error:", error);
+    return false;
+  }
+}
 function App() {
   const [authChecked, setAuthChecked] = reactExports.useState(false);
   const [isAuthenticated, setIsAuthenticated] = reactExports.useState(false);
-  const HeaderCard = () => /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "verve-card", radius: "md", style: { padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", style: { fontSize: 20, margin: 0 }, children: MAIN_SITE_URL.replace("https://", "") }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 8, alignItems: "center" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { size: "xs", weight: 600, style: { background: "#10B98120", color: "#10B981", padding: "2px 8px", borderRadius: 6 }, children: plan }),
-      typeof remainingQuota === "number" && /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { color: remainingQuota > 5 ? "green" : "yellow", variant: "light", children: [
-        Math.max(0, remainingQuota),
-        "/15"
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { size: "xs", variant: "gradient", gradient: { from: "violet", to: "indigo", deg: 45 }, style: { animation: "pulse 2s infinite" }, onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL}/pricing` }), children: "Upgrade" })
-    ] })
-  ] });
   const [loggedInUser, setLoggedInUser] = reactExports.useState(null);
   const [recentHistory, setRecentHistory] = reactExports.useState([]);
   const [profileInfo, setProfileInfo] = reactExports.useState(null);
   const [remainingQuota, setRemainingQuota] = reactExports.useState(void 0);
   const [plan, setPlan] = reactExports.useState("FREE");
-  reactExports.useEffect(() => {
-    const styleEl = document.createElement("style");
-    styleEl.textContent = `@keyframes pulse {0%{box-shadow:0 0 0 0 rgba(167,139,250,.7);}70%{box-shadow:0 0 0 6px rgba(167,139,250,0);}100%{box-shadow:0 0 0 0 rgba(167,139,250,0);}}`;
-    document.head.appendChild(styleEl);
-    (async () => {
-      const token = await getClerkToken();
-      console.log("[Verve][App] getClerkToken →", token ? token.slice(0, 16) + "…" : "null");
-      if (token) {
+  const [authError, setAuthError] = reactExports.useState("");
+  const HeaderCard = () => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    Card,
+    {
+      className: "verve-card",
+      radius: "md",
+      style: {
+        padding: "16px 20px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "16px"
+      },
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Title,
+          {
+            order: 2,
+            className: "h-title",
+            style: {
+              fontSize: "18px",
+              margin: 0,
+              color: "#FFFFFF",
+              fontWeight: "700"
+            },
+            children: MAIN_SITE_URL.replace("https://", "")
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px", alignItems: "center" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Badge,
+            {
+              size: "sm",
+              style: {
+                background: "#10B981",
+                color: "#FFFFFF",
+                fontWeight: "600",
+                fontSize: "11px",
+                padding: "4px 8px"
+              },
+              children: plan
+            }
+          ),
+          typeof remainingQuota === "number" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Badge,
+            {
+              size: "sm",
+              style: {
+                background: remainingQuota > 5 ? "#10B981" : "#F59E0B",
+                color: "#FFFFFF",
+                fontWeight: "600",
+                fontSize: "11px",
+                padding: "4px 8px"
+              },
+              children: [
+                Math.max(0, remainingQuota),
+                "/15"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              size: "xs",
+              style: {
+                background: "linear-gradient(135deg, #8C3EFF 0%, #D159FF 100%)",
+                color: "#FFFFFF",
+                fontWeight: "600",
+                fontSize: "11px",
+                padding: "6px 12px",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                boxShadow: "0 2px 8px rgba(140, 62, 255, 0.3)"
+              },
+              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL}/pricing` }),
+              children: "Upgrade"
+            }
+          )
+        ] })
+      ]
+    }
+  );
+  const clearAllData = () => {
+    chrome.storage?.local.remove(["clerkToken", "twitterUser", "toneReady", "recentHistory", "lastProfile", "quotaRemaining"], () => {
+      setIsAuthenticated(false);
+      setLoggedInUser(null);
+      setRecentHistory([]);
+      setProfileInfo(null);
+      setRemainingQuota(void 0);
+      setPlan("FREE");
+      setAuthError("");
+    });
+  };
+  const checkAuthentication = async () => {
+    const token = await getClerkToken();
+    console.log("[Verve][App] getClerkToken →", token ? token.slice(0, 16) + "…" : "null");
+    if (token) {
+      const isValid = await validateSession(token);
+      if (isValid) {
         try {
           const res = await fetch(`${API_BASE}/users/me`, {
             headers: { Authorization: `Bearer ${token}` }
           });
-          console.log("[Verve][App] /users/me status", res.status);
           if (res.ok) {
             const data = await res.json();
             setPlan(data.plan || "FREE");
             setIsAuthenticated(true);
+            setAuthError("");
             if (chrome?.storage?.local)
               chrome.storage.local.set({ clerkToken: token });
           } else {
-            if (chrome?.storage?.local)
-              chrome.storage.local.remove("clerkToken");
+            clearAllData();
+            setAuthError("Session expired. Please login again.");
           }
         } catch (e) {
           console.error("[Verve][App] auth check error", e);
+          clearAllData();
+          setAuthError("Connection error. Please try again.");
         }
+      } else {
+        clearAllData();
+        setAuthError("Session expired. Please login again.");
       }
-      setAuthChecked(true);
-    })();
+    } else {
+      clearAllData();
+    }
+    setAuthChecked(true);
+  };
+  reactExports.useEffect(() => {
+    const styleEl = document.createElement("style");
+    styleEl.textContent = `@keyframes pulse {0%{box-shadow:0 0 0 0 rgba(167,139,250,.7);}70%{box-shadow:0 0 0 6px rgba(167,139,250,0);}100%{box-shadow:0 0 0 0 rgba(167,139,250,0);}}`;
+    document.head.appendChild(styleEl);
+    checkAuthentication();
   }, []);
   reactExports.useEffect(() => {
-    console.log("[Verve][App] State", { authChecked, isAuthenticated, loggedInUser, remainingQuota, plan });
-  }, [authChecked, isAuthenticated, loggedInUser, remainingQuota, plan]);
+    if (typeof chrome === "undefined" || !chrome.cookies)
+      return;
+    const handleCookieChange = (changeInfo) => {
+      if (changeInfo.cookie.name === "__session" && changeInfo.removed) {
+        console.log("[Verve] Session cookie removed, logging out");
+        clearAllData();
+        setAuthError("Logged out from website. Please login again.");
+      }
+    };
+    chrome.cookies.onChanged.addListener(handleCookieChange);
+    return () => chrome.cookies.onChanged.removeListener(handleCookieChange);
+  }, []);
+  reactExports.useEffect(() => {
+    if (!isAuthenticated)
+      return;
+    const interval = setInterval(async () => {
+      const token = await getClerkToken();
+      if (token) {
+        const isValid = await validateSession(token);
+        if (!isValid) {
+          clearAllData();
+          setAuthError("Session expired. Please login again.");
+        }
+      }
+    }, 5 * 60 * 1e3);
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
+  reactExports.useEffect(() => {
+    console.log("[Verve][App] State", { authChecked, isAuthenticated, loggedInUser, remainingQuota, plan, authError });
+  }, [authChecked, isAuthenticated, loggedInUser, remainingQuota, plan, authError]);
   reactExports.useEffect(() => {
     if (!isAuthenticated || !loggedInUser)
       return;
@@ -8729,6 +8985,11 @@ function App() {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!res.ok) {
+          if (res.status === 401) {
+            clearAllData();
+            setAuthError("Session expired. Please login again.");
+            return;
+          }
           console.warn("[Verve][App] /users/me/profile failed", res.status);
           return;
         }
@@ -8744,6 +9005,7 @@ function App() {
         chrome.storage?.local.set({ lastProfile: data, recentHistory: recent });
       } catch (e) {
         console.error("[Verve][App] profile fetch error", e);
+        setAuthError("Connection error. Please try again.");
       }
     })();
   }, [isAuthenticated, loggedInUser]);
@@ -8772,25 +9034,216 @@ function App() {
     chrome.storage?.onChanged.addListener(listener);
     return () => chrome.storage?.onChanged.removeListener(listener);
   }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { width: 320 }, className: "stack-24", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+    width: 360,
+    padding: "16px",
+    background: "linear-gradient(180deg, #0B0F1E 0%, #1E1E3A 100%)",
+    minHeight: "100vh"
+  }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(HeaderCard, {}),
-    !authChecked && /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "verve-card", radius: "md", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: "Loading…" }) }),
-    authChecked && (!isAuthenticated || !loggedInUser) && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "verve-card", radius: "md", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", mb: 12, children: "Connect Your Account" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { size: "sm", color: "#E0E0FF", mb: 12, children: "Instantly craft premium, context-aware replies with AI." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TwitterLogin, { onLogin: setLoggedInUser, onHistory: setRecentHistory, onProfile: setProfileInfo })
-    ] }),
-    loggedInUser && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    !authChecked && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Card,
+      {
+        className: "verve-card",
+        radius: "md",
+        style: {
+          padding: "24px",
+          textAlign: "center"
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { style: { color: "#A0A4B8", fontSize: "14px" }, children: "Loading…" })
+      }
+    ),
+    authChecked && authError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      Card,
+      {
+        className: "verve-card",
+        radius: "md",
+        style: {
+          padding: "24px",
+          background: "linear-gradient(180deg, #1E1E3A 0%, #392F5A 100%)",
+          border: "1px solid rgba(239, 68, 68, 0.3)"
+        },
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Title,
+            {
+              order: 3,
+              style: {
+                fontSize: "16px",
+                marginBottom: "8px",
+                color: "#EF4444",
+                textAlign: "center"
+              },
+              children: "Authentication Error"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Text,
+            {
+              size: "sm",
+              style: {
+                color: "#A0A4B8",
+                marginBottom: "16px",
+                textAlign: "center",
+                fontSize: "13px",
+                lineHeight: "1.4"
+              },
+              children: authError
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
+            {
+              fullWidth: true,
+              style: {
+                background: "linear-gradient(135deg, #8C3EFF 0%, #D159FF 100%)",
+                border: "none",
+                color: "#FFFFFF",
+                fontWeight: "600",
+                fontSize: "14px",
+                padding: "12px 24px",
+                borderRadius: "12px",
+                transition: "all 0.2s ease"
+              },
+              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL}` }),
+              children: [
+                "Login at ",
+                MAIN_SITE_URL.replace("https://", "")
+              ]
+            }
+          )
+        ]
+      }
+    ),
+    authChecked && !isAuthenticated && !authError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      Card,
+      {
+        className: "verve-card",
+        radius: "md",
+        style: {
+          padding: "24px",
+          background: "linear-gradient(180deg, #1E1E3A 0%, #392F5A 100%)",
+          border: "1px solid rgba(140, 62, 255, 0.2)"
+        },
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Title,
+            {
+              order: 2,
+              className: "h-title",
+              style: {
+                fontSize: "20px",
+                marginBottom: "8px",
+                color: "#FFFFFF",
+                textAlign: "center"
+              },
+              children: "Please Login First"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Text,
+            {
+              size: "sm",
+              style: {
+                color: "#A0A4B8",
+                marginBottom: "20px",
+                textAlign: "center",
+                fontSize: "13px",
+                lineHeight: "1.4"
+              },
+              children: "Login to your account on our website to use the extension."
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
+            {
+              fullWidth: true,
+              style: {
+                background: "linear-gradient(135deg, #8C3EFF 0%, #D159FF 100%)",
+                border: "none",
+                color: "#FFFFFF",
+                fontWeight: "600",
+                fontSize: "14px",
+                padding: "12px 24px",
+                borderRadius: "12px",
+                transition: "all 0.2s ease"
+              },
+              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL}` }),
+              children: [
+                "Login at ",
+                MAIN_SITE_URL.replace("https://", "")
+              ]
+            }
+          )
+        ]
+      }
+    ),
+    authChecked && isAuthenticated && !loggedInUser && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      Card,
+      {
+        className: "verve-card",
+        radius: "md",
+        style: {
+          padding: "24px",
+          background: "linear-gradient(180deg, #1E1E3A 0%, #392F5A 100%)",
+          border: "1px solid rgba(140, 62, 255, 0.2)"
+        },
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Title,
+            {
+              order: 2,
+              className: "h-title",
+              style: {
+                fontSize: "20px",
+                marginBottom: "8px",
+                color: "#FFFFFF",
+                textAlign: "center"
+              },
+              children: "Connect Your Twitter Account"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Text,
+            {
+              size: "sm",
+              style: {
+                color: "#A0A4B8",
+                marginBottom: "20px",
+                textAlign: "center",
+                fontSize: "13px",
+                lineHeight: "1.4"
+              },
+              children: "Connect your Twitter account to start generating AI replies."
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TwitterLogin, { onLogin: setLoggedInUser, onHistory: setRecentHistory, onProfile: setProfileInfo })
+        ]
+      }
+    ),
+    loggedInUser && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "16px" }, children: [
       plan === "FREE" && remainingQuota <= 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeCard, {}),
       profileInfo && /* @__PURE__ */ jsxRuntimeExports.jsx(SummaryCard, { profile: profileInfo }),
       recentHistory.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(RecentRepliesCard, { history: recentHistory }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { fullWidth: true, color: "red", variant: "outline", mt: 16, onClick: () => {
-        chrome.storage?.local.remove(["twitterUser", "toneReady"], () => {
-          setLoggedInUser(null);
-          setRecentHistory([]);
-          setProfileInfo(null);
-        });
-      }, children: "Logout" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          fullWidth: true,
+          style: {
+            background: "transparent",
+            border: "1px solid #EF4444",
+            color: "#EF4444",
+            fontWeight: "600",
+            padding: "12px 24px",
+            borderRadius: "12px",
+            transition: "all 0.2s ease"
+          },
+          onClick: () => {
+            clearAllData();
+          },
+          children: "Logout"
+        }
+      )
     ] })
   ] });
 }

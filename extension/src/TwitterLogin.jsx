@@ -278,44 +278,163 @@ export default function TwitterLogin({ onLogin, onHistory, onProfile }) {
   return (
     <>
       {!user ? (
-        <>
-          <Button fullWidth className="verve-btn" leftIcon={<IconBrandX size={18} />} onClick={login}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <Button 
+            fullWidth 
+            className="verve-btn" 
+            leftIcon={<IconBrandX size={18} />} 
+            onClick={login}
+            style={{
+              background: 'linear-gradient(135deg, #8C3EFF 0%, #D159FF 100%)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontWeight: '600',
+              fontSize: '14px',
+              padding: '14px 24px',
+              borderRadius: '12px',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 4px 12px rgba(140, 62, 255, 0.3)'
+            }}
+          >
             Login with X
           </Button>
-          <Divider label="or" my="md" labelPosition="center" />
-          <form onSubmit={handleManualSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 8 }}>
-            <TextInput
-              className="verve-input"
-              label="Enter X (Twitter) Username"
-              placeholder="e.g. elonmusk"
-              value={manualUsername}
-              onChange={e => setManualUsername(e.currentTarget.value)}
-              required
-            />
-            <Button type="submit" className="verve-btn-outline" fullWidth>Analyze without login</Button>
-            {manualStatus && <Text size="xs" color="dimmed" mt={4}>{manualStatus}</Text>}
+          
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '12px',
+            margin: '8px 0'
+          }}>
+            <div style={{ 
+              flex: 1, 
+              height: '1px', 
+              background: 'rgba(160, 164, 184, 0.2)' 
+            }}></div>
+            <Text style={{ 
+              color: '#A0A4B8', 
+              fontSize: '12px',
+              fontWeight: '500'
+            }}>
+              or
+            </Text>
+            <div style={{ 
+              flex: 1, 
+              height: '1px', 
+              background: 'rgba(160, 164, 184, 0.2)' 
+            }}></div>
+          </div>
+          
+          <form onSubmit={handleManualSubmit} style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '12px'
+          }}>
+            <div>
+              <Text 
+                size="sm" 
+                style={{ 
+                  color: '#FFFFFF',
+                  fontWeight: '600',
+                  marginBottom: '6px',
+                  fontSize: '13px'
+                }}
+              >
+                Enter X (Twitter) Username *
+              </Text>
+              <input
+                className="verve-input"
+                placeholder="e.g. elonmusk"
+                value={manualUsername}
+                onChange={e => setManualUsername(e.currentTarget.value)}
+                required
+                style={{
+                  width: '100%',
+                  background: 'rgba(30, 30, 58, 0.8)',
+                  border: '1px solid rgba(57, 47, 90, 0.6)',
+                  borderRadius: '8px',
+                  padding: '12px 16px',
+                  fontSize: '14px',
+                  color: '#FFFFFF',
+                  outline: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              />
+            </div>
+            
+            <Button 
+              type="submit" 
+              className="verve-btn-outline" 
+              fullWidth
+              style={{
+                background: 'transparent',
+                border: '1px solid #8C3EFF',
+                color: '#8C3EFF',
+                fontWeight: '600',
+                fontSize: '14px',
+                padding: '14px 24px',
+                borderRadius: '12px',
+                transition: 'all 0.2s ease',
+                marginTop: '4px'
+              }}
+            >
+              Analyze without login
+            </Button>
+            
+            {manualStatus && (
+              <Text 
+                size="xs" 
+                style={{ 
+                  color: '#A0A4B8', 
+                  marginTop: '8px',
+                  fontSize: '12px',
+                  textAlign: 'center'
+                }}
+              >
+                {manualStatus}
+              </Text>
+            )}
           </form>
-        </>
+        </div>
       ) : (
-        <>
-          {/* Additional summary UI moved to popup cards */}
-          <Divider my="sm" />
-          <Group position="apart">
-            <Button color="red" onClick={logout}>Logout</Button>
-          </Group>
-        </>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ 
+            height: '1px', 
+            background: 'rgba(160, 164, 184, 0.2)',
+            margin: '8px 0'
+          }}></div>
+          
+          <Button 
+            color="red" 
+            onClick={logout}
+            style={{
+              background: 'transparent',
+              border: '1px solid #EF4444',
+              color: '#EF4444',
+              fontWeight: '600',
+              fontSize: '14px',
+              padding: '12px 24px',
+              borderRadius: '12px',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Logout
+          </Button>
+        </div>
       )}
+      
       {/* Settings Modal */}
       <Modal opened={isSettingsOpen} onClose={onSettingsClose} title="Settings" centered>
         <Switch label="Auto-copy replies" checked={settings.autoCopy} onChange={e => setSettings(s => ({ ...s, autoCopy: e.target.checked }))} mb="md" />
         <Switch label="Enable notifications" checked={settings.notifications} onChange={e => setSettings(s => ({ ...s, notifications: e.target.checked }))} mb="md" />
       </Modal>
+      
       {/* Feedback Modal */}
       <Modal opened={isFeedbackOpen} onClose={onFeedbackClose} title="Feedback & Support" centered>
         <TextInput label="Your email" placeholder="you@example.com" mb="md" />
         <TextInput label="Message" placeholder="How can we help?" mb="md" />
         <Button fullWidth color="blue" onClick={handleFeedbackSubmit}>Send</Button>
       </Modal>
+      
       {/* Notifications */}
       {msg && (
         <Notification color="green" onClose={() => setMsg('')} mt="md">
