@@ -13,11 +13,8 @@
     "https://twitter.com/*",
     "https://x.com/*",
     "http://localhost:5173/*",
-    "https://app.verve.dev/*",
     "https://getverve.xyz/*",
-    "http://localhost:8000/*",
-    "https://api.verve.dev/*",
-    "http://127.0.0.1:5173/*"
+    "http://localhost:8000/*"
   ],
   "content_scripts": [
     {

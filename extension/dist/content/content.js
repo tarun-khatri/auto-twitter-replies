@@ -448,14 +448,32 @@ var m = reactDomExports;
   client.hydrateRoot = m.hydrateRoot;
 }
 
-const BACKEND_URL = "http://localhost:8000" ;
-const MAIN_SITE_URL = "https://getverve.xyz" ;
+// Configuration file for API URLs
+// This file handles the 3 URL variables that were causing issues with environment loading
+
+
+// Production URLs
+const PROD_CONFIG = {
+  VITE_API_URL: 'https://auto-twitter-replies.onrender.com',
+  VITE_SITE_URL: 'https://getverve.xyz',
+  VITE_MAIN_SITE_URL: 'https://getverve.xyz'
+};
+
+// Export the appropriate config based on environment
+const config = PROD_CONFIG;
+
+// Export individual variables for convenience
+const API_BASE = config.VITE_API_URL;
+const SITE_URL = config.VITE_SITE_URL;
+const MAIN_SITE_URL = config.VITE_MAIN_SITE_URL;
+
+// Log the current configuration (for debugging)
+console.log('[Config] Environment:', 'production');
+console.log('[Config] API_BASE:', API_BASE);
+console.log('[Config] SITE_URL:', SITE_URL);
+console.log('[Config] MAIN_SITE_URL:', MAIN_SITE_URL);
+
 const ORIGINS = [
-  // dev origins first
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  // prod origins
-  "https://app.verve.dev",
   MAIN_SITE_URL
 ];
 function getClerkToken() {
@@ -687,7 +705,7 @@ function TwitterReplyGenerator() {
             image_urls: imageUrls || []
           };
           console.log("[AI Reply] Sending payload to backend:", payloadBody);
-          const replyRes = await fetchWithFreshToken(`${BACKEND_URL}/generate_reply`, {
+          const replyRes = await fetchWithFreshToken(`${API_BASE}/generate_reply`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payloadBody)
@@ -704,7 +722,7 @@ function TwitterReplyGenerator() {
             chrome.storage?.local.set({ quotaRemaining: remaining_quota });
           }
           await insertReply(reply);
-          await fetchWithFreshToken(`${BACKEND_URL}/users/me/history`, {
+          await fetchWithFreshToken(`${API_BASE}/users/me/history`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ tweet: tweetText, reply })

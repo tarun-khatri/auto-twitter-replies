@@ -4,12 +4,9 @@ import TwitterLogin from './TwitterLogin';
 import RecentRepliesCard from './RecentRepliesCard';
 import SummaryCard from './SummaryCard';
 import UpgradeCard from './UpgradeCard';
+import { API_BASE, SITE_URL, MAIN_SITE_URL } from './config';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://api.verve.dev';
-const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://app.verve.dev';
-const MAIN_SITE_URL = import.meta.env.VITE_MAIN_SITE_URL || 'https://getverve.xyz';
-
-const ORIGINS = [SITE_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', MAIN_SITE_URL];
+const ORIGINS = [SITE_URL, MAIN_SITE_URL];
 
 async function getClerkToken() {
   return new Promise((resolve) => {

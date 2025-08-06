@@ -15,9 +15,9 @@ import { IconBrandX } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 // Base REST & WS endpoints – fall back to production API if not provided at build
-const API_BASE = import.meta.env.VITE_API_URL || 'https://api.verve.dev';
+import { API_BASE } from './config';
 const WS_BASE = API_BASE.replace(/^http/, 'ws');
-const MAIN_SITE_URL = import.meta.env.VITE_MAIN_SITE_URL || 'https://getverve.xyz';
+import { MAIN_SITE_URL } from './config';
 
 function fetchUserProfileWithToken(token) {
   return fetch(`${API_BASE}/users/me/profile`, {
@@ -29,9 +29,7 @@ function fetchUserProfileWithToken(token) {
 }
 
 const ORIGINS = [
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  'https://app.verve.dev',
+ 
   MAIN_SITE_URL
 ];
 
@@ -142,7 +140,7 @@ export default function TwitterLogin({ onLogin, onHistory, onProfile }) {
   const login = () => {
     setMsg('Opening login window…');
     const popup = window.open(
-      ' http://localhost:5173/X-login?start=true',
+      `${SITE_URL}/X-login?start=true`,
       'twitterAuth',
       'width=600,height=700'
     );

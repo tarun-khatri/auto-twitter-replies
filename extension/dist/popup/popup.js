@@ -8315,11 +8315,34 @@ function showNotification(notification, store = notificationsStore) {
   return id;
 }
 
-const API_BASE$1 = "http://localhost:8000" ;
-const WS_BASE = API_BASE$1.replace(/^http/, "ws");
-const MAIN_SITE_URL$2 = "https://getverve.xyz" ;
+// Configuration file for API URLs
+// This file handles the 3 URL variables that were causing issues with environment loading
+
+
+// Production URLs
+const PROD_CONFIG = {
+  VITE_API_URL: 'https://auto-twitter-replies.onrender.com',
+  VITE_SITE_URL: 'https://getverve.xyz',
+  VITE_MAIN_SITE_URL: 'https://getverve.xyz'
+};
+
+// Export the appropriate config based on environment
+const config = PROD_CONFIG;
+
+// Export individual variables for convenience
+const API_BASE = config.VITE_API_URL;
+const SITE_URL$1 = config.VITE_SITE_URL;
+const MAIN_SITE_URL$1 = config.VITE_MAIN_SITE_URL;
+
+// Log the current configuration (for debugging)
+console.log('[Config] Environment:', 'production');
+console.log('[Config] API_BASE:', API_BASE);
+console.log('[Config] SITE_URL:', SITE_URL$1);
+console.log('[Config] MAIN_SITE_URL:', MAIN_SITE_URL$1);
+
+const WS_BASE = API_BASE.replace(/^http/, "ws");
 function fetchUserProfileWithToken(token) {
-  return fetch(`${API_BASE$1}/users/me/profile`, {
+  return fetch(`${API_BASE}/users/me/profile`, {
     headers: { Authorization: `Bearer ${token}` }
   }).then((r) => {
     if (!r.ok)
@@ -8328,10 +8351,7 @@ function fetchUserProfileWithToken(token) {
   });
 }
 const ORIGINS$1 = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  "https://app.verve.dev",
-  MAIN_SITE_URL$2
+  MAIN_SITE_URL$1
 ];
 function getClerkTokenFallback() {
   return new Promise((resolve) => {
@@ -8434,7 +8454,7 @@ function TwitterLogin({ onLogin, onHistory, onProfile }) {
   const login = () => {
     setMsg("Opening login window…");
     const popup = window.open(
-      " http://localhost:5173/X-login?start=true",
+      `${SITE_URL}/X-login?start=true`,
       "twitterAuth",
       "width=600,height=700"
     );
@@ -8463,7 +8483,7 @@ function TwitterLogin({ onLogin, onHistory, onProfile }) {
             const headers = { "Content-Type": "application/json" };
             if (token)
               headers.Authorization = `Bearer ${token}`;
-            fetch(`${API_BASE$1}/users/register`, {
+            fetch(`${API_BASE}/users/register`, {
               method: "POST",
               headers,
               body: JSON.stringify({
@@ -8492,7 +8512,7 @@ function TwitterLogin({ onLogin, onHistory, onProfile }) {
         const headers = { "Content-Type": "application/json" };
         if (token)
           headers.Authorization = `Bearer ${token}`;
-        fetch(`${API_BASE$1}/users/register`, {
+        fetch(`${API_BASE}/users/register`, {
           method: "POST",
           headers,
           body: JSON.stringify({
@@ -8738,7 +8758,7 @@ function SummaryCard({ profile }) {
   ] });
 }
 
-const MAIN_SITE_URL$1 = "https://getverve.xyz" ;
+const MAIN_SITE_URL = ({}).VITE_MAIN_SITE_URL || "https://getverve.xyz";
 function UpgradeCard() {
   const features = [
     "Unlimited personalized replies",
@@ -8749,9 +8769,9 @@ function UpgradeCard() {
   ];
   const openUpgrade = () => {
     if (chrome?.tabs)
-      chrome.tabs.create({ url: `${MAIN_SITE_URL$1}/pricing` });
+      chrome.tabs.create({ url: `${MAIN_SITE_URL}/pricing` });
     else
-      window.open(`${MAIN_SITE_URL$1}/pricing`, "_blank");
+      window.open(`${MAIN_SITE_URL}/pricing`, "_blank");
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "verve-card", radius: "md", mt: 16, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", mb: 12, children: "Upgrade to Verve Pro" }),
@@ -8760,10 +8780,7 @@ function UpgradeCard() {
   ] });
 }
 
-const API_BASE = "http://localhost:8000" ;
-const SITE_URL = "http://localhost:5173" ;
-const MAIN_SITE_URL = "https://getverve.xyz" ;
-const ORIGINS = [SITE_URL, "http://localhost:5173", "http://127.0.0.1:5173", MAIN_SITE_URL];
+const ORIGINS = [SITE_URL$1, MAIN_SITE_URL$1];
 async function getClerkToken() {
   return new Promise((resolve) => {
     if (typeof chrome === "undefined" || !chrome.cookies) {
@@ -8828,7 +8845,7 @@ function App() {
               color: "#FFFFFF",
               fontWeight: "700"
             },
-            children: MAIN_SITE_URL.replace("https://", "")
+            children: MAIN_SITE_URL$1.replace("https://", "")
           }
         ) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px", alignItems: "center" }, children: [
@@ -8879,7 +8896,7 @@ function App() {
                 transition: "all 0.2s ease",
                 boxShadow: "0 2px 8px rgba(140, 62, 255, 0.3)"
               },
-              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL}/pricing` }),
+              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL$1}/pricing` }),
               children: "Upgrade"
             }
           )
@@ -9105,10 +9122,10 @@ function App() {
                 borderRadius: "12px",
                 transition: "all 0.2s ease"
               },
-              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL}` }),
+              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL$1}` }),
               children: [
                 "Login at ",
-                MAIN_SITE_URL.replace("https://", "")
+                MAIN_SITE_URL$1.replace("https://", "")
               ]
             }
           )
@@ -9168,10 +9185,10 @@ function App() {
                 borderRadius: "12px",
                 transition: "all 0.2s ease"
               },
-              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL}` }),
+              onClick: () => chrome.tabs?.create({ url: `${MAIN_SITE_URL$1}` }),
               children: [
                 "Login at ",
-                MAIN_SITE_URL.replace("https://", "")
+                MAIN_SITE_URL$1.replace("https://", "")
               ]
             }
           )

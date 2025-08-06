@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { FaMagic } from "react-icons/fa";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL || 'https://api.verve.dev';
-const MAIN_SITE_URL = import.meta.env.VITE_MAIN_SITE_URL || 'https://getverve.xyz';
+import { API_BASE as BACKEND_URL } from './config';
+import { MAIN_SITE_URL } from './config';
 const ORIGINS = [
-  // dev origins first
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  // prod origins
-  'https://app.verve.dev',
+
+
   MAIN_SITE_URL,
 ];
 
