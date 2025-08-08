@@ -1,5 +1,6 @@
 import React from 'react';
 import { Chrome, Mail, Shield, HelpCircle, FileText, CreditCard } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -38,34 +39,34 @@ const Footer = () => {
             <h4 className="font-serif text-white font-bold mb-6 text-lg tracking-wide">Support & Legal</h4>
             <ul className="space-y-3 text-gray-300">
               <li>
-                <a href="/contact" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                <Link to="/contact" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
                   <Mail size={18} />
                   Contact Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/contact" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                <Link to="/contact" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
                   <HelpCircle size={18} />
                   Help Center
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/privacy" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                <Link to="/privacy" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
                   <Shield size={18} />
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/terms" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                <Link to="/terms" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
                   <FileText size={18} />
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/refund" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
+                <Link to="/refund" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
                   <CreditCard size={18} />
                   Refund Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
