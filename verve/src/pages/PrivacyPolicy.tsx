@@ -37,37 +37,47 @@ const PrivacyPolicy = () => {
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-white mb-4">2. Information We Collect</h2>
             
-            <h3 className="text-xl font-bold text-white mb-3">2.1 Personal Information</h3>
+            <h3 className="text-xl font-bold text-white mb-3">2.1 Authentication Information</h3>
             <p className="text-gray-300 mb-4">
-              We may collect personal information that you provide directly to us:
+              We collect authentication information to provide our service:
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
-              <li>Name and email address (when you create an account)</li>
-              <li>Payment information (processed securely by Stripe)</li>
-              <li>Social media handles and public profile information</li>
-              <li>Communication preferences and settings</li>
+              <li>Clerk authentication tokens for user login and session management</li>
+              <li>X (Twitter) authentication cookies to verify user login status</li>
+              <li>User account credentials and session information</li>
             </ul>
 
-            <h3 className="text-xl font-bold text-white mb-3">2.2 Usage Data</h3>
-            <p className="text-gray-300 mb-4">
-              We automatically collect certain information about your use of our service:
-            </p>
-            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
-              <li>Extension usage patterns and features accessed</li>
-              <li>Generated replies and interaction data</li>
-              <li>Technical information (browser type, device information)</li>
-              <li>Performance and error logs</li>
-            </ul>
-
-            <h3 className="text-xl font-bold text-white mb-3">2.3 Social Media Content</h3>
+            <h3 className="text-xl font-bold text-white mb-3">2.2 Personal Communications</h3>
             <p className="text-gray-300 mb-4">
               To provide our AI-powered reply generation service, we analyze:
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
-              <li>Public tweets and replies from your social media accounts</li>
-              <li>Writing patterns, tone, and communication style</li>
-              <li>Public profile information and bio</li>
+              <li>Public tweets and replies from your X (Twitter) accounts</li>
+              <li>Tweet content that you want to reply to</li>
+              <li>Generated replies and interaction history</li>
+              <li>Public profile information and bio from X</li>
+            </ul>
+
+            <h3 className="text-xl font-bold text-white mb-3">2.3 Website Content</h3>
+            <p className="text-gray-300 mb-4">
+              We access and process website content to provide our service:
+            </p>
+            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+              <li>Tweet text, images, and metadata from X pages</li>
+              <li>User profile information and public account data</li>
+              <li>Writing patterns, tone, and communication style analysis</li>
               <li>Engagement patterns and audience interactions</li>
+            </ul>
+
+            <h3 className="text-xl font-bold text-white mb-3">2.4 User Activity</h3>
+            <p className="text-gray-300 mb-4">
+              We collect limited usage data to improve our service:
+            </p>
+            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+              <li>Extension usage patterns and features accessed</li>
+              <li>Reply generation requests and quota usage</li>
+              <li>Technical information (browser type, extension version)</li>
+              <li>Performance and error logs for service improvement</li>
             </ul>
           </section>
 
@@ -78,10 +88,10 @@ const PrivacyPolicy = () => {
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
               <li><strong>Service Provision:</strong> To provide and maintain our AI-powered reply generation service</li>
-              <li><strong>Personalization:</strong> To analyze your writing style and create personalized replies</li>
-              <li><strong>Account Management:</strong> To manage your account, process payments, and provide customer support</li>
-              <li><strong>Improvement:</strong> To improve our service, develop new features, and enhance user experience</li>
-              <li><strong>Communication:</strong> To send you important updates, security alerts, and support messages</li>
+              <li><strong>Personalization:</strong> To analyze your writing style and create personalized replies that match your tone</li>
+              <li><strong>Account Management:</strong> To manage your account, track usage quotas, and provide customer support</li>
+              <li><strong>Improvement:</strong> To improve our AI models, develop new features, and enhance user experience</li>
+              <li><strong>Security:</strong> To verify user authentication and prevent unauthorized access</li>
               <li><strong>Legal Compliance:</strong> To comply with applicable laws and regulations</li>
             </ul>
           </section>
@@ -92,7 +102,7 @@ const PrivacyPolicy = () => {
               We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
-              <li><strong>Service Providers:</strong> With trusted third-party service providers who assist us in operating our service (payment processing, hosting, analytics)</li>
+              <li><strong>Service Providers:</strong> With trusted third-party service providers who assist us in operating our service (Clerk for authentication, MongoDB for data storage, AI model providers)</li>
               <li><strong>Legal Requirements:</strong> When required by law or to protect our rights and safety</li>
               <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
               <li><strong>Consent:</strong> With your explicit consent for specific purposes</li>
@@ -100,60 +110,62 @@ const PrivacyPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">5. Data Security</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">5. Data Storage and Security</h2>
             <p className="text-gray-300 mb-4">
               We implement appropriate technical and organizational measures to protect your information:
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
               <li>Encryption of data in transit and at rest</li>
-              <li>Secure authentication and access controls</li>
+              <li>Secure authentication through Clerk</li>
+              <li>MongoDB database with access controls</li>
               <li>Regular security assessments and updates</li>
               <li>Limited access to personal information on a need-to-know basis</li>
-              <li>Secure payment processing through Stripe</li>
             </ul>
           </section>
 
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-white mb-4">6. Data Retention</h2>
             <p className="text-gray-300 mb-4">
-              We retain your information for as long as necessary to provide our services and comply with legal obligations:
+              We retain your information for as long as necessary to provide our services:
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
               <li><strong>Account Data:</strong> Retained while your account is active and for 30 days after deletion</li>
               <li><strong>Usage Data:</strong> Retained for 2 years for service improvement and analytics</li>
-              <li><strong>Payment Data:</strong> Retained as required by financial regulations</li>
-              <li><strong>Social Media Analysis:</strong> Retained for 1 year to maintain personalized features</li>
+              <li><strong>X Content Analysis:</strong> Retained for 1 year to maintain personalized features</li>
+              <li><strong>Generated Replies:</strong> Stored locally in browser storage and optionally in our database for history</li>
+              <li><strong>Authentication Tokens:</strong> Stored locally in browser storage and managed by Clerk</li>
             </ul>
           </section>
 
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-white mb-4">7. Your Rights and Choices</h2>
             <p className="text-gray-300 mb-4">
-              Depending on your location, you may have the following rights:
+              You have the following rights regarding your personal information:
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
               <li><strong>Access:</strong> Request access to your personal information</li>
               <li><strong>Correction:</strong> Request correction of inaccurate information</li>
-              <li><strong>Deletion:</strong> Request deletion of your personal information</li>
+              <li><strong>Deletion:</strong> Request deletion of your personal information and account</li>
               <li><strong>Portability:</strong> Request a copy of your data in a portable format</li>
               <li><strong>Opt-out:</strong> Opt out of marketing communications</li>
-              <li><strong>Restriction:</strong> Request restriction of processing</li>
+              <li><strong>Local Storage:</strong> Clear extension data from your browser storage</li>
             </ul>
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">8. Cookies and Tracking Technologies</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">8. Browser Storage and Cookies</h2>
             <p className="text-gray-300 mb-4">
-              We use cookies and similar technologies to:
+              Our extension uses browser storage and cookies to:
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
-              <li>Maintain your authentication session</li>
-              <li>Remember your preferences and settings</li>
-              <li>Analyze service usage and performance</li>
-              <li>Provide personalized content and features</li>
+              <li>Store authentication tokens and session information</li>
+              <li>Remember user preferences and settings</li>
+              <li>Cache recent reply history and usage data</li>
+              <li>Maintain user login status across browser sessions</li>
+              <li>Track quota usage and account information</li>
             </ul>
             <p className="text-gray-300 mb-4">
-              You can control cookie settings through your browser preferences.
+              You can clear this data through your browser settings or the extension's logout function.
             </p>
           </section>
 
@@ -163,29 +175,44 @@ const PrivacyPolicy = () => {
               Our service integrates with third-party services:
             </p>
             <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
-              <li><strong>Stripe:</strong> Payment processing (subject to Stripe's privacy policy)</li>
               <li><strong>Clerk:</strong> Authentication services (subject to Clerk's privacy policy)</li>
-              <li><strong>Social Media Platforms:</strong> For content analysis and reply generation</li>
-              <li><strong>Analytics Services:</strong> For service improvement and user experience</li>
+              <li><strong>MongoDB:</strong> Database storage (subject to MongoDB's privacy policy)</li>
+              <li><strong>X (Twitter):</strong> For content analysis and reply generation</li>
+              <li><strong>AI Model Providers:</strong> For generating personalized replies</li>
+              <li><strong>RSS Services:</strong> For fetching public tweet data (TwitRSS.me, xcancel.com)</li>
             </ul>
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">10. International Data Transfers</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">10. Data Processing and AI</h2>
+            <p className="text-gray-300 mb-4">
+              Our AI-powered service processes your data as follows:
+            </p>
+            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+              <li>Analyzes your X posts to understand your writing style and tone</li>
+              <li>Processes tweet content to generate contextually relevant replies</li>
+              <li>Uses AI models to create personalized responses that match your communication style</li>
+              <li>Stores analysis results to improve future reply generation</li>
+              <li>All processing is done securely on our servers</li>
+            </ul>
+          </section>
+
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold text-white mb-4">11. International Data Transfers</h2>
             <p className="text-gray-300 mb-4">
               Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your information in accordance with this Privacy Policy.
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">11. Children's Privacy</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">12. Children's Privacy</h2>
             <p className="text-gray-300 mb-4">
               Our service is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us.
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">12. Changes to This Privacy Policy</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">13. Changes to This Privacy Policy</h2>
             <p className="text-gray-300 mb-4">
               We may update this Privacy Policy from time to time. We will notify you of any material changes by:
             </p>
@@ -197,7 +224,7 @@ const PrivacyPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">13. Contact Us</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">14. Contact Us</h2>
             <p className="text-gray-300 mb-4">
               If you have any questions about this Privacy Policy or our data practices, please contact us:
             </p>
