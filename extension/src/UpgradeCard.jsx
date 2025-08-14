@@ -11,9 +11,16 @@ export default function UpgradeCard() {
     'Account mimicking',
     'Priority support',
   ];
-  const openUpgrade = () => {
-    if (chrome?.tabs) chrome.tabs.create({ url: `${MAIN_SITE_URL}/pricing` });
-    else window.open(`${MAIN_SITE_URL}/pricing`, '_blank');
+  const openUpgrade = async () => {
+    try {
+      // Let the site handle auth + checkout; open pricing section for context
+      const url = `${MAIN_SITE_URL}#pricing`;
+      if (chrome?.tabs) chrome.tabs.create({ url });
+      else window.open(url, '_blank');
+    } catch (e) {
+      if (chrome?.tabs) chrome.tabs.create({ url: `${MAIN_SITE_URL}/pricing` });
+      else window.open(`${MAIN_SITE_URL}/pricing`, '_blank');
+    }
   };
   return (
     <Card className="verve-card" radius="md" mt={16}>

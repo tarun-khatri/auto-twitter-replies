@@ -8767,11 +8767,19 @@ function UpgradeCard() {
     "Account mimicking",
     "Priority support"
   ];
-  const openUpgrade = () => {
-    if (chrome?.tabs)
-      chrome.tabs.create({ url: `${MAIN_SITE_URL}/pricing` });
-    else
-      window.open(`${MAIN_SITE_URL}/pricing`, "_blank");
+  const openUpgrade = async () => {
+    try {
+      const url = `${MAIN_SITE_URL}#pricing`;
+      if (chrome?.tabs)
+        chrome.tabs.create({ url });
+      else
+        window.open(url, "_blank");
+    } catch (e) {
+      if (chrome?.tabs)
+        chrome.tabs.create({ url: `${MAIN_SITE_URL}/pricing` });
+      else
+        window.open(`${MAIN_SITE_URL}/pricing`, "_blank");
+    }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "verve-card", radius: "md", mt: 16, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Title, { order: 2, className: "h-title", mb: 12, children: "Upgrade to Verve Pro" }),
@@ -8849,20 +8857,73 @@ function App() {
           }
         ) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: "8px", alignItems: "center" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Badge,
-            {
-              size: "sm",
-              style: {
-                background: "#10B981",
-                color: "#FFFFFF",
-                fontWeight: "600",
-                fontSize: "11px",
-                padding: "4px 8px"
-              },
-              children: plan
-            }
-          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative" }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              Badge,
+              {
+                size: "sm",
+                style: {
+                  background: "#10B981",
+                  color: "#FFFFFF",
+                  fontWeight: "600",
+                  fontSize: "11px",
+                  padding: "4px 8px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  cursor: "default"
+                },
+                onMouseEnter: (e) => {
+                  const tip = e.currentTarget.nextSibling;
+                  if (tip)
+                    tip.style.display = "block";
+                },
+                onMouseLeave: (e) => {
+                  const tip = e.currentTarget.nextSibling;
+                  if (tip)
+                    tip.style.display = "none";
+                },
+                onClick: (e) => {
+                  const tip = e.currentTarget.nextSibling;
+                  if (tip)
+                    tip.style.display = tip.style.display === "none" || !tip.style.display ? "block" : "none";
+                },
+                children: [
+                  plan === "PRO" && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { "aria-hidden": true, children: "👑" }),
+                  plan
+                ]
+              }
+            ),
+            plan === "PRO" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "div",
+              {
+                role: "tooltip",
+                style: {
+                  position: "absolute",
+                  right: 0,
+                  top: "100%",
+                  marginTop: 6,
+                  width: 220,
+                  display: "none",
+                  background: "rgba(17,24,39,0.95)",
+                  color: "#E5E7EB",
+                  border: "1px solid #374151",
+                  borderRadius: 8,
+                  padding: 8,
+                  zIndex: 9999
+                },
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { color: "#6EE7B7", fontWeight: 700, fontSize: 11, marginBottom: 6 }, children: "PRO Benefits" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { style: { margin: 0, paddingLeft: 16, fontSize: 11, lineHeight: 1.5 }, children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "Unlimited replies" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "Understand image context" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "Faster replies" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "More personal replies" })
+                  ] })
+                ]
+              }
+            )
+          ] }),
           typeof remainingQuota === "number" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
             Badge,
             {
@@ -8880,7 +8941,7 @@ function App() {
               ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+          plan !== "PRO" && /* @__PURE__ */ jsxRuntimeExports.jsx(
             Button,
             {
               size: "xs",
@@ -8986,6 +9047,10 @@ function App() {
   }, [isAuthenticated]);
   reactExports.useEffect(() => {
     console.log("[Verve][App] State", { authChecked, isAuthenticated, loggedInUser, remainingQuota, plan, authError });
+    try {
+      window.__vervePlan = plan;
+    } catch {
+    }
   }, [authChecked, isAuthenticated, loggedInUser, remainingQuota, plan, authError]);
   reactExports.useEffect(() => {
     if (!isAuthenticated || !loggedInUser)

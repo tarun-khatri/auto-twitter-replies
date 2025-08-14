@@ -19,3 +19,15 @@ services:
         sync: false
       - key: CLERK_ALLOWED_ORIGIN_3
         sync: false 
+      - key: DODO_PAYMENTS_API_KEY
+        sync: false
+      - key: DODO_WEBHOOK_SECRET
+        sync: false
+      - key: DODO_ENVIRONMENT
+        sync: false
+      - key: DODO_PRO_PRODUCT_ID
+        sync: false
+      - key: DODO_RETURN_URL
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false

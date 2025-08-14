@@ -44,10 +44,10 @@ const Hero = () => {
           </div>
 
           <div className="mb-16 animate-slide-up" style={{animationDelay: '0.4s'}}>
-            <button className="group bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:via-purple-700 hover:to-rose-gold text-white px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 flex items-center gap-3 mx-auto shadow-2xl hover:shadow-indigo-500/25 animate-glow">
+            <a href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop"} target="_blank" className="group bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:via-purple-700 hover:to-rose-gold text-white px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 flex items-center gap-3 mx-auto shadow-2xl hover:shadow-indigo-500/25 animate-glow">
               <Chrome size={24} />
               <span className="group-hover:tracking-wide transition-all duration-300">Add to Chrome - It's Free</span>
-            </button>
+            </a>
             <p className="text-gray-400 text-sm mt-4 font-medium">No credit card required • Works instantly</p>
           </div>
 

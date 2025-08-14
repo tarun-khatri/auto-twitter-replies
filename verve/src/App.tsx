@@ -14,6 +14,7 @@ import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
 import Contact from './pages/Contact';
+import WelcomePro from './pages/WelcomePro';
 
 function HomePage() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/refund" element={<RefundPolicy />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/welcome/pro" element={<WelcomePro />} />
       </Routes>
     </Router>
   );

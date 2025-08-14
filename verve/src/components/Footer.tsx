@@ -19,10 +19,14 @@ const Footer = () => {
             <p className="font-sans text-gray-300 mb-8 max-w-md leading-relaxed text-lg">
               The intelligent extension that helps you achieve 5x faster growth with personalized replies that sound authentically you.
             </p>
-            <button className="group bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 hover:scale-105 shadow-lg hover:shadow-indigo-500/25">
+            <a 
+              href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop"}
+              target="_blank"
+              className="group bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 hover:scale-105 shadow-lg hover:shadow-indigo-500/25"
+            >
               <Chrome size={22} />
               <span className="group-hover:tracking-wide transition-all duration-300">Add to Chrome</span>
-            </button>
+            </a>
           </div>
 
           <div>

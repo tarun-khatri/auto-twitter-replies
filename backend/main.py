@@ -8,7 +8,9 @@ from database import db
 from reply_generator import generate_reply, generate_reply_with_images
 from users import router as users_router
 from profiles import router as profiles_router
-from config import PORT
+from billing import router as billing_router
+from webhooks_dodo import router as dodo_webhooks_router
+from config import PORT, CLERK_ALLOWED_ORIGINS
 from scraper import fetch_user_tweets
 from datetime import date, datetime, timezone
 import tempfile
@@ -18,9 +20,14 @@ import os
 app = FastAPI(title="Twitter Reply Generator")
 
 # CORS for local dev
+allowed_origins = CLERK_ALLOWED_ORIGINS or [
+    "http://localhost:5173",
+    "https://getverve.xyz",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,6 +35,8 @@ app.add_middleware(
 
 app.include_router(users_router)
 app.include_router(profiles_router)
+app.include_router(billing_router)
+app.include_router(dodo_webhooks_router)
 
 @app.on_event("startup")
 def startup_db_check():
@@ -156,13 +165,15 @@ def generate_reply_endpoint(
             except Exception as e:
                 print(f"[IMAGE CLEANUP ERROR] Failed to delete {temp_file}: {e}")
 
-    # 4. increment quota and calculate remaining
+    # 4. increment quota and calculate remaining (PRO users unlimited)
     current_used = user_doc.get("quota_used_today", 0)
     new_used = current_used + 1
-    print(f"[QUOTA DEBUG] Clerk: {clerk_uid}, Current used: {current_used}, New used: {new_used}, Remaining: {max(0, FREE_DAILY_LIMIT - new_used)}")
+    plan = user_doc.get("plan", "FREE")
+    calculated_remaining = max(0, FREE_DAILY_LIMIT - new_used)
+    print(f"[QUOTA DEBUG] Clerk: {clerk_uid}, Plan: {plan}, Current used: {current_used}, New used: {new_used}, Remaining (FREE only): {calculated_remaining}")
     db.users.update_one({"_id": user_doc["_id"]}, {"$inc": {"quota_used_today": 1}})
 
-    remaining = max(0, FREE_DAILY_LIMIT - new_used)
+    remaining = None if plan == "PRO" else calculated_remaining
 
     return {"reply": reply, "remaining_quota": remaining}
 

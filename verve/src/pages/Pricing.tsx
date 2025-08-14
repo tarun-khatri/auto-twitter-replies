@@ -88,10 +88,29 @@ const Pricing = () => {
               </div>
             </div>
 
-                         <button 
-               onClick={() => {
-                 // TODO: Integrate with payment provider (Dodo payments)
-                 alert('Payment integration coming soon!');
+             <button 
+               onClick={async () => {
+                 try {
+                   const token = await (window as any).Clerk?.session?.getToken?.() || null;
+                   if (!token) {
+                     const clerk = (window as any).Clerk;
+                     if (clerk?.openSignIn) clerk.openSignIn();
+                     else alert('Please sign in first');
+                     return;
+                   }
+                   const api = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+                   const res = await fetch(`${api}/billing/static-checkout-url`, {
+                     method: 'GET',
+                     headers: {
+                       Authorization: `Bearer ${token}`,
+                     },
+                   });
+                   if (!res.ok) throw new Error(await res.text());
+                   const data = await res.json();
+                   if (data?.url) window.location.href = data.url;
+                 } catch (e: any) {
+                   alert(e?.message || 'Checkout failed');
+                 }
                }}
                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
              >

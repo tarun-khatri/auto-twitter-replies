@@ -78,18 +78,56 @@ export default function App() {
       </div>
       
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <Badge 
-          size="sm"
-          style={{ 
-            background: '#10B981', 
-            color: '#FFFFFF', 
-            fontWeight: '600',
-            fontSize: '11px',
-            padding: '4px 8px'
-          }}
-        >
-          {plan}
-        </Badge>
+        <div style={{ position: 'relative' }}>
+          <Badge 
+            size="sm"
+            style={{ 
+              background: '#10B981', 
+              color: '#FFFFFF', 
+              fontWeight: '600',
+              fontSize: '11px',
+              padding: '4px 8px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              const tip = e.currentTarget.nextSibling;
+              if (tip) tip.style.display = 'block';
+            }}
+            onMouseLeave={(e) => {
+              const tip = e.currentTarget.nextSibling;
+              if (tip) tip.style.display = 'none';
+            }}
+            onClick={(e) => {
+              const tip = e.currentTarget.nextSibling;
+              if (tip) tip.style.display = (tip.style.display === 'none' || !tip.style.display) ? 'block' : 'none';
+            }}
+          >
+            {plan === 'PRO' && <span aria-hidden>👑</span>}
+            {plan}
+          </Badge>
+          {plan === 'PRO' && (
+            <div
+              role="tooltip"
+              style={{
+                position: 'absolute', right: 0, top: '100%', marginTop: 6,
+                width: 220, display: 'none',
+                background: 'rgba(17,24,39,0.95)', color: '#E5E7EB',
+                border: '1px solid #374151', borderRadius: 8, padding: 8, zIndex: 9999
+              }}
+            >
+              <div style={{ color: '#6EE7B7', fontWeight: 700, fontSize: 11, marginBottom: 6 }}>PRO Benefits</div>
+              <ul style={{ margin: 0, paddingLeft: 16, fontSize: 11, lineHeight: 1.5 }}>
+                <li>Unlimited replies</li>
+                <li>Understand image context</li>
+                <li>Faster replies</li>
+                <li>More personal replies</li>
+              </ul>
+            </div>
+          )}
+        </div>
         
         {typeof remainingQuota === 'number' && (
           <Badge 
@@ -106,6 +144,7 @@ export default function App() {
           </Badge>
         )}
         
+        {plan !== 'PRO' && (
         <Button 
           size="xs" 
           style={{ 
@@ -124,6 +163,7 @@ export default function App() {
         >
           Upgrade
         </Button>
+        )}
       </div>
     </Card>
   );
@@ -222,6 +262,7 @@ export default function App() {
   // Debug: log key state changes
   useEffect(() => {
     console.log('[Verve][App] State', { authChecked, isAuthenticated, loggedInUser, remainingQuota, plan, authError });
+    try { window.__vervePlan = plan; } catch {}
   }, [authChecked, isAuthenticated, loggedInUser, remainingQuota, plan, authError]);
 
   // Fetch profile & history whenever auth + loggedInUser are ready

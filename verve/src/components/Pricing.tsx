@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check, Chrome, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
 
 const plans = [
   {
@@ -55,10 +56,31 @@ const plans = [
 
 const Pricing = () => {
   const navigate = useNavigate();
+  const { isSignedIn, getToken } = useAuth();
 
-  const handleCtaClick = (cta: string) => {
+  const handleCtaClick = async (cta: string) => {
     if (cta === "Upgrade to Pro") {
-      navigate('/pricing');
+      try {
+        if (!isSignedIn) {
+          alert('Please sign in to upgrade to Pro.');
+          return;
+        }
+        const token = await getToken();
+        const apiUrl = import.meta.env.VITE_API_URL as string;
+        const res = await fetch(`${apiUrl}/billing/static-checkout-url`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error(`Checkout link failed: ${res.status}`);
+        const data = await res.json();
+        if (data?.url) {
+          window.location.href = data.url;
+        } else {
+          throw new Error('No checkout URL in response');
+        }
+      } catch (e) {
+        console.error('upgrade error', e);
+        alert('Unable to open checkout. Please try again.');
+      }
     } else if (cta === "Get Started Free") {
       // Handle free signup
       console.log("Get Started Free clicked");
@@ -103,9 +125,22 @@ const Pricing = () => {
               <div className="text-center mb-10">
                 <h3 className="font-serif text-3xl font-bold text-white mb-3 tracking-wide">{plan.name}</h3>
                 <p className="text-gray-400 mb-6 font-medium">{plan.description}</p>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="font-serif text-5xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${plan.price}</span>
-                  <span className="text-gray-400 font-medium">/{plan.period}</span>
+                <div className="flex flex-col items-center justify-center gap-2">
+                  {plan.name === 'Pro' ? (
+                    <>
+                      <div className="flex items-baseline justify-center gap-2">
+                        <span className="text-gray-400 line-through text-lg">$27</span>
+                        <span className="font-serif text-5xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${plan.price}</span>
+                        <span className="text-gray-400 font-medium">/{plan.period}</span>
+                      </div>
+                      <div className="text-rose-300 text-sm font-semibold">Limited-time: 56% OFF — next 100 users only</div>
+                    </>
+                  ) : (
+                    <div className="flex items-baseline justify-center gap-1">
+                      <span className="font-serif text-5xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${plan.price}</span>
+                      <span className="text-gray-400 font-medium">/{plan.period}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 

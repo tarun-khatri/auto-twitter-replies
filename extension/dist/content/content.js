@@ -712,7 +712,9 @@ function TwitterReplyGenerator() {
           });
           if (replyRes.status === 429) {
             chrome.storage?.local.set({ quotaRemaining: 0 });
-            alert(`Daily quota exceeded! Upgrade to Verve Pro for unlimited replies at ${MAIN_SITE_URL}/pricing`);
+            if ((window.__vervePlan || "FREE") === "FREE") {
+              alert(`Daily quota exceeded! Upgrade to Verve Pro for unlimited replies at ${MAIN_SITE_URL}/pricing`);
+            }
             return;
           }
           if (!replyRes.ok)

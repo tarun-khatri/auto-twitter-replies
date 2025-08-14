@@ -64,13 +64,46 @@ const Header = () => {
             </SignedOut>
             <SignedIn>
               {plan && (
-                <span className="text-xs bg-emerald-600/80 text-white px-2 py-0.5 rounded-lg mr-2 uppercase tracking-wider">
-                  {plan}
-                </span>
+                <div className="relative mr-2">
+                  <span
+                    className="text-xs bg-emerald-600/80 text-white px-2 py-0.5 rounded-lg uppercase tracking-wider flex items-center gap-1 cursor-default"
+                    onClick={(e) => {
+                      // Toggle tooltip on touch/click
+                      const el = (e.currentTarget.nextSibling as HTMLElement);
+                      if (el) el.style.display = el.style.display === 'none' || !el.style.display ? 'block' : 'none';
+                    }}
+                    onMouseEnter={(e) => {
+                      const el = (e.currentTarget.nextSibling as HTMLElement);
+                      if (el) el.style.display = 'block';
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = (e.currentTarget.nextSibling as HTMLElement);
+                      if (el) el.style.display = 'none';
+                    }}
+                  >
+                    {plan === 'PRO' && <span aria-hidden>👑</span>}
+                    {plan}
+                  </span>
+                  {plan === 'PRO' && (
+                    <div
+                      role="tooltip"
+                      style={{ display: 'none' }}
+                      className="absolute right-0 mt-2 w-56 rounded-lg border border-gray-700 bg-gray-900/95 text-gray-100 shadow-xl p-3 z-50"
+                    >
+                      <div className="text-xs font-semibold mb-2 text-emerald-300">PRO Benefits</div>
+                      <ul className="list-disc list-inside text-xs space-y-1 text-gray-200">
+                        <li>Unlimited replies</li>
+                        <li>Understand image context</li>
+                        <li>Faster replies</li>
+                        <li>More personal replies</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               )}
               <UserButton afterSignOutUrl="/" />
               <a
-                href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chrome.google.com/webstore/category/extensions"}
+                href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop"}
                 target="_blank"
                 className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold px-6 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
               >
@@ -109,7 +142,7 @@ const Header = () => {
             </SignedOut>
             <SignedIn>
               <a
-                href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chrome.google.com/webstore/category/extensions"}
+                href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop"}
                 target="_blank"
                 className="block w-full mt-4 text-center bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
