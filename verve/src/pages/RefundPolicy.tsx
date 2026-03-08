@@ -6,40 +6,38 @@ const RefundPolicy = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Header */}
-        <div className="mb-12">
+    <div className="min-h-screen bg-[#fafafa]">
+      <div className="max-w-3xl mx-auto px-6 py-20">
+        <div className="mb-10">
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
+            className="flex items-center gap-2 text-gray-400 hover:text-gray-700 transition-colors mb-6 text-[14px]"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={16} />
             Back to Home
           </button>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="font-heading text-4xl md:text-[48px] text-gray-900 mb-3">
             Refund Policy
           </h1>
-          <p className="text-gray-400 text-lg">
+          <p className="text-gray-400 text-[14px]">
             Last updated: January 2025
           </p>
         </div>
 
-        {/* Content */}
-        <div className="prose prose-invert max-w-none">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-soft p-8 md:p-10">
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">1. Overview</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">1. Overview</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               At Verve, we want you to be completely satisfied with our AI-powered reply generation service. This refund policy outlines the terms and conditions for refunds, cancellations, and dispute resolution.
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">2. 30-Day Money-Back Guarantee</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">2. 30-Day Money-Back Guarantee</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               We offer a 30-day money-back guarantee for all new subscribers:
             </p>
-            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+            <ul className="text-[15px] text-gray-600 mb-4 leading-relaxed list-disc list-inside space-y-2">
               <li><strong>Eligibility:</strong> Available for first-time Pro and Team plan subscribers</li>
               <li><strong>Timeframe:</strong> 30 days from the date of your first payment</li>
               <li><strong>Coverage:</strong> Full refund of your subscription payment</li>
@@ -48,11 +46,11 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">3. How to Request a Refund</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">3. How to Request a Refund</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               To request a refund, please follow these steps:
             </p>
-            <ol className="text-gray-300 mb-4 list-decimal list-inside space-y-2">
+            <ol className="text-[15px] text-gray-600 mb-4 leading-relaxed list-decimal list-inside space-y-2">
               <li><strong>Contact Support:</strong> Email us at support@getverve.xyz</li>
               <li><strong>Include Details:</strong> Provide your account email and reason for refund</li>
               <li><strong>Account Verification:</strong> We'll verify your account and eligibility</li>
@@ -61,11 +59,11 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">4. Refund Processing</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">4. Refund Processing</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               Once your refund is approved:
             </p>
-            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+            <ul className="text-[15px] text-gray-600 mb-4 leading-relaxed list-disc list-inside space-y-2">
               <li><strong>Timeline:</strong> 5-7 business days for processing</li>
               <li><strong>Method:</strong> Refunded to your original payment method</li>
               <li><strong>Notification:</strong> You'll receive an email confirmation</li>
@@ -74,11 +72,11 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">5. Cancellation Policy</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">5. Cancellation Policy</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               You may cancel your subscription at any time:
             </p>
-            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+            <ul className="text-[15px] text-gray-600 mb-4 leading-relaxed list-disc list-inside space-y-2">
               <li><strong>Account Settings:</strong> Cancel through your account dashboard</li>
               <li><strong>Email Request:</strong> Send cancellation request to support@getverve.xyz</li>
               <li><strong>Effective Date:</strong> Cancellation takes effect at the end of your current billing period</li>
@@ -87,11 +85,11 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">6. Non-Refundable Items</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">6. Non-Refundable Items</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               The following are not eligible for refunds:
             </p>
-            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+            <ul className="text-[15px] text-gray-600 mb-4 leading-relaxed list-disc list-inside space-y-2">
               <li>Free plan usage (no payment made)</li>
               <li>Subscriptions cancelled after 30-day guarantee period</li>
               <li>Partial months of service</li>
@@ -101,11 +99,11 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">7. Dispute Resolution</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">7. Dispute Resolution</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               If you have a dispute regarding your payment or refund:
             </p>
-            <ol className="text-gray-300 mb-4 list-decimal list-inside space-y-2">
+            <ol className="text-[15px] text-gray-600 mb-4 leading-relaxed list-decimal list-inside space-y-2">
               <li><strong>Direct Communication:</strong> Contact our support team first</li>
               <li><strong>Documentation:</strong> Provide relevant account and payment information</li>
               <li><strong>Review Process:</strong> We'll review your case within 3 business days</li>
@@ -114,11 +112,11 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">8. Chargebacks and Payment Disputes</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">8. Chargebacks and Payment Disputes</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               We strongly encourage direct communication before initiating chargebacks:
             </p>
-            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+            <ul className="text-[15px] text-gray-600 mb-4 leading-relaxed list-disc list-inside space-y-2">
               <li><strong>Contact Us First:</strong> Reach out to our support team</li>
               <li><strong>Documentation:</strong> We'll provide all necessary documentation</li>
               <li><strong>Fair Resolution:</strong> We're committed to resolving issues fairly</li>
@@ -127,11 +125,11 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">9. Special Circumstances</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">9. Special Circumstances</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               We may consider refunds in special circumstances:
             </p>
-            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+            <ul className="text-[15px] text-gray-600 mb-4 leading-relaxed list-disc list-inside space-y-2">
               <li><strong>Technical Issues:</strong> Prolonged service outages or technical problems</li>
               <li><strong>Billing Errors:</strong> Incorrect charges or double billing</li>
               <li><strong>Service Changes:</strong> Significant changes to our service offering</li>
@@ -140,11 +138,11 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">10. Contact Information</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">10. Contact Information</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               For refund requests, cancellations, or disputes:
             </p>
-            <ul className="text-gray-300 mb-4 list-disc list-inside space-y-2">
+            <ul className="text-[15px] text-gray-600 mb-4 leading-relaxed list-disc list-inside space-y-2">
               <li><strong>Email:</strong> support@getverve.xyz</li>
               <li><strong>Response Time:</strong> Within 24 hours during business days</li>
               <li><strong>Business Hours:</strong> Monday - Friday, 9 AM - 6 PM EST</li>
@@ -153,8 +151,8 @@ const RefundPolicy = () => {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">11. Changes to This Policy</h2>
-            <p className="text-gray-300 mb-4">
+            <h2 className="text-[18px] font-bold text-gray-900 mb-3 font-display">11. Changes to This Policy</h2>
+            <p className="text-[15px] text-gray-600 mb-4 leading-relaxed">
               We reserve the right to modify this refund policy at any time. Changes will be effective immediately upon posting on our website. We will notify users of any material changes via email.
             </p>
           </section>

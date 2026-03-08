@@ -1,6 +1,5 @@
 import React from 'react';
-import { Check, Chrome, Zap } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Check, Sparkles, ArrowRight } from 'lucide-react';
 import { useAuth } from '@clerk/clerk-react';
 
 const plans = [
@@ -8,12 +7,12 @@ const plans = [
     name: "Free",
     price: "0",
     period: "forever",
-    description: "Perfect for getting started",
+    description: "Try it out. No strings attached.",
     features: [
-      "15 personalized replies per day",
+      "15 AI replies per day",
       "Basic tone analysis",
-      "Text post analysis",
-      "Chrome extension"
+      "Text-only tweet support",
+      "Chrome extension included"
     ],
     cta: "Get Started Free",
     popular: false
@@ -22,15 +21,15 @@ const plans = [
     name: "Pro",
     price: "12",
     period: "month",
-    description: "For serious creators and professionals",
+    description: "For creators serious about growing.",
     features: [
       "Everything in Free",
-      "Unlimited personalized replies",
-      "Advanced tone analysis",
-      "Image context analysis",
-      "Account mimicking",
-      "Priority support",
-      "Custom tone profiles"
+      "Unlimited AI replies",
+      "Deep personality analysis",
+      "Image + chart understanding",
+      "Clone any public account's style",
+      "Multiple tone profiles",
+      "Priority generation speed"
     ],
     cta: "Upgrade to Pro",
     popular: true
@@ -39,12 +38,12 @@ const plans = [
     name: "Team",
     price: "39",
     period: "month",
-    description: "For agencies and teams",
+    description: "For agencies managing multiple brands.",
     features: [
       "Everything in Pro",
-      "5 team members",
+      "Up to 5 team members",
       "Shared tone profiles",
-      "Team analytics",
+      "Team usage analytics",
       "Priority support",
       "Custom integrations",
       "Dedicated account manager"
@@ -55,7 +54,6 @@ const plans = [
 ];
 
 const Pricing = () => {
-  const navigate = useNavigate();
   const { isSignedIn, getToken } = useAuth();
 
   const handleCtaClick = async (cta: string) => {
@@ -82,98 +80,111 @@ const Pricing = () => {
         alert('Unable to open checkout. Please try again.');
       }
     } else if (cta === "Get Started Free") {
-      // Handle free signup
       console.log("Get Started Free clicked");
     } else if (cta === "Contact Sales") {
-      // Handle contact sales
       console.log("Contact Sales clicked");
     }
   };
 
   return (
-    <section id="pricing" className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-800 to-gray-900 noise-overlay">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6 tracking-wide">
+    <section id="pricing" className="py-28 px-6 bg-white relative">
+      <div className="absolute inset-0 dot-pattern opacity-[0.02]" />
+
+      <div className="max-w-5xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 rounded-full text-amber-600 text-[13px] font-semibold mb-5">
+            <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
+            PRICING
+          </div>
+          <h2 className="font-heading text-4xl md:text-[52px] text-gray-900 leading-tight mb-5">
             Simple, Transparent Pricing
           </h2>
-          <p className="font-sans text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Choose the plan that fits your growth goals. Start free, upgrade when ready.
+          <p className="text-lg text-gray-500 max-w-xl mx-auto leading-relaxed">
+            Start free. Upgrade when you're hooked. Cancel anytime — no questions asked.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-5 max-w-4xl mx-auto">
           {plans.map((plan, index) => (
-            <div 
+            <div
               key={index}
-              className={`relative bg-gray-800/40 backdrop-blur-md border rounded-3xl p-10 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl animate-slide-up ${
-                plan.popular 
-                  ? 'border-indigo-500 ring-2 ring-indigo-500/30 shadow-indigo-500/20' 
-                  : 'border-gray-600/50 hover:border-indigo-400/50'
+              className={`relative rounded-2xl p-7 transition-all duration-500 hover:-translate-y-1 animate-fade-up ${
+                plan.popular
+                  ? 'bg-gray-900 text-white shadow-glow-purple hover:shadow-[0_0_80px_-12px_rgba(124,58,237,0.35)]'
+                  : 'bg-white border border-gray-200 hover:shadow-card hover:border-gray-300'
               }`}
               style={{animationDelay: `${index * 0.1}s`}}
             >
               {plan.popular && (
-                <div className="absolute -top-5 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-gold text-white px-6 py-3 rounded-full text-sm font-semibold flex items-center gap-2 shadow-lg animate-glow">
-                    <Zap size={16} />
-                    Most Popular
-                  </div>
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-[12px] font-bold px-4 py-1.5 rounded-full shadow-lg">
+                    <Sparkles size={12} />
+                    MOST POPULAR
+                  </span>
                 </div>
               )}
 
-              <div className="text-center mb-10">
-                <h3 className="font-serif text-3xl font-bold text-white mb-3 tracking-wide">{plan.name}</h3>
-                <p className="text-gray-400 mb-6 font-medium">{plan.description}</p>
-                <div className="flex flex-col items-center justify-center gap-2">
-                  {plan.name === 'Pro' ? (
-                    <>
-                      <div className="flex items-baseline justify-center gap-2">
-                        <span className="text-gray-400 line-through text-lg">$27</span>
-                        <span className="font-serif text-5xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${plan.price}</span>
-                        <span className="text-gray-400 font-medium">/{plan.period}</span>
-                      </div>
-                      <div className="text-rose-300 text-sm font-semibold">Limited-time: 56% OFF — next 100 users only</div>
-                    </>
-                  ) : (
-                    <div className="flex items-baseline justify-center gap-1">
-                      <span className="font-serif text-5xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${plan.price}</span>
-                      <span className="text-gray-400 font-medium">/{plan.period}</span>
-                    </div>
+              {/* Plan header */}
+              <div className="mb-7">
+                <h3 className={`font-display text-lg font-bold mb-1 ${plan.popular ? 'text-white' : 'text-gray-900'}`}>{plan.name}</h3>
+                <p className={`text-[14px] mb-5 ${plan.popular ? 'text-gray-400' : 'text-gray-500'}`}>{plan.description}</p>
+                <div className="flex items-baseline gap-1.5">
+                  {plan.name === 'Pro' && (
+                    <span className="text-gray-500 line-through text-[15px] mr-1">$27</span>
                   )}
+                  <span className={`font-display text-[48px] font-bold leading-none ${plan.popular ? 'text-white' : 'text-gray-900'}`}>${plan.price}</span>
+                  <span className={`text-[14px] ${plan.popular ? 'text-gray-400' : 'text-gray-500'}`}>/{plan.period}</span>
                 </div>
+                {plan.name === 'Pro' && (
+                  <div className="mt-2">
+                    <span className="text-[12px] font-bold text-fuchsia-400 bg-fuchsia-500/10 px-2.5 py-1 rounded-full">56% OFF — early adopter</span>
+                  </div>
+                )}
               </div>
 
-              <ul className="space-y-5 mb-10">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-4">
-                    <Check size={22} className="text-green-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300 font-medium">{feature}</span>
+              {/* Features */}
+              <ul className="space-y-3.5 mb-8">
+                {plan.features.map((feature, fi) => (
+                  <li key={fi} className="flex items-start gap-3">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                      plan.popular ? 'bg-violet-500/20' : 'bg-emerald-50'
+                    }`}>
+                      <Check size={12} className={plan.popular ? 'text-violet-300' : 'text-emerald-600'} />
+                    </div>
+                    <span className={`text-[14px] leading-relaxed ${plan.popular ? 'text-gray-300' : 'text-gray-600'}`}>{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              <button 
+              {/* CTA */}
+              <button
                 onClick={() => handleCtaClick(plan.cta)}
-                className={`group w-full py-4 px-6 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105 ${
+                className={`group w-full py-3.5 rounded-full text-[14px] font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
                   plan.popular
-                    ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:via-purple-700 hover:to-rose-gold text-white shadow-lg hover:shadow-indigo-500/25'
-                    : 'bg-gray-700 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-700 text-white shadow-lg'
+                    ? 'bg-white text-gray-900 hover:bg-gray-100 shadow-lg'
+                    : 'bg-gray-900 text-white hover:bg-gray-800'
                 }`}
               >
-                {index === 0 && <Chrome size={22} />}
-                <span className="group-hover:tracking-wide transition-all duration-300">{plan.cta}</span>
+                {plan.cta}
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           ))}
         </div>
 
-        <div className="mt-20 text-center animate-fade-in" style={{animationDelay: '0.6s'}}>
-          <p className="text-gray-400 mb-6 font-medium text-lg">All plans include our 30-day money-back guarantee</p>
-          <div className="inline-flex items-center gap-8 text-gray-400 font-medium">
-            <span>✓ No setup fees</span>
-            <span>✓ Cancel anytime</span>
-            <span>✓ Secure payments</span>
+        {/* Trust badges */}
+        <div className="mt-14 text-center animate-fade-up" style={{animationDelay: '0.5s'}}>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-[14px] text-gray-400">
+            <span className="flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              30-day money-back guarantee
+            </span>
+            <span className="text-gray-200">|</span>
+            <span>No setup fees</span>
+            <span className="text-gray-200">|</span>
+            <span>Cancel anytime</span>
+            <span className="text-gray-200">|</span>
+            <span>Secure payments</span>
           </div>
         </div>
       </div>

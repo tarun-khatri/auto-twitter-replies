@@ -5,111 +5,126 @@ const testimonials = [
   {
     name: "Sarah Chen",
     role: "Content Creator",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=48&h=48&fit=crop&crop=face",
-    content: "Verve transformed my engagement completely. My replies actually sound like me now, not some generic bot. My follower growth increased 3x in just two months!",
-    rating: 5
+    handle: "42K followers",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face",
+    content: "I used to spend 2 hours a day just replying to tweets. Now I spend 10 minutes and my engagement is actually higher. The replies genuinely sound like me — even my friends can't tell the difference.",
+    highlight: "10 min instead of 2 hours"
   },
   {
     name: "Marcus Rodriguez",
-    role: "Tech Entrepreneur",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=face",
-    content: "I was skeptical at first, but Verve nailed my writing style perfectly. It even picked up on my tendency to use specific tech jargon. This is the future of social media.",
-    rating: 5
+    role: "SaaS Founder",
+    handle: "@marcusbuildz",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
+    content: "Was very skeptical — another AI tool, right? But Verve picked up on my dry humor and tech references. My reply impressions went from ~500 to 3K+ per tweet.",
+    highlight: "500 to 3K+ impressions"
   },
   {
     name: "Emma Thompson",
-    role: "Digital Marketer",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=48&h=48&fit=crop&crop=face",
-    content: "The image analysis feature is incredible. Verve understands context from photos and creates relevant replies. It's like having a personal social media assistant.",
-    rating: 5
+    role: "Agency Owner",
+    handle: "Digital Marketing",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
+    content: "The image analysis is what sold me. I reply to a lot of data/chart tweets and Verve actually understands what's in the image. No other tool does this. Worth every penny.",
+    highlight: "Image understanding"
   },
   {
     name: "David Park",
     role: "Startup Founder",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=48&h=48&fit=crop&crop=face",
-    content: "Being able to mimic successful accounts in my niche helped me understand effective communication patterns. My engagement rate went from 2% to 8%!",
-    rating: 5
+    handle: "YC W24",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
+    content: "I used the account mimicking feature to study how top VCs communicate on Twitter. Applied those patterns to my own voice and my follower growth rate literally doubled in 3 weeks.",
+    highlight: "2x follower growth"
   },
   {
     name: "Lisa Wang",
-    role: "Growth Hacker",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=48&h=48&fit=crop&crop=face",
-    content: "Verve doesn't just save time - it helps me build authentic relationships. People actually respond to my comments now because they feel genuine.",
-    rating: 5
+    role: "Growth Lead",
+    handle: "B2B Tech",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face",
+    content: "My team manages 4 client accounts. Verve lets us switch between different tone profiles instantly. What used to take a junior hire 4 hours now takes 15 minutes.",
+    highlight: "4 hours → 15 minutes"
   },
   {
     name: "Alex Kumar",
-    role: "Influencer",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=48&h=48&fit=crop&crop=face",
-    content: "I've tried every reply tool out there. Verve is the only one that actually sounds like me. The tone analysis is incredibly sophisticated.",
-    rating: 5
+    role: "Creator",
+    handle: "18K → 67K in 4 months",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
+    content: "I've tried Typefully, Hypefury, Tweet Hunter — none of them do replies well. Verve is the only tool that made my replies feel like actual conversations. People DM me now.",
+    highlight: "18K to 67K followers"
   }
 ];
 
 const Testimonials = () => {
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-900 noise-overlay">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6 tracking-wide">
-            Join 100+ Fast-Growing Creators
+    <section className="py-28 px-6 bg-gray-950 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-violet-500/10 to-transparent rounded-full blur-[100px]" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-fuchsia-500/10 to-transparent rounded-full blur-[80px]" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-violet-300 text-[13px] font-semibold mb-5">
+            <span className="w-1.5 h-1.5 bg-violet-400 rounded-full" />
+            TESTIMONIALS
+          </div>
+          <h2 className="font-heading text-4xl md:text-[52px] text-white leading-tight mb-5">
+            Real Creators.<br />Real Results.
           </h2>
-          <p className="font-sans text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            See how Verve is helping creators achieve 127% average growth with authentic engagement
+          <p className="text-lg text-gray-400 max-w-xl mx-auto leading-relaxed">
+            Don't take our word for it — here's what happens when your replies actually sound like you
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {testimonials.map((testimonial, index) => (
-            <div 
+            <div
               key={index}
-              className="group bg-gray-800/40 backdrop-blur-md border border-gray-600/50 rounded-3xl p-8 hover:border-indigo-500/50 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/10 animate-slide-up"
-              style={{animationDelay: `${index * 0.1}s`}}
+              className="group relative bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-7 hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-500 hover:-translate-y-1 animate-fade-up"
+              style={{animationDelay: `${index * 0.08}s`}}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative">
-                <div className="flex items-center mb-6">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} size={18} className="fill-yellow-400 text-yellow-400 hover:scale-110 transition-transform duration-200" />
-                ))}
-                </div>
-              
-                <div className="relative mb-8">
-                  <Quote size={28} className="text-indigo-400 opacity-40 absolute -top-3 -left-3" />
-                  <p className="font-sans text-gray-300 leading-relaxed pl-8 text-lg">
-                  {testimonial.content}
-                  </p>
-                </div>
+              {/* Highlight badge */}
+              <div className="mb-5">
+                <span className="inline-block text-[12px] font-bold text-violet-300 bg-violet-500/10 px-3 py-1 rounded-full border border-violet-500/20">
+                  {testimonial.highlight}
+                </span>
+              </div>
 
-                <div className="flex items-center gap-4">
-                  <img 
-                    src={testimonial.avatar} 
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full shadow-lg group-hover:scale-110 transition-transform duration-300 object-cover"
-                  />
-                  <div>
-                    <p className="text-white font-semibold text-lg">{testimonial.name}</p>
-                    <p className="text-gray-400 font-medium">{testimonial.role}</p>
-                  </div>
+              {/* Stars */}
+              <div className="flex items-center gap-0.5 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+
+              {/* Content */}
+              <p className="text-[15px] text-gray-300 leading-relaxed mb-6">
+                "{testimonial.content}"
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-5 border-t border-white/[0.06]">
+                <img
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  className="w-10 h-10 rounded-full object-cover ring-2 ring-white/10"
+                />
+                <div>
+                  <p className="text-[14px] font-semibold text-white">{testimonial.name}</p>
+                  <p className="text-[13px] text-gray-500">{testimonial.role} · {testimonial.handle}</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-20 text-center animate-fade-in" style={{animationDelay: '0.8s'}}>
-          <div className="inline-flex items-center gap-6 bg-gray-800/40 backdrop-blur-md border border-gray-600/50 rounded-full px-10 py-6 shadow-xl">
-            <div className="flex -space-x-2">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" />
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '0.2s'}} />
-              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '0.4s'}} />
-              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '0.6s'}} />
-              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '0.8s'}} />
-            </div>
-            <div className="text-left">
-              <p className="text-white font-semibold text-lg">100+ Happy Users</p>
-              <p className="text-gray-400 font-medium">127% avg growth</p>
-            </div>
+        {/* Social proof bar */}
+        <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-8 animate-fade-up" style={{animationDelay: '0.6s'}}>
+          <div className="flex -space-x-3">
+            {testimonials.slice(0, 5).map((t, i) => (
+              <img key={i} src={t.avatar} alt="" className="w-10 h-10 rounded-full border-[3px] border-gray-950 object-cover" />
+            ))}
+          </div>
+          <div>
+            <p className="text-white font-semibold text-[16px]">Trusted by 100+ creators</p>
+            <p className="text-gray-500 text-[14px]">Average 2x follower growth in 30 days</p>
           </div>
         </div>
       </div>

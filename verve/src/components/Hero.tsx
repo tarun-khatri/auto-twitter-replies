@@ -1,233 +1,118 @@
 import React from 'react';
-import { Chrome, Star, Users, Zap, X } from 'lucide-react';
-import Spline from '@splinetool/react-spline';
+import { ArrowRight, Star, Zap, Shield, Clock } from 'lucide-react';
 
 const Hero = () => {
+  const chromeUrl = import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop";
+
   return (
-    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-900 to-indigo-900 noise-overlay relative overflow-hidden">
-      {/* Spline 3D Background */}
-      <div className="absolute inset-0 z-0 opacity-30">
-        <Spline
-          scene="https://prod.spline.design/e0ffqY22-XA7P1hk/scene.splinecode"
-          style={{
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none'
-          }}
-        />
-      </div>
-      
-      {/* Gradient overlay to ensure text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-indigo-900/80 z-10"></div>
-      
-      {/* Floating background elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 rounded-full blur-3xl animate-float z-20"></div>
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-full blur-3xl animate-float z-20" style={{animationDelay: '2s'}}></div>
-      
-      <div className="max-w-7xl mx-auto relative z-30">
-        <div className="text-center">
-          <div className="mb-8">
-            <div className="inline-flex items-center px-6 py-3 bg-indigo-500/10 backdrop-blur-sm border border-indigo-500/30 rounded-full text-indigo-400 text-sm font-medium mb-8 animate-fade-in hover:bg-indigo-500/20 transition-all duration-300">
-              <Zap size={16} className="mr-2" />
-              Your Personal Reply Assistant
-            </div>
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight tracking-wider animate-slide-up">
-              Grow 5x Faster with
-              <span className="block bg-gradient-to-r from-indigo-400 via-purple-400 to-rose-gold bg-clip-text text-transparent">
-                Personalized Replies
-              </span>
-            </h1>
-            <p className="font-sans text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed animate-slide-up" style={{animationDelay: '0.2s'}}>
-              Verve analyzes your past tweets to craft replies that sound exactly like you. 
-              Get 3x more engagement, build authentic connections, and grow your influence 10x faster.
-            </p>
-          </div>
+    <section className="relative pt-32 pb-24 px-6 mesh-gradient-1">
+      {/* Decorative blobs */}
+      <div className="absolute top-20 -left-32 w-96 h-96 bg-violet-200/30 rounded-full blur-[100px] animate-pulse-soft" />
+      <div className="absolute bottom-0 -right-32 w-96 h-96 bg-pink-200/30 rounded-full blur-[100px] animate-pulse-soft" style={{animationDelay: '1.5s'}} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-100/20 rounded-full blur-[120px]" />
 
-          <div className="mb-16 animate-slide-up" style={{animationDelay: '0.4s'}}>
-            <a href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop"} target="_blank" className="group bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:via-purple-700 hover:to-rose-gold text-white px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center gap-3 w-auto mx-auto shadow-2xl hover:shadow-indigo-500/25 animate-glow">
-              <Chrome size={24} />
-              <span className="group-hover:tracking-wide transition-all duration-300">Add to Chrome - It's Free</span>
-            </a>
-            <p className="text-gray-400 text-sm mt-4 font-medium">No credit card required • Works instantly</p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-gray-300 animate-fade-in" style={{animationDelay: '0.6s'}}>
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" />
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '1s'}} />
-                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '2s'}} />
-                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '3s'}} />
-                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face" alt="User" className="w-10 h-10 rounded-full border-2 border-gray-900 animate-float" style={{animationDelay: '4s'}} />
-              </div>
-              <span className="text-sm font-medium">Trusted by 103+ users</span>
-            </div>
-            <div className="flex items-center gap-1">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star key={star} size={18} className="fill-yellow-400 text-yellow-400 hover:scale-110 transition-transform duration-200" />
-              ))}
-              <span className="text-sm ml-2 font-medium">4.9/5 • 127% avg growth</span>
-            </div>
+      <div className="max-w-5xl mx-auto relative z-10">
+        {/* Badge */}
+        <div className="flex justify-center mb-8 animate-fade-up">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-md border border-gray-200/60 rounded-full shadow-soft">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <span className="text-[13px] font-semibold text-gray-700">AI-Powered Reply Engine for X/Twitter</span>
           </div>
         </div>
 
-        <div className="mt-24">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-gray-800/30 backdrop-blur-md border border-gray-600/50 rounded-3xl p-10 max-w-6xl mx-auto shadow-2xl animate-slide-up" style={{animationDelay: '0.8s'}}>
-              <div className="text-center mb-12">
-                <h3 className="font-serif text-3xl font-bold text-white tracking-wide">Why Verve Dominates the Competition</h3>
-                <p className="text-gray-400 mt-4 text-lg">See the real difference in results and user experience</p>
-              </div>
-              
-              <div className="grid lg:grid-cols-2 gap-12 items-start">
-                {/* Generic Reply Tools */}
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4 group">
-                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-200">
-                      <X size={14} className="text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-red-400 font-semibold text-xl mb-4">Generic Reply Tools</p>
-                      
-                      <div className="space-y-4">
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">Robotic, template-based responses</p>
-                            <p className="text-gray-500 text-sm">Sounds like a bot, not like you</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">1% average engagement rate</p>
-                            <p className="text-gray-500 text-sm">Below industry standard</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">No personalization</p>
-                            <p className="text-gray-500 text-sm">Same replies for everyone</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">Limited context understanding</p>
-                            <p className="text-gray-500 text-sm">Ignores images and context</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">2-3 hours daily time investment</p>
-                            <p className="text-gray-500 text-sm">Manual reply crafting</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">Generic tone analysis</p>
-                            <p className="text-gray-500 text-sm">Basic sentiment only</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        {/* Main heading */}
+        <div className="text-center mb-8 animate-fade-up" style={{animationDelay: '0.1s'}}>
+          <h1 className="font-heading text-[52px] sm:text-[64px] md:text-[76px] lg:text-[88px] text-gray-900 leading-[1.05] tracking-tight mb-0">
+            Grow 5x Faster
+          </h1>
+          <h1 className="font-heading text-[52px] sm:text-[64px] md:text-[76px] lg:text-[88px] leading-[1.05] tracking-tight">
+            <span className="italic gradient-text-warm">with Replies</span>
+            <span className="text-gray-900"> That</span>
+          </h1>
+          <h1 className="font-heading text-[52px] sm:text-[64px] md:text-[76px] lg:text-[88px] text-gray-900 leading-[1.05] tracking-tight">
+            Sound Like <span className="underline decoration-accent/40 decoration-[6px] underline-offset-[6px]">You</span>
+          </h1>
+        </div>
 
-                {/* Verve */}
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4 group">
-                    <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-200">
-                      <Zap size={14} className="text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-green-400 font-semibold text-xl mb-4">Verve</p>
-                      
-                      <div className="space-y-4">
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">Your exact tone & personality</p>
-                            <p className="text-gray-500 text-sm">94% accuracy in voice matching</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">32% higher engagement rate</p>
-                            <p className="text-gray-500 text-sm">3.9x better than competitors</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">Deep personalization</p>
-                            <p className="text-gray-500 text-sm">Learns your unique style</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">Advanced image & context analysis</p>
-                            <p className="text-gray-500 text-sm">53% better context understanding</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">Under 2 seconds per reply</p>
-                            <p className="text-gray-500 text-sm">Saves 2-3 hours daily</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-                          <div>
-                            <p className="text-gray-300 font-medium">AI-powered tone analysis</p>
-                            <p className="text-gray-500 text-sm">Studies 1000+ past tweets</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Results Summary */}
-              <div className="mt-12 pt-8 border-t border-gray-600/30">
-                <div className="grid md:grid-cols-3 gap-8 text-center">
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">32%</div>
-                    <p className="text-gray-300 font-medium">Higher Engagement</p>
-                    <p className="text-gray-500 text-sm">vs generic tools</p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">96%</div>
-                    <p className="text-gray-300 font-medium">Voice Accuracy</p>
-                    <p className="text-gray-500 text-sm">tone matching</p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">2-3h</div>
-                    <p className="text-gray-300 font-medium">Time Saved Daily</p>
-                    <p className="text-gray-500 text-sm">automated replies</p>
-                  </div>
-                </div>
+        {/* Subtitle */}
+        <p className="text-center text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-up" style={{animationDelay: '0.2s'}}>
+          Verve analyzes your writing style and generates personalized replies that feel 100% authentic. More engagement, real connections, zero effort.
+        </p>
+
+        {/* CTA buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14 animate-fade-up" style={{animationDelay: '0.3s'}}>
+          <a
+            href={chromeUrl}
+            target="_blank"
+            className="group relative bg-gray-900 text-white px-8 py-4 rounded-full font-semibold text-[16px] transition-all duration-300 hover:shadow-glow-purple inline-flex items-center gap-3 hover:scale-[1.02]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-fuchsia-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <span className="relative">Add to Chrome — It's Free</span>
+            <ArrowRight size={18} className="relative group-hover:translate-x-1 transition-transform" />
+          </a>
+          <a
+            href="#how-it-works"
+            className="text-gray-500 hover:text-gray-900 text-[15px] font-medium transition-colors flex items-center gap-2 px-6 py-4"
+          >
+            <span className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center group-hover:border-gray-400">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21" /></svg>
+            </span>
+            See how it works
+          </a>
+        </div>
+
+        {/* Social proof */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 animate-fade-up" style={{animationDelay: '0.4s'}}>
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-3">
+              {[
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&h=40&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face",
+              ].map((src, i) => (
+                <img key={i} src={src} alt="" className="w-9 h-9 rounded-full border-[3px] border-white object-cover shadow-sm" />
+              ))}
+            </div>
+            <div>
+              <p className="text-[14px] font-semibold text-gray-800">103+ creators</p>
+              <div className="flex items-center gap-0.5">
+                {[1,2,3,4,5].map(i => (
+                  <Star key={i} size={12} className="fill-amber-400 text-amber-400" />
+                ))}
+                <span className="text-[12px] text-gray-500 ml-1">4.9/5</span>
               </div>
             </div>
           </div>
+
+          <div className="h-8 w-px bg-gray-200 hidden sm:block" />
+
+          <div className="flex items-center gap-6 text-[14px] text-gray-500">
+            <span className="flex items-center gap-1.5"><span className="font-bold text-gray-800 text-[18px]">32%</span> more engagement</span>
+            <span className="flex items-center gap-1.5"><span className="font-bold text-gray-800 text-[18px]">&lt;2s</span> per reply</span>
+          </div>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto animate-fade-up" style={{animationDelay: '0.5s'}}>
+          {[
+            { icon: Zap, value: '96%', label: 'Voice Accuracy', desc: 'Matches your exact tone', gradient: 'from-violet-500/10 to-purple-500/10', iconColor: 'text-violet-600', border: 'border-violet-100' },
+            { icon: Clock, value: '<2s', label: 'Per Reply', desc: 'Lightning fast generation', gradient: 'from-amber-500/10 to-orange-500/10', iconColor: 'text-amber-600', border: 'border-amber-100' },
+            { icon: Shield, value: '100%', label: 'Your Data Safe', desc: 'Encrypted & private', gradient: 'from-emerald-500/10 to-teal-500/10', iconColor: 'text-emerald-600', border: 'border-emerald-100' },
+          ].map((stat, i) => (
+            <div key={i} className={`glass-card rounded-2xl p-6 text-center hover:shadow-card transition-all duration-300 hover:-translate-y-1 border ${stat.border}`}>
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mx-auto mb-4`}>
+                <stat.icon size={22} className={stat.iconColor} />
+              </div>
+              <div className="font-display text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
+              <div className="text-[14px] font-semibold text-gray-700 mb-0.5">{stat.label}</div>
+              <div className="text-[13px] text-gray-400">{stat.desc}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

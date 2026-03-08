@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, MessageSquare, Clock, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const Contact = () => {
   const navigate = useNavigate();
@@ -17,8 +19,6 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('');
-
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitStatus('success');
@@ -27,158 +27,98 @@ const Contact = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Header */}
-        <div className="mb-12">
+    <div className="min-h-screen bg-[#fafafa]">
+      <Header />
+      <main className="max-w-5xl mx-auto px-6 pt-32 pb-20">
+        <div className="mb-10">
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
+            className="flex items-center gap-2 text-gray-400 hover:text-gray-700 transition-colors mb-6 text-[14px]"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={16} />
             Back to Home
           </button>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
-            Contact Us
-          </h1>
-          <p className="text-gray-400 text-xl">
-            We're here to help! Get in touch with our support team.
-          </p>
+          <h1 className="font-heading text-4xl md:text-[48px] text-gray-900 mb-3">Contact Us</h1>
+          <p className="text-[16px] text-gray-500">We're here to help! Get in touch with our support team.</p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div className="space-y-8">
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Left side */}
+          <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-6">Get in Touch</h2>
-              <p className="text-gray-300 mb-8">
+              <h2 className="font-display text-xl font-bold text-gray-900 mb-3">Get in Touch</h2>
+              <p className="text-[15px] text-gray-500 leading-relaxed">
                 Have questions about Verve? Need help with your account? We're here to help you get the most out of our AI-powered reply generation service.
               </p>
             </div>
 
-            {/* Contact Methods */}
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Mail size={24} className="text-indigo-400" />
+            <div className="space-y-4">
+              {[
+                { icon: Mail, title: "Email Support", line1: "support@getverve.xyz", line2: "For general inquiries and account support", color: 'bg-violet-50 text-violet-600' },
+                { icon: MessageSquare, title: "Live Chat", line1: "Available during business hours", line2: "For immediate assistance", color: 'bg-blue-50 text-blue-600' },
+                { icon: Clock, title: "Business Hours", line1: "Monday - Friday", line2: "9:00 AM - 6:00 PM EST", color: 'bg-amber-50 text-amber-600' },
+                { icon: MapPin, title: "Response Time", line1: "Within 24 hours", line2: "During business days", color: 'bg-emerald-50 text-emerald-600' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-soft transition-all">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${item.color}`}>
+                    <item.icon size={18} />
+                  </div>
+                  <div>
+                    <h3 className="text-[14px] font-bold text-gray-900">{item.title}</h3>
+                    <p className="text-[14px] text-gray-700">{item.line1}</p>
+                    <p className="text-[13px] text-gray-400">{item.line2}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Email Support</h3>
-                  <p className="text-gray-300 mb-1">support@getverve.xyz</p>
-                  <p className="text-gray-400 text-sm">For general inquiries and account support</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <MessageSquare size={24} className="text-indigo-400" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Live Chat</h3>
-                  <p className="text-gray-300 mb-1">Available during business hours</p>
-                  <p className="text-gray-400 text-sm">For immediate assistance</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Clock size={24} className="text-indigo-400" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Business Hours</h3>
-                  <p className="text-gray-300 mb-1">Monday - Friday</p>
-                  <p className="text-gray-400 text-sm">9:00 AM - 6:00 PM EST</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <MapPin size={24} className="text-indigo-400" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Response Time</h3>
-                  <p className="text-gray-300 mb-1">Within 24 hours</p>
-                  <p className="text-gray-400 text-sm">During business days</p>
-                </div>
-              </div>
+              ))}
             </div>
 
-            {/* FAQ Link */}
-            <div className="bg-gray-800/20 border border-gray-700/30 rounded-2xl p-6">
-              <h3 className="text-white font-semibold mb-3">Quick Help</h3>
-              <p className="text-gray-300 mb-4">
-                Check our FAQ section for quick answers to common questions.
-              </p>
+            <div className="bg-gradient-to-br from-violet-50 to-fuchsia-50 border border-violet-100 rounded-xl p-6">
+              <h3 className="text-[14px] font-bold text-gray-900 mb-2">Quick Help</h3>
+              <p className="text-[14px] text-gray-600 mb-3">Check our FAQ section for quick answers to common questions.</p>
               <button
                 onClick={() => navigate('/#faq')}
-                className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+                className="text-violet-600 hover:text-violet-700 text-[14px] font-semibold transition-colors"
               >
-                View FAQ →
+                View FAQ &rarr;
               </button>
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="bg-gray-800/20 border border-gray-700/30 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-white mb-6">Send us a Message</h2>
-            
+          <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-soft">
+            <h2 className="font-display text-xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+
             {submitStatus === 'success' && (
-              <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-                <p className="text-green-400">Thank you! Your message has been sent. We'll get back to you within 24 hours.</p>
+              <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                <p className="text-emerald-700 text-[14px] font-medium">Thank you! Your message has been sent. We'll get back to you within 24 hours.</p>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-white font-medium mb-2">
-                  Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 transition-colors"
-                  placeholder="Your full name"
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {[
+                { id: 'name', label: 'Name', type: 'text', placeholder: 'Your full name' },
+                { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' },
+              ].map((field) => (
+                <div key={field.id}>
+                  <label htmlFor={field.id} className="block text-[13px] font-semibold text-gray-700 mb-1.5">{field.label} *</label>
+                  <input
+                    type={field.type} id={field.id} name={field.id}
+                    value={(formData as any)[field.id]} onChange={handleChange} required
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-[14px] placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
+                    placeholder={field.placeholder}
+                  />
+                </div>
+              ))}
 
               <div>
-                <label htmlFor="email" className="block text-white font-medium mb-2">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 transition-colors"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-white font-medium mb-2">
-                  Subject *
-                </label>
+                <label htmlFor="subject" className="block text-[13px] font-semibold text-gray-700 mb-1.5">Subject *</label>
                 <select
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                  id="subject" name="subject" value={formData.subject} onChange={handleChange} required
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-[14px] focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
                 >
                   <option value="">Select a subject</option>
                   <option value="general">General Inquiry</option>
@@ -192,50 +132,27 @@ const Contact = () => {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-white font-medium mb-2">
-                  Message *
-                </label>
+                <label htmlFor="message" className="block text-[13px] font-semibold text-gray-700 mb-1.5">Message *</label>
                 <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={6}
-                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 transition-colors resize-none"
+                  id="message" name="message" value={formData.message} onChange={handleChange} required rows={5}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-[14px] placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all resize-none"
                   placeholder="Tell us how we can help you..."
                 />
               </div>
 
               <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                type="submit" disabled={isSubmitting}
+                className="w-full bg-gray-900 text-white font-bold py-3.5 px-6 rounded-full text-[14px] transition-all hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
         </div>
-
-        {/* Additional Information */}
-        <div className="mt-16 grid md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <h3 className="text-white font-semibold mb-2">Customer Satisfaction</h3>
-            <p className="text-gray-400">98% satisfaction rate</p>
-          </div>
-          <div className="text-center">
-            <h3 className="text-white font-semibold mb-2">Average Response Time</h3>
-            <p className="text-gray-400">Under 24 hours</p>
-          </div>
-          <div className="text-center">
-            <h3 className="text-white font-semibold mb-2">Support Team</h3>
-            <p className="text-gray-400">Expert assistance</p>
-          </div>
-        </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 };
 
-export default Contact; 
+export default Contact;

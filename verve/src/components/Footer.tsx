@@ -1,109 +1,102 @@
 import React from 'react';
-import { Chrome, Mail, Shield, HelpCircle, FileText, CreditCard } from 'lucide-react';
+import { Mail, Shield, HelpCircle, FileText, CreditCard, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
+  const chromeUrl = import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop";
+
   return (
-    <footer className="bg-gray-900 border-t border-gray-700/50 noise-overlay">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-4 gap-10">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <img 
-                src="/ChatGPT_Image_Jul_14__2025__02_20_20_AM-removebg-preview.png" 
-                alt="Verve Logo" 
-                className="h-8 w-auto"
+    <footer className="bg-gray-950 text-gray-400 relative overflow-hidden">
+      {/* Top gradient line */}
+      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
+
+      <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="grid md:grid-cols-12 gap-10">
+          {/* Brand col */}
+          <div className="md:col-span-5">
+            <div className="flex items-center gap-2.5 mb-5">
+              <img
+                src="/ChatGPT_Image_Jul_14__2025__02_20_20_AM-removebg-preview.png"
+                alt="Verve Logo"
+                className="h-8 w-auto brightness-200"
               />
-              <h3 className="font-serif text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent tracking-wide">Verve</h3>
+              <span className="font-display text-xl font-bold text-white tracking-tight">Verve</span>
             </div>
-            <p className="font-sans text-gray-300 mb-8 max-w-md leading-relaxed text-lg">
-              The intelligent extension that helps you achieve 5x faster growth with personalized replies that sound authentically you.
+            <p className="text-[15px] text-gray-500 leading-relaxed mb-6 max-w-sm">
+              AI-powered replies that sound like you. Grow faster on X without spending hours in the reply section.
             </p>
-            <a 
-              href={import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop"}
+            <a
+              href={chromeUrl}
               target="_blank"
-              className="group bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 inline-flex items-center gap-3 w-auto hover:scale-105 shadow-lg hover:shadow-indigo-500/25"
+              className="group inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white text-[14px] font-semibold px-6 py-3 rounded-full transition-all border border-white/10 hover:border-white/20"
             >
-              <Chrome size={22} />
-              <span className="group-hover:tracking-wide transition-all duration-300">Add to Chrome</span>
+              Add to Chrome — Free
+              <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
           </div>
 
-          <div>
-            <h4 className="font-serif text-white font-bold mb-6 text-lg tracking-wide">Product</h4>
-            <ul className="space-y-3 text-gray-300">
-              <li><a href="#features" className="font-medium hover:text-white transition-all duration-300 hover:tracking-wide">Features</a></li>
-              <li><a href="#how-it-works" className="font-medium hover:text-white transition-all duration-300 hover:tracking-wide">How it Works</a></li>
-              <li><a href="#pricing" className="font-medium hover:text-white transition-all duration-300 hover:tracking-wide">Pricing</a></li>
-              <li><a href="#faq" className="font-medium hover:text-white transition-all duration-300 hover:tracking-wide">FAQ</a></li>
+          {/* Product links */}
+          <div className="md:col-span-3">
+            <h4 className="text-white font-display font-bold text-[14px] uppercase tracking-wider mb-5">Product</h4>
+            <ul className="space-y-3">
+              {[
+                { label: 'Features', href: '#features' },
+                { label: 'How it Works', href: '#how-it-works' },
+                { label: 'Pricing', href: '#pricing' },
+                { label: 'FAQ', href: '#faq' },
+              ].map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="text-[14px] text-gray-500 hover:text-white transition-colors duration-200">{link.label}</a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-serif text-white font-bold mb-6 text-lg tracking-wide">Support & Legal</h4>
-            <ul className="space-y-3 text-gray-300">
-              <li>
-                <Link to="/contact" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
-                  <Mail size={18} />
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
-                  <HelpCircle size={18} />
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link to="/privacy" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
-                  <Shield size={18} />
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/terms" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
-                  <FileText size={18} />
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link to="/refund" className="font-medium hover:text-white transition-all duration-300 flex items-center gap-3 hover:tracking-wide">
-                  <CreditCard size={18} />
-                  Refund Policy
-                </Link>
-              </li>
+          {/* Legal links */}
+          <div className="md:col-span-4">
+            <h4 className="text-white font-display font-bold text-[14px] uppercase tracking-wider mb-5">Support & Legal</h4>
+            <ul className="space-y-3">
+              {[
+                { icon: Mail, label: 'Contact Us', to: '/contact' },
+                { icon: HelpCircle, label: 'Help Center', to: '/contact' },
+                { icon: Shield, label: 'Privacy Policy', to: '/privacy' },
+                { icon: FileText, label: 'Terms of Service', to: '/terms' },
+                { icon: CreditCard, label: 'Refund Policy', to: '/refund' },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link to={link.to} className="text-[14px] text-gray-500 hover:text-white transition-colors duration-200 flex items-center gap-2">
+                    <link.icon size={14} className="text-gray-600" />
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-700/50 mt-16 pt-10 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 font-medium">
-            © 2025 Verve. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4 mt-6 md:mt-0 text-gray-400 font-medium">
-            <span className="italic">Made for creators who want to stand out</span>
-          </div>
+        {/* Divider */}
+        <div className="h-px bg-white/5 mt-14 mb-10" />
+
+        {/* Contact info */}
+        <div className="grid md:grid-cols-3 gap-6 mb-10">
+          {[
+            { title: 'Customer Support', lines: ['support@getverve.xyz', '24/7 Email Support'] },
+            { title: 'Business Hours', lines: ['Monday - Friday', '9:00 AM - 6:00 PM EST'] },
+            { title: 'Response Time', lines: ['Within 24 hours', 'During business days'] },
+          ].map((block) => (
+            <div key={block.title} className="text-center">
+              <p className="text-[13px] font-semibold text-gray-300 mb-1.5">{block.title}</p>
+              {block.lines.map((line, i) => (
+                <p key={i} className="text-[13px] text-gray-600">{line}</p>
+              ))}
+            </div>
+          ))}
         </div>
 
-        {/* Contact Information for Stripe Compliance */}
-        <div className="border-t border-gray-700/50 mt-8 pt-8">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <h5 className="text-white font-semibold mb-2">Customer Support</h5>
-              <p className="text-gray-400 text-sm">support@getverve.xyz</p>
-              <p className="text-gray-400 text-sm">24/7 Email Support</p>
-            </div>
-            <div>
-              <h5 className="text-white font-semibold mb-2">Business Hours</h5>
-              <p className="text-gray-400 text-sm">Monday - Friday</p>
-              <p className="text-gray-400 text-sm">9:00 AM - 6:00 PM EST</p>
-            </div>
-            <div>
-              <h5 className="text-white font-semibold mb-2">Response Time</h5>
-              <p className="text-gray-400 text-sm">Within 24 hours</p>
-              <p className="text-gray-400 text-sm">During business days</p>
-            </div>
-          </div>
+        {/* Bottom bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[13px] text-gray-600">
+          <p>&copy; {new Date().getFullYear()} Verve. All rights reserved.</p>
+          <p className="italic text-gray-700">Built for creators who refuse to be ignored</p>
         </div>
       </div>
     </footer>

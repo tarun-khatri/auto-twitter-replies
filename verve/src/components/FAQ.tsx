@@ -1,97 +1,118 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ArrowRight } from 'lucide-react';
 
 const faqs = [
   {
-    question: "How does Verve analyze my writing style?",
-    answer: "Verve uses advanced natural language processing to analyze 1000+ of your past tweets, replies, and interactions. It identifies patterns in your vocabulary, sentence structure, humor style, emoji usage, and topic-specific responses to create a 94% accurate profile of your unique voice."
+    question: "How does Verve learn my writing style?",
+    answer: "Verve analyzes hundreds of your past tweets — vocabulary, sentence length, humor, tone, emoji habits — and builds a unique voice profile. It doesn't just template your words; it understands the patterns behind how you communicate. The result is replies that feel like you actually typed them."
   },
   {
-    question: "Is my data safe and private?",
-    answer: "Absolutely. We only analyze publicly available content and pattern data to understand your writing style. We never store your personal information or private messages. All analysis happens securely, and your data is never shared with third parties."
+    question: "Is my data safe?",
+    answer: "Yes. We only analyze publicly available tweets. Your data is encrypted in transit and at rest, and we never sell or share it with third parties. You can delete your profile and all associated data at any time from your account settings."
   },
   {
-    question: "Can I mimic multiple accounts?",
-    answer: "Yes! With our Pro plan, you can analyze and mimic any public account. This is perfect for studying successful creators in your niche or adapting different communication styles for various contexts."
+    question: "What does 'account mimicking' mean?",
+    answer: "You can enter any public X handle and Verve will analyze their communication style — how they reply, what tone they use, their vocabulary patterns. You can then generate replies in that style. It's perfect for studying creators who are crushing it in your niche and adapting their playbook."
   },
   {
-    question: "How accurate are the personalized replies?",
-    answer: "Our users report 94% authenticity match with reply quality. Verve gets better over time as it analyzes more of your content. Most users see 47% higher engagement within the first week of use."
+    question: "How good are the replies, honestly?",
+    answer: "Our users report a 96% voice-match accuracy. The replies aren't perfect 100% of the time — no AI is — but they're a strong first draft that you can post as-is or tweak in 2 seconds. Most users say their Verve replies get more engagement than what they'd write manually because consistency beats perfection."
   },
   {
-    question: "Does it work with images and videos?",
-    answer: "Yes! Verve can analyze images in posts to understand context and create 23% more relevant replies. This ensures your responses are contextually appropriate and show you actually engaged with the content."
+    question: "Can it understand images in tweets?",
+    answer: "Yes — this is a Pro feature. Verve uses multimodal AI to analyze charts, memes, screenshots, and photos in tweets so your reply is contextually relevant. You won't accidentally say 'great insight!' to a meme about a dog."
   },
   {
-    question: "What makes Verve different from other reply tools?",
-    answer: "Unlike generic response tools that achieve 12% engagement, Verve creates a unique profile of YOUR writing style achieving 47% engagement. Instead of robotic templates, you get replies that sound authentically like you, driving 5x faster growth."
+    question: "How is this different from ChatGPT or other AI tools?",
+    answer: "ChatGPT gives you generic, obviously-AI responses. Verve is purpose-built for X replies with your specific voice baked in. It knows Twitter culture, understands context from images, and writes replies that match your personality — not a corporate chatbot's personality."
   },
   {
-    question: "How quickly can I start seeing results?",
-    answer: "You can start using Verve immediately after installation. Most users see 47% improved engagement within the first few days as the system learns their style. Full optimization and 127% growth typically occurs within 1-2 weeks."
+    question: "How fast will I see results?",
+    answer: "You'll generate your first personalized reply within 2 minutes of signing up. Most users notice a bump in engagement within the first week as they reply more consistently. The compounding effect is real — more replies means more visibility means more followers."
   },
   {
-    question: "Do I need to be tech-savvy to use Verve?",
-    answer: "Not at all! Verve is designed for everyone. Simply install the Chrome extension, connect your account, and start getting personalized replies in under 2 seconds with one click. No technical knowledge required."
+    question: "Do I need any technical skills?",
+    answer: "Zero. Install the Chrome extension, connect your account, and you'll see a small button on every tweet in your X feed. Click it, get a reply, post it. That's the entire workflow."
   }
 ];
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const chromeUrl = import.meta.env.VITE_CHROME_WEBSTORE_URL || "https://chromewebstore.google.com/detail/twitter-reply-generator/fjhakkgjfcnjoapnedaiiocjjiehnnop";
 
   return (
-    <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-900 noise-overlay">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6 tracking-wide">
-            Frequently Asked Questions
+    <section id="faq" className="py-28 px-6 relative mesh-gradient-2">
+      <div className="max-w-3xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-50 rounded-full text-pink-600 text-[13px] font-semibold mb-5">
+            <span className="w-1.5 h-1.5 bg-pink-500 rounded-full" />
+            FAQ
+          </div>
+          <h2 className="font-heading text-4xl md:text-[52px] text-gray-900 leading-tight mb-5">
+            Got Questions?
           </h2>
-          <p className="font-sans text-xl text-gray-300 leading-relaxed">
-            Everything you need to know about Verve
+          <p className="text-lg text-gray-500 max-w-md mx-auto leading-relaxed">
+            Here are the ones everyone asks before they sign up
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-3">
           {faqs.map((faq, index) => (
-            <div 
+            <div
               key={index}
-              className="bg-gray-800/40 backdrop-blur-md border border-gray-600/50 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-all duration-300 hover:shadow-lg animate-slide-up"
-              style={{animationDelay: `${index * 0.05}s`}}
+              className={`bg-white rounded-2xl border transition-all duration-300 animate-fade-up ${
+                openIndex === index
+                  ? 'border-gray-200 shadow-card'
+                  : 'border-gray-100 hover:border-gray-200 hover:shadow-soft'
+              }`}
+              style={{animationDelay: `${index * 0.04}s`}}
             >
               <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-700/30 transition-all duration-300"
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="w-full px-7 py-5 text-left flex items-center justify-between gap-4"
               >
-                <span className="font-sans text-lg font-semibold text-white pr-8 tracking-wide">{faq.question}</span>
-                {openIndex === index ? (
-                  <ChevronUp size={26} className="text-indigo-400 flex-shrink-0 transition-colors duration-300" />
-                ) : (
-                  <ChevronDown size={26} className="text-gray-400 flex-shrink-0 hover:text-indigo-400 transition-colors duration-300" />
-                )}
-              </button>
-              
-              {openIndex === index && (
-                <div className="px-8 pb-6 animate-fade-in">
-                  <p className="font-sans text-gray-300 leading-relaxed text-lg">{faq.answer}</p>
+                <span className="text-[15px] font-semibold text-gray-900 leading-relaxed">{faq.question}</span>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                  openIndex === index ? 'bg-gray-900 rotate-180' : 'bg-gray-100'
+                }`}>
+                  <ChevronDown
+                    size={16}
+                    className={`transition-colors ${openIndex === index ? 'text-white' : 'text-gray-500'}`}
+                  />
                 </div>
-              )}
+              </button>
+
+              <div className={`overflow-hidden transition-all duration-300 ${
+                openIndex === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+              }`}>
+                <div className="px-7 pb-6">
+                  <p className="text-[15px] text-gray-500 leading-relaxed">{faq.answer}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-20 text-center animate-slide-up" style={{animationDelay: '0.6s'}}>
-          <div className="bg-gray-800/40 backdrop-blur-md border border-gray-600/50 rounded-3xl p-10 shadow-xl">
-            <h3 className="font-serif text-2xl font-bold text-white mb-6 tracking-wide">Ready to grow 5x faster?</h3>
-            <p className="font-sans text-gray-300 mb-8 text-lg">Join 100+ creators achieving 127% average growth with Verve</p>
-            <button className="group bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-indigo-500/25">
-              <span className="group-hover:tracking-wide transition-all duration-300">
-              Start Growing Now
-              </span>
-            </button>
+        {/* Bottom CTA */}
+        <div className="mt-16 text-center animate-fade-up" style={{animationDelay: '0.5s'}}>
+          <div className="bg-gradient-to-br from-gray-900 via-gray-900 to-violet-950 rounded-3xl p-10 text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/10 rounded-full blur-[80px]" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-fuchsia-500/10 rounded-full blur-[60px]" />
+
+            <div className="relative z-10">
+              <h3 className="font-heading text-3xl text-white mb-3">Still on the fence?</h3>
+              <p className="text-gray-400 text-[16px] mb-8 max-w-md mx-auto">
+                The free plan has no time limit. Try it, see the difference, then decide.
+              </p>
+              <a
+                href={chromeUrl}
+                target="_blank"
+                className="group inline-flex items-center gap-2.5 bg-white text-gray-900 px-8 py-4 rounded-full font-bold text-[15px] transition-all hover:shadow-lg hover:scale-[1.02]"
+              >
+                Try Verve Free
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
