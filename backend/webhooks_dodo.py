@@ -340,10 +340,18 @@ def _handle_subscription_event(s: dict) -> None:
 def _handle_payment_event(p: dict) -> None:
     customer = p.get("customer") or {}
     dodo_customer_id = customer.get("customer_id")
-    user = db.users.find_one({"dodo_customer_id": dodo_customer_id}) if dodo_customer_id else None
+    meta = p.get("metadata", {}) or {}
+    clerk_uid = meta.get("clerk_uid") or meta.get("metadata_clerk_uid")
+
+    # Find user: try clerk_uid from metadata first, then dodo_customer_id
+    user = None
+    if clerk_uid:
+        user = db.users.find_one({"clerk_uid": clerk_uid})
+    if not user and dodo_customer_id:
+        user = db.users.find_one({"dodo_customer_id": dodo_customer_id})
 
     db.payments.insert_one({
-        "clerk_uid": user.get("clerk_uid") if user else None,
+        "clerk_uid": user.get("clerk_uid") if user else clerk_uid,
         "dodo_payment_id": p.get("payment_id"),
         "status": p.get("status"),
         "amount": p.get("total_amount") or p.get("amount"),

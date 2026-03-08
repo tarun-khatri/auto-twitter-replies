@@ -1,7 +1,6 @@
 # backend/users.py
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime, date, timezone
 from profiles import _scrape_and_analyze
 from database import db
@@ -90,7 +89,6 @@ def add_my_reply_history(data: dict, clerk_uid: str = Depends(verify_clerk_token
 
 class RegisterUser(BaseModel):
     twitter_handle: str
-    firebase_uid: Optional[str] = None
 
 @router.post("/register")
 def register_user(
@@ -98,9 +96,8 @@ def register_user(
     background_tasks: BackgroundTasks,
     clerk_uid: str = Depends(verify_clerk_token),
 ):
-    """Upsert a user document keyed by Clerk UID. Optionally store firebase_uid
-    for Twitter OAuth users. Kick off scraping & tone analysis if we have not done
-    it before.
+    """Upsert a user document keyed by Clerk UID. Kick off scraping & tone
+    analysis if we have not done it before.
     """
     handle = user.twitter_handle.strip()
     if not handle:
@@ -117,6 +114,9 @@ def register_user(
     profile = db.profiles.find_one({"clerk_uid": clerk_uid, "handle": handle})
     if profile:
         profile_id = profile["_id"]
+        # If the profile exists but analysis failed previously, retry it
+        if not profile.get("tone_summary"):
+            background_tasks.add_task(_scrape_and_analyze, profile_id, handle)
     else:
         profile_id = db.profiles.insert_one({
             "clerk_uid": clerk_uid,
@@ -130,9 +130,5 @@ def register_user(
 
     # Set active profile
     db.users.update_one({"clerk_uid": clerk_uid}, {"$set": {"active_profile_id": profile_id}})
-
-    # Store firebase_uid if provided
-    if user.firebase_uid:
-        db.users.update_one({"clerk_uid": clerk_uid}, {"$set": {"firebase_uid": user.firebase_uid}})
 
     return {"status": "ok", "profile_id": str(profile_id)}

@@ -21,6 +21,9 @@ def create_profile(data: CreateProfile, background_tasks: BackgroundTasks, clerk
     existing = db.profiles.find_one({"clerk_uid": clerk_uid, "handle": handle})
     if existing:
         profile_id = existing["_id"]
+        # If the profile exists but analysis failed previously, retry it
+        if not existing.get("tone_summary"):
+            background_tasks.add_task(_scrape_and_analyze, profile_id, handle)
     else:
         profile_id = db.profiles.insert_one({
             "clerk_uid": clerk_uid,

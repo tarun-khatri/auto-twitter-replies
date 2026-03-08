@@ -1,16 +1,14 @@
 import os
 import requests
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 
 class DodoClient:
-    """Small wrapper around Dodo Payments REST API.
+    """Wrapper around Dodo Payments REST API using the recommended Checkout Sessions endpoint.
 
     Notes
-    - Uses Dodo's public base URL (https://api.dodopayments.com). Environment (test/live)
-      is determined by your API key as per Dodo docs. We still read `DODO_ENVIRONMENT`
-      for application behavior (e.g., selecting return URLs), but it isn't required to
-      call the API.
+    - Uses `POST /checkouts` (recommended) instead of deprecated `POST /subscriptions`.
+    - Environment (test/live) is determined by `DODO_ENVIRONMENT` env var.
     - Reads API key from env `DODO_PAYMENTS_API_KEY`.
     """
 
@@ -23,7 +21,6 @@ class DodoClient:
         if env_value in ("live", "production", "prod"):
             self.base_url = "https://live.dodopayments.com"
         else:
-            # default to test
             self.base_url = "https://test.dodopayments.com"
 
     def _headers(self) -> Dict[str, str]:
@@ -32,42 +29,42 @@ class DodoClient:
             "Content-Type": "application/json",
         }
 
-    def create_subscription_payment_link(
+    def create_checkout_session(
         self,
         *,
         product_id: str,
-        customer: Optional[Dict[str, Any]] = None,
-        billing: Optional[Dict[str, Any]] = None,
         quantity: int = 1,
+        customer: Optional[Dict[str, Any]] = None,
+        billing_address: Optional[Dict[str, Any]] = None,
         return_url: Optional[str] = None,
-        allowed_payment_method_types: Optional[list[str]] = None,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
+        """Create a checkout session using the recommended POST /checkouts endpoint.
+
+        Returns dict with `checkout_url` (redirect user here) and `session_id`.
+        """
         payload: Dict[str, Any] = {
-            "product_id": product_id,
-            "quantity": quantity,
-            "payment_link": True,
+            "product_cart": [
+                {"product_id": product_id, "quantity": quantity}
+            ],
         }
         if customer:
             payload["customer"] = customer
-        if billing:
-            payload["billing"] = billing
+        if billing_address:
+            payload["billing_address"] = billing_address
         if return_url:
-            payload["return_url"] = return_url
-        # Intentionally omit allowed_payment_method_types to allow all methods by default
-        if allowed_payment_method_types:
-            payload["allowed_payment_method_types"] = allowed_payment_method_types
+            payload["success_url"] = return_url
         if metadata:
             payload["metadata"] = metadata
 
         resp = requests.post(
-            f"{self.base_url}/subscriptions",
+            f"{self.base_url}/checkouts",
             headers=self._headers(),
             json=payload,
             timeout=30,
         )
         if not resp.ok:
-            raise RuntimeError(f"Dodo create subscription failed: {resp.status_code} {resp.text}")
+            raise RuntimeError(f"Dodo create checkout failed: {resp.status_code} {resp.text}")
         return resp.json()
 
     def retrieve_subscription(self, subscription_id: str) -> Dict[str, Any]:
@@ -79,5 +76,3 @@ class DodoClient:
         if not resp.ok:
             raise RuntimeError(f"Dodo retrieve subscription failed: {resp.status_code} {resp.text}")
         return resp.json()
-
-

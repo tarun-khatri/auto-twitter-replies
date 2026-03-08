@@ -8,7 +8,6 @@ if dotenv_path:
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MONGO_URI = os.getenv("MONGO_URI")
-FIREBASE_CREDENTIALS = os.getenv("FIREBASE_CREDENTIALS")
 PORT = int(os.getenv("PORT", 8000))
 
 # Clerk Configuration
@@ -21,6 +20,9 @@ CLERK_ALLOWED_ORIGINS = [
 # Filter out None values
 CLERK_ALLOWED_ORIGINS = [origin for origin in CLERK_ALLOWED_ORIGINS if origin]
 
+# Rettiwt API Array
+RETTIWT_API_KEYS_RAW = os.getenv("RETTIWT_API_KEYS", "")
+RETTIWT_API_KEYS = [k.strip() for k in RETTIWT_API_KEYS_RAW.split(",") if k.strip()]
+
 if not MONGO_URI:
     raise ValueError("❌ MONGO_URI is not set or is empty in your environment variables")
-

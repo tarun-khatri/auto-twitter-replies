@@ -18,77 +18,74 @@ def analyze_tone(user_tweets):
             "Your tweets appear highly repetitive or bot-like. "
             "Replies will use a general human-like tone. Please tweet more original content to improve personalization."
         )
-    combined_text = " ".join(user_tweets[:100])
+    combined_text = "\n---\n".join(user_tweets[:100])
     prompt = (
-        "You are a senior brand-voice strategist with 15 years of experience analyzing high-profile social media accounts "
-        "and distilling communication patterns for Fortune 500 companies. Your expertise lies in identifying the subtle "
-        "linguistic DNA that makes each voice distinctive and memorable.\n"
+        "You are an elite communication analyst building a voice-replication profile. Your analysis will be used "
+        "by an AI to write replies that are indistinguishable from this person's actual writing.\n"
         "\n"
-        "Your mission: Extract and articulate this author's complete writing fingerprint from the provided tweets, "
-        "creating a comprehensive profile that could enable accurate voice replication.\n"
+        "Analyze these tweets and produce a DETAILED voice profile covering ALL of the following:\n"
         "\n"
-        "Deliver a detailed 8-10 sentence analysis covering these critical dimensions:\n"
+        "PERSONALITY & MINDSET:\n"
+        "- Their core identity and how they see themselves (leader, rebel, hustler, intellectual, comedian, etc.)\n"
+        "- Their emotional baseline (cynical, optimistic, aggressive, chill, intense, detached)\n"
+        "- What they care about deeply vs. what they dismiss\n"
+        "- Their relationship with their audience (mentor, peer, provocateur, entertainer)\n"
         "\n"
-        "EMOTIONAL SIGNATURE & PERSONALITY:\n"
-        "• Primary emotional register (sarcastic, enthusiastic, analytical, contemplative, etc.)\n"
-        "• Secondary emotional tones that appear frequently\n"
-        "• Overall personality traits (confident, humble, opinionated, diplomatic, etc.)\n"
-        "• Emotional consistency vs. range across different topics\n"
+        "HUMOR & WIT STYLE:\n"
+        "- Exactly how they use humor (dark, self-deprecating, dry, sarcastic, absurdist, none)\n"
+        "- How they deliver punchlines (one-liners, build-up, deadpan, exaggeration)\n"
+        "- What they find funny vs. what they take seriously\n"
         "\n"
-        "COMMUNICATION STYLE & PATTERNS:\n"
-        "• Sentence structure preferences (short/punchy vs. flowing/narrative)\n"
-        "• Punctuation habits and quirks (excessive periods, strategic caps, emoji usage)\n"
-        "• Vocabulary sophistication level and word choice patterns\n"
-        "• Recurring phrases, verbal tics, or signature expressions\n"
-        "• Contraction usage and formality level\n"
+        "LANGUAGE PATTERNS:\n"
+        "- Sentence length and structure (fragments vs. full sentences, simple vs. complex)\n"
+        "- Capitalization habits (all lowercase? Normal? Strategic caps for emphasis?)\n"
+        "- Punctuation style (periods, ellipses, dashes, no punctuation, exclamation marks)\n"
+        "- Vocabulary level (street slang, professional, academic, internet-native, mixed)\n"
+        "- Favorite phrases, verbal tics, or recurring expressions they use\n"
+        "- How they start tweets (declarations, questions, reactions, stories)\n"
         "\n"
-        "CONTENT FOCUS & PERSPECTIVE:\n"
-        "• Primary topics and areas of expertise\n"
-        "• Approach to subjects (critic, evangelist, educator, provocateur, observer)\n"
-        "• Ideological leanings or clear biases\n"
-        "• How they handle controversial topics\n"
-        "• Knowledge depth and confidence in different areas\n"
+        "ENGAGEMENT STYLE:\n"
+        "- How they agree with people (enthusiastic, cool, minimal)\n"
+        "- How they disagree or argue (aggressive, dismissive, logical, sarcastic)\n"
+        "- How they respond to praise, criticism, or questions\n"
+        "- Their typical reply length (one word, one sentence, paragraph)\n"
         "\n"
-        "ENGAGEMENT STRATEGY & RHETORICAL DEVICES:\n"
-        "• Attention-grabbing techniques in opening lines\n"
-        "• Preferred rhetorical devices (questions, bold claims, storytelling, data points)\n"
-        "• Primary engagement drivers (controversy, humor, inspiration, information)\n"
-        "• How they respond to others and build conversations\n"
-        "• Call-to-action patterns or lack thereof\n"
+        "TOPICS & VALUES:\n"
+        "- Main subjects they tweet about\n"
+        "- Their stance and opinions on their core topics\n"
+        "- What triggers them to be passionate, angry, or excited\n"
         "\n"
-        "UNIQUE VOICE CHARACTERISTICS:\n"
-        "• What makes this voice distinct from typical social media communication\n"
-        "• Signature elements that would be recognizable to followers\n"
-        "• Memorable patterns or habits\n"
-        "• How they stand out in their niche or topic area\n"
+        "OUTPUT RULES:\n"
+        "- Write 15-20 sentences of flowing analytical prose (NO bullet points, NO headers, NO numbered lists)\n"
+        "- Write in third person\n"
+        "- Include specific examples from their tweets woven naturally into the analysis\n"
+        "- Make it so detailed that a ghostwriter could perfectly mimic this person after reading it\n"
+        "- Focus on ACTIONABLE patterns, not vague descriptions\n"
         "\n"
-        "SYNTHESIS REQUIREMENTS:\n"
-        "• Write in third person with analytical objectivity\n"
-        "• Construct flowing prose without bullet points or section headers\n"
-        "• Prioritize specific, observable patterns over generic descriptors\n"
-        "• Avoid meta-commentary about the analysis process\n"
-        "• Focus on distinctive elements that separate this voice from others\n"
-        "• Ensure each sentence adds unique insight\n"
-        "• Include specific examples of their communication patterns\n"
-        "• Highlight both strengths and unique quirks\n"
-        "• Make it actionable for voice replication\n"
-        "\n"
-        "TONE ANALYSIS OUTPUT FORMAT:\n"
-        "Write a comprehensive, flowing analysis that captures the essence of this person's communication style. "
-        "Focus on what makes them unique and how they naturally express themselves. This analysis will be used "
-        "to generate replies that sound exactly like them, so be thorough and specific.\n"
-        "\n"
-        f"Source Material:\n{combined_text}"
+        f"TWEETS TO ANALYZE:\n{combined_text}"
     )
-    
+
     config = types.GenerateContentConfig(
-        max_output_tokens=400,
-        temperature=0.3
+        max_output_tokens=1200,
+        temperature=0.7
     )
-    
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=[prompt],
-        config=config
-    )
-    return response.text.strip() if response else "Analysis failed."
+
+    # Retry up to 3 times on transient failures
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model="gemini-3.1-flash-lite-preview",
+                contents=[prompt],
+                config=config
+            )
+            result = response.text.strip() if response else ""
+            if result:
+                return result
+            print(f"[TONE ANALYSIS] Empty response on attempt {attempt + 1}, retrying...")
+        except Exception as e:
+            print(f"[TONE ANALYSIS FAIL] Attempt {attempt + 1}/3: {e}")
+            if attempt < 2:
+                import time
+                time.sleep(2 * (attempt + 1))
+
+    return "Analysis temporarily unavailable. Please try again later."

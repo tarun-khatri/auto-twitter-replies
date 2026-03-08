@@ -20,6 +20,10 @@ client = genai.Client(api_key=GEMINI_API_KEY)
 
 # Utility to strip hashtags and emojis
 def _filter_text(text: str) -> str:
+    if not text:
+        return ""
+    # Normalize excessive newlines and whitespace
+    text = re.sub(r'\s+', ' ', text)
     # Remove hashtags
     text = re.sub(r"#\S+", "", text)
     # Remove emojis
@@ -27,115 +31,100 @@ def _filter_text(text: str) -> str:
     return text.strip()
 
 
-def generate_reply(user_tone: str, tweet_text: str, num_replies: int = 1, tweet_author: str | None = None) -> list[str]:
-    """
-    Generate human-like replies using Gemini. If user_tone is empty or contains a placeholder
-    asking for tweets, fall back to a generic reply prompt.
-    Always returns exactly num_replies filtered replies.
-    """
-    # Check for insufficient or bot-like tone analysis
+def _build_prompt(user_tone: str, tweet_text: str, tweet_author: str | None = None, has_images: bool = False) -> str:
+    """Build the prompt based on user tone availability."""
+    image_instruction = ""
+    if has_images:
+        image_instruction = "IMPORTANT: The tweet contains image(s) attached below. Look at them carefully and reference what you see when relevant.\n\n"
+
+    # Fallback prompt when tone data is insufficient
     if user_tone and (
         user_tone.startswith("Not enough tweet data") or
         user_tone.startswith("Your tweets appear highly repetitive")
     ):
-        prompt = (
-            "You are an expert at writing authentic, human-like Twitter replies with a naturally sarcastic edge.\n"
-            "The user does not have enough original tweet data for accurate personalization.\n"
-            "Write a reply to the following tweet in a natural, friendly, and slightly sarcastic tone.\n"
-            "- Add subtle wit or dry humor naturally\n"
-            "- Do not include any hashtags, emojis, or filler/introductory phrases\n"
-            "- Do not repeat words or phrases from the original tweet\n"
-            "- Keep it under one sentence only\n"
-            "- Output ONLY the reply text - no quotes, no markdown, no explanations\n"
-            "- Do not use asterisks, backticks, or any formatting\n"
-            "- Just write the reply as plain text\n\n"
-            f"Tweet:\n{tweet_text}"
+        return (
+            f"{image_instruction}"
+            "Write a Twitter reply to this tweet. Rules:\n"
+            "- 1 sentence max, short and punchy\n"
+            "- Must directly relate to what the tweet is actually about\n"
+            "- Sound like a real person, not a motivational poster\n"
+            "- No hashtags, no emojis, no quotes, no markdown\n"
+            "- Just the reply text, nothing else\n\n"
+            f"Tweet by @{tweet_author or 'user'}:\n{tweet_text}"
         )
-    elif not user_tone or user_tone.lower().startswith("please provide the tweets"):
-        prompt = (
-            "You are an expert at writing authentic, human-like Twitter replies with a naturally sarcastic edge.\n"
-            "Write a reply to the following tweet.\n"
-            "- The reply must sound natural and human, as if written by a real person\n"
-            "- Add subtle wit or dry humor naturally\n"
-            "- Do not include any hashtags, emojis, or filler/introductory phrases\n"
-            "- Do not repeat words or phrases from the original tweet\n"
-            "- Keep it under one sentence only\n"
-            "- Output ONLY the reply text - no quotes, no markdown, no explanations\n"
-            "- Do not use asterisks, backticks, or any formatting\n"
-            "- Just write the reply as plain text\n\n"
-            f"Tweet:\n{tweet_text}"
+
+    if not user_tone or user_tone.lower().startswith("please provide the tweets"):
+        return (
+            f"{image_instruction}"
+            "Write a Twitter reply to this tweet. Rules:\n"
+            "- 1 sentence, conversational and natural\n"
+            "- Must directly respond to the specific content of the tweet\n"
+            "- Sound like a real person scrolling their feed, not an AI\n"
+            "- No hashtags, no emojis, no quotes, no markdown\n"
+            "- Just the reply text, nothing else\n\n"
+            f"Tweet by @{tweet_author or 'user'}:\n{tweet_text}"
         )
-    else:
-        prompt = (
-            "You're ghostwriting Twitter replies for someone with a specific communication style. Study their tone and personality, "
-            "then write replies that capture their essence without copying their exact words.\n"
-            "\n"
-            f"THEIR PERSONALITY & TONE:\n{user_tone}\n"
-            "\n"
-            "CRITICAL RULES:\n"
-            "• DO NOT copy specific words, phrases, or sentences from their tone analysis\n"
-            "• DO NOT repeat words or phrases from the original tweet\n"
-            "• DO NOT use the same sentence structure as their analysis\n"
-            "• Instead, understand their communication patterns and recreate them naturally\n"
-            "\n"
-            "UNDERSTAND THEIR STYLE:\n"
-            "• Communication approach (formal/casual, direct/evasive, etc.)\n"
-            "• Emotional tendencies (sarcastic, enthusiastic, analytical, etc.)\n"
-            "• Typical sentence structure and length\n"
-            "• Common topics they discuss\n"
-            "• Overall personality traits\n"
-            "\n"
-            "REPLY REQUIREMENTS:\n"
-            "1. Be SARCASTIC by default - add witty, dry humor to every reply\n"
-            "2. Match their communication style but use completely different words\n"
-            "3. Keep it under one sentence only\n"
-            "4. Sound natural and spontaneous, like a real person\n"
-            "5. Vary sentence structure - avoid repetitive patterns\n"
-            "6. Use contractions and casual language\n"
-            "7. Show personality without being overly formal\n"
-            "8. Never repeat words from the tweet or tone analysis\n"
-            "\n"
-            "TONE GUIDELINES:\n"
-            "• Always include subtle sarcasm or witty commentary\n"
-            "• If they're analytical: be smart but add a sarcastic twist\n"
-            "• If they're enthusiastic: be excited but with a hint of irony\n"
-            "• If they're blunt: be direct but cleverly so\n"
-            "• If they use jargon: reference it naturally with humor\n"
-            "• Make it feel like a real person having a casual, slightly sarcastic conversation\n"
-            "• Use your own vocabulary, not theirs\n"
-            "\n"
-            "OUTPUT FORMAT:\n"
-            "• Output ONLY the reply text - nothing else\n"
-            "• No quotes, no markdown formatting, no explanations\n"
-            "• Do not use asterisks (*), backticks (`), or any formatting\n"
-            "• Just write the reply as plain text\n"
-            "• No \"Reply:\" or any prefix\n"
-            "• No additional commentary or context\n"
-            "\n"
-            "Write ONE reply that captures their personality with your own words, always with a sarcastic edge:\n"
-            "\n"
-            f"Tweet to reply to:\n@{tweet_author or 'user'}\n"
-            f"Content/Tweet text: {tweet_text}"
-        )
+
+    # Main prompt with full tone analysis
+    return (
+        f"{image_instruction}"
+        f"You are replying to a tweet AS this person. Here is their analyzed personality:\n"
+        f"\n{user_tone}\n\n"
+        "YOUR JOB: Write a reply that this person would actually type. Not inspired by them — AS them.\n\n"
+        "HARD RULES:\n"
+        "1. READ THE TWEET FIRST. Your reply must respond to what the tweet actually says. If it's about crypto, reply about crypto. If it's a joke, react to the joke. NEVER write a generic motivational reply.\n"
+        "2. Keep it SHORT. 1 sentence is ideal. 2 max if truly needed. Real people don't write essays in replies.\n"
+        "3. Match their exact vibe — if they're sarcastic, be sarcastic. If they're analytical, be analytical. If they're casual, be casual. Don't default to 'witty' if that's not who they are.\n"
+        "4. Use their vocabulary level and sentence structure, NOT fancy AI language.\n"
+        "5. No hashtags. No emojis. No quotes. No markdown. No asterisks. No 'Reply:' prefix.\n"
+        "6. Don't parrot words from the tweet back at them.\n"
+        "7. Output ONLY the reply text. Nothing else.\n\n"
+        f"Tweet by @{tweet_author or 'user'}:\n{tweet_text}"
+    )
+
+
+def generate_reply(user_tone: str, tweet_text: str, num_replies: int = 1, tweet_author: str | None = None) -> list[str]:
+    """
+    Generate human-like replies using Gemini.
+    Always returns exactly num_replies filtered replies.
+    """
+    prompt = _build_prompt(user_tone, tweet_text, tweet_author, has_images=False)
 
     replies = []
     config = types.GenerateContentConfig(
-        max_output_tokens=40,
+        max_output_tokens=150,
         temperature=0.9
     )
+    models_to_try = ["gemini-3.1-flash-lite-preview", "gemini-2.0-flash"]
     for _ in range(max(1, num_replies)):
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=[prompt],
-                config=config
-            )
-            raw = response.text if response and hasattr(response, "text") else ""
-        except Exception:
-            raw = ""
+        raw = ""
+        for model_name in models_to_try:
+            got_response = False
+            for attempt in range(2):
+                try:
+                    print(f"[GEMINI] Trying model={model_name}, attempt {attempt + 1}/2...")
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=[prompt],
+                        config=config
+                    )
+                    raw = response.text if response and hasattr(response, "text") else ""
+                    print(f"\n============= RAW GEMINI OUTPUT [{_}] (model={model_name}) =============\n{raw}\n==================================================\n")
+                    if raw.strip():
+                        got_response = True
+                        break
+                    print(f"[GEMINI WARN] Empty response on attempt {attempt + 1}, retrying...")
+                except Exception as e:
+                    print(f"[GEMINI FAIL] model={model_name} attempt {attempt + 1}/2: {e}")
+                    if attempt < 1:
+                        import time
+                        time.sleep(1)
+                    continue
+            if got_response:
+                break
+            print(f"[GEMINI] model={model_name} failed, trying next model...")
         # Filter out hashtags and emojis
         filtered = _filter_text(raw)
-        # If filtering results in empty, keep raw as fallback
         replies.append(filtered or raw)
 
     return replies
@@ -143,13 +132,13 @@ def generate_reply(user_tone: str, tweet_text: str, num_replies: int = 1, tweet_
 
 def generate_reply_with_images(user_tone: str, tweet_text: str, image_paths: list[str], num_replies: int = 1, tweet_author: str | None = None) -> list[str]:
     """
-    Generate human-like replies using Gemini with image context. 
+    Generate human-like replies using Gemini with image context.
     Uses multimodal AI to analyze both text and images in the tweet.
     """
     print(f"[MULTIMODAL] Starting multimodal reply generation with {len(image_paths)} images")
     print(f"[MULTIMODAL] Tweet text: {tweet_text[:100]}...")
     print(f"[MULTIMODAL] User tone: {user_tone[:100]}...")
-    
+
     # Load images
     images = []
     for i, image_path in enumerate(image_paths):
@@ -158,36 +147,29 @@ def generate_reply_with_images(user_tone: str, tweet_text: str, image_paths: lis
             with open(image_path, 'rb') as f:
                 image_data = f.read()
                 print(f"[IMAGE PROCESSING] Read {len(image_data)} bytes from file")
-                
+
                 if PIL_AVAILABLE:
-                    # Convert to PIL Image for processing
                     pil_image = Image.open(io.BytesIO(image_data))
                     print(f"[IMAGE PROCESSING] PIL Image loaded: {pil_image.size} {pil_image.mode}")
-                    
-                    # Convert to RGB if necessary
+
                     if pil_image.mode != 'RGB':
                         pil_image = pil_image.convert('RGB')
-                        print(f"[IMAGE PROCESSING] Converted to RGB mode")
-                    
-                    # Resize if too large (Gemini has size limits)
+
                     max_size = 1024
                     if max(pil_image.size) > max_size:
                         ratio = max_size / max(pil_image.size)
                         new_size = (int(pil_image.size[0] * ratio), int(pil_image.size[1] * ratio))
                         pil_image = pil_image.resize(new_size, Image.Resampling.LANCZOS)
                         print(f"[IMAGE PROCESSING] Resized to {new_size}")
-                    
-                    # Convert back to bytes
+
                     img_byte_arr = io.BytesIO()
                     pil_image.save(img_byte_arr, format='JPEG', quality=85)
                     img_byte_arr = img_byte_arr.getvalue()
                     images.append(img_byte_arr)
                     print(f"[IMAGE PROCESSING] Successfully processed image {i+1}: {len(img_byte_arr)} bytes")
                 else:
-                    # Fallback: use raw image data without processing
                     print(f"[IMAGE PROCESSING] PIL not available, using raw image data")
                     images.append(image_data)
-                    print(f"[IMAGE PROCESSING] Using raw image data: {len(image_data)} bytes")
         except Exception as e:
             print(f"[IMAGE PROCESSING ERROR] Failed to load {image_path}: {e}")
             continue
@@ -195,150 +177,64 @@ def generate_reply_with_images(user_tone: str, tweet_text: str, image_paths: lis
     if not images:
         print("[IMAGE WARNING] No valid images loaded, falling back to text-only generation")
         return generate_reply(user_tone, tweet_text, num_replies, tweet_author)
-    
+
     print(f"[MULTIMODAL] Successfully loaded {len(images)} images for AI processing")
 
-    # Check for insufficient or bot-like tone analysis
-    if user_tone and (
-        user_tone.startswith("Not enough tweet data") or
-        user_tone.startswith("Your tweets appear highly repetitive")
-    ):
-        prompt = (
-            "You are an expert at writing authentic, human-like Twitter replies with a naturally sarcastic edge.\n"
-            "The user does not have enough original tweet data for accurate personalization.\n"
-            "Write a reply to the following tweet and image(s) in a natural, friendly, and slightly sarcastic tone.\n"
-            "- Analyze the image(s) for context and visual elements that might be relevant to the tweet\n"
-            "- Add subtle wit or dry humor naturally\n"
-            "- Do not include any hashtags, emojis, or filler/introductory phrases\n"
-            "- Do not repeat words or phrases from the original tweet\n"
-            "- Keep it under one sentence only\n"
-            "- Output ONLY the reply text - no quotes, no markdown, no explanations\n"
-            "- Do not use asterisks, backticks, or any formatting\n"
-            "- Just write the reply as plain text\n\n"
-            f"Tweet:\n{tweet_text}"
-        )
-    elif not user_tone or user_tone.lower().startswith("please provide the tweets"):
-        prompt = (
-            "You are an expert at writing authentic, human-like Twitter replies with a naturally sarcastic edge.\n"
-            "Write a reply to the following tweet and image(s).\n"
-            "- Analyze the image(s) for context and visual elements that might be relevant to the tweet\n"
-            "- The reply must sound natural and human, as if written by a real person\n"
-            "- Add subtle wit or dry humor naturally\n"
-            "- Do not include any hashtags, emojis, or filler/introductory phrases\n"
-            "- Do not repeat words or phrases from the original tweet\n"
-            "- Keep it under one sentence only\n"
-            "- Output ONLY the reply text - no quotes, no markdown, no explanations\n"
-            "- Do not use asterisks, backticks, or any formatting\n"
-            "- Just write the reply as plain text\n\n"
-            f"Tweet:\n{tweet_text}"
-        )
-    else:
-        prompt = (
-            "You're ghostwriting Twitter replies for someone with a specific communication style. Study their tone and personality, "
-            "then write replies that capture their essence without copying their exact words.\n"
-            "\n"
-            f"THEIR PERSONALITY & TONE:\n{user_tone}\n"
-            "\n"
-            "CRITICAL RULES:\n"
-            "• DO NOT copy specific words, phrases, or sentences from their tone analysis\n"
-            "• DO NOT repeat words or phrases from the original tweet\n"
-            "• DO NOT use the same sentence structure as their analysis\n"
-            "• Instead, understand their communication patterns and recreate them naturally\n"
-            "\n"
-            "UNDERSTAND THEIR STYLE:\n"
-            "• Communication approach (formal/casual, direct/evasive, etc.)\n"
-            "• Emotional tendencies (sarcastic, enthusiastic, analytical, etc.)\n"
-            "• Typical sentence structure and length\n"
-            "• Common topics they discuss\n"
-            "• Overall personality traits\n"
-            "\n"
-            "REPLY REQUIREMENTS:\n"
-            "1. Be SARCASTIC by default - add witty, dry humor to every reply\n"
-            "2. Match their communication style but use completely different words\n"
-            "3. Keep it under one sentence only\n"
-            "4. Sound natural and spontaneous, like a real person\n"
-            "5. Vary sentence structure - avoid repetitive patterns\n"
-            "6. Use contractions and casual language\n"
-            "7. Show personality without being overly formal\n"
-            "8. Never repeat words from the tweet or tone analysis\n"
-            "9. Analyze the image(s) for context and visual elements relevant to the tweet\n"
-            "\n"
-            "TONE GUIDELINES:\n"
-            "• Always include subtle sarcasm or witty commentary\n"
-            "• If they're analytical: be smart but add a sarcastic twist\n"
-            "• If they're enthusiastic: be excited but with a hint of irony\n"
-            "• If they're blunt: be direct but cleverly so\n"
-            "• If they use jargon: reference it naturally with humor\n"
-            "• Make it feel like a real person having a casual, slightly sarcastic conversation\n"
-            "• Use your own vocabulary, not theirs\n"
-            "• Reference visual elements from the image(s) when relevant\n"
-            "\n"
-            "OUTPUT FORMAT:\n"
-            "• Output ONLY the reply text - nothing else\n"
-            "• No quotes, no markdown formatting, no explanations\n"
-            "• Do not use asterisks (*), backticks (`), or any formatting\n"
-            "• Just write the reply as plain text\n"
-            "• No \"Reply:\" or any prefix\n"
-            "• No additional commentary or context\n"
-            "\n"
-            "Write ONE reply that captures their personality with your own words, always with a sarcastic edge:\n"
-            "\n"
-            f"Tweet to reply to:\n@{tweet_author or 'user'}\n"
-            f"Content/Tweet text: {tweet_text}"
-        )
+    prompt = _build_prompt(user_tone, tweet_text, tweet_author, has_images=True)
 
     replies = []
     config = types.GenerateContentConfig(
-        max_output_tokens=40,
+        max_output_tokens=150,
         temperature=0.9
     )
-    
+
     # Prepare content with images using proper Gemini types
     content_parts = []
-    
-    # Add text prompt
     content_parts.append(types.Part(text=prompt))
-    
-    # Add images as parts
+
     for i, img_bytes in enumerate(images):
         image_part = types.Part(inline_data=types.Blob(mime_type="image/jpeg", data=img_bytes))
         content_parts.append(image_part)
         print(f"[MULTIMODAL] Added image part {i+1}: {len(img_bytes)} bytes")
-    
+
     print(f"[MULTIMODAL] Content structure: {len(content_parts)} parts (1 text + {len(images)} images)")
 
+    models_to_try = ["gemini-3.1-flash-lite-preview", "gemini-2.0-flash"]
     for i in range(max(1, num_replies)):
-        try:
-            print(f"[MULTIMODAL] Generating reply {i+1}/{num_replies} with Gemini...")
-            # Try multimodal model first
-            try:
-                response = client.models.generate_content(
-                    model="gemini-2.0-flash-exp",
-                    contents=content_parts,
-                    config=config
-                )
-                raw = response.text if response and hasattr(response, "text") else ""
-                print(f"[MULTIMODAL] Gemini multimodal response received: {raw[:100]}...")
-            except Exception as multimodal_error:
-                print(f"[MULTIMODAL] Multimodal model failed: {multimodal_error}")
-                # Try with regular model
-                print(f"[MULTIMODAL] Trying with regular Gemini model...")
-                response = client.models.generate_content(
-                    model="gemini-2.0-flash",
-                    contents=[types.Part(text=prompt)],  # Only send text prompt
-                    config=config
-                )
-                raw = response.text if response and hasattr(response, "text") else ""
-                print(f"[MULTIMODAL] Gemini text-only response received: {raw[:100]}...")
-        except Exception as e:
-            print(f"[MULTIMODAL ERROR] Failed to generate reply with images: {e}")
-            # Fallback to text-only
-            print(f"[MULTIMODAL] Falling back to text-only generation...")
-            raw = generate_reply(user_tone, tweet_text, 1, tweet_author)[0]
-        
-        # Filter out hashtags and emojis
+        raw = ""
+        for model_name in models_to_try:
+            got_response = False
+            for attempt in range(2):
+                try:
+                    print(f"[MULTIMODAL] Generating reply {i+1}/{num_replies} with model={model_name} (attempt {attempt+1}/2)...")
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=content_parts,
+                        config=config
+                    )
+                    raw = response.text if response and hasattr(response, "text") else ""
+                    print(f"[MULTIMODAL] Gemini multimodal response received: {raw[:100]}...")
+                    if raw.strip():
+                        got_response = True
+                        break
+                    print(f"[MULTIMODAL WARN] Empty response on attempt {attempt + 1}, retrying...")
+                except Exception as e:
+                    print(f"[MULTIMODAL FAIL] model={model_name} attempt {attempt + 1}/2: {e}")
+                    if attempt < 1:
+                        import time
+                        time.sleep(1)
+                    continue
+            if got_response:
+                break
+            print(f"[MULTIMODAL] model={model_name} failed, trying next model...")
+
+        # If multimodal completely failed, fall back to text-only
+        if not raw.strip():
+            print(f"[MULTIMODAL] All attempts failed, falling back to text-only...")
+            fallback = generate_reply(user_tone, tweet_text, 1, tweet_author)
+            raw = fallback[0] if fallback else ""
+
         filtered = _filter_text(raw)
-        # If filtering results in empty, keep raw as fallback
         final_reply = filtered or raw
         replies.append(final_reply)
         print(f"[MULTIMODAL] Final reply {i+1}: {final_reply[:100]}...")

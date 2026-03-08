@@ -49,6 +49,8 @@ def startup_db_check():
 class ReplyRequest(BaseModel):
     tweet_text: str
     image_urls: list[str] = []
+    tweet_id: str | None = None
+    page_url: str | None = None
 
 FREE_DAILY_LIMIT = 15
 
@@ -60,6 +62,95 @@ def generate_reply_endpoint(
     print(f"[GENERATE_REPLY] Request received from clerk_uid: {clerk_uid}")
     print(f"[GENERATE_REPLY] Tweet text: {req.tweet_text[:100]}...")
     print(f"[GENERATE_REPLY] Image URLs count: {len(req.image_urls)}")
+    print(f"[GENERATE_REPLY] Tweet ID from extension: {req.tweet_id}")
+    print(f"[GENERATE_REPLY] Page URL: {req.page_url}")
+
+    # --- SERVER-SIDE TWEET ID & IMAGE EXTRACTION ---
+    import re as _re
+
+    # Strategy 1: Extract tweet_id from page_url (works when on tweet detail page)
+    if not req.tweet_id and req.page_url:
+        url_match = _re.search(r'/status/(\d+)', req.page_url)
+        if url_match:
+            req.tweet_id = url_match.group(1)
+            print(f"[GENERATE_REPLY] Extracted tweet_id from page_url: {req.tweet_id}")
+
+    # Strategy 2: Extract tweet_id from tweet text (sometimes contains x.com/user/status/ID links)
+    if not req.tweet_id:
+        text_match = _re.search(r'(?:twitter\.com|x\.com)/\w+/status/(\d+)', req.tweet_text)
+        if text_match:
+            req.tweet_id = text_match.group(1)
+            print(f"[GENERATE_REPLY] Extracted tweet_id from tweet text: {req.tweet_id}")
+
+    # Strategy 3: Resolve pic.x.com / pic.twitter.com URLs to get tweet_id
+    # These URLs redirect to x.com/user/status/TWEET_ID/photo/1
+    pic_url_match = _re.search(r'(?:https?://)?pic\.(x\.com|twitter\.com)/(\S+)', req.tweet_text)
+    has_pic_url = bool(pic_url_match)
+    if has_pic_url:
+        print(f"[GENERATE_REPLY] Tweet text contains pic URL - images likely present")
+
+    if not req.tweet_id and pic_url_match:
+        pic_short_url = f"https://pic.{pic_url_match.group(1)}/{pic_url_match.group(2)}"
+        print(f"[GENERATE_REPLY] Resolving pic URL to get tweet_id: {pic_short_url}")
+        try:
+            # Follow redirects to get the final URL which contains the tweet_id
+            pic_response = requests.head(pic_short_url, allow_redirects=True, timeout=5, headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            })
+            final_url = pic_response.url
+            print(f"[GENERATE_REPLY] Pic URL resolved to: {final_url}")
+            id_match = _re.search(r'/status/(\d+)', final_url)
+            if id_match:
+                req.tweet_id = id_match.group(1)
+                print(f"[GENERATE_REPLY] Extracted tweet_id from pic URL redirect: {req.tweet_id}")
+        except Exception as e:
+            print(f"[GENERATE_REPLY] Failed to resolve pic URL: {e}")
+
+    # Strategy 4: Try resolving any t.co or https:// short links in tweet text
+    if not req.tweet_id:
+        tco_match = _re.search(r'https?://t\.co/(\S+)', req.tweet_text)
+        if tco_match:
+            tco_url = tco_match.group(0)
+            print(f"[GENERATE_REPLY] Resolving t.co URL: {tco_url}")
+            try:
+                tco_response = requests.head(tco_url, allow_redirects=True, timeout=5, headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                })
+                final_url = tco_response.url
+                print(f"[GENERATE_REPLY] t.co URL resolved to: {final_url}")
+                id_match = _re.search(r'/status/(\d+)', final_url)
+                if id_match:
+                    req.tweet_id = id_match.group(1)
+                    print(f"[GENERATE_REPLY] Extracted tweet_id from t.co redirect: {req.tweet_id}")
+            except Exception as e:
+                print(f"[GENERATE_REPLY] Failed to resolve t.co URL: {e}")
+
+    # Now use tweet_id (from any source) to fetch tweet details via Rettiwt
+    if req.tweet_id:
+        print(f"[GENERATE_REPLY] Using tweet_id: {req.tweet_id}. Fetching exact details via Rettiwt...")
+        from scraper import fetch_tweet_details
+        tweet_data = fetch_tweet_details(req.tweet_id)
+        if tweet_data:
+            print(f"[GENERATE_REPLY] Found exact tweet data via Rettiwt. Overriding payload...")
+            req.tweet_text = f"@{tweet_data.get('author', 'Unknown')} | {tweet_data.get('text', req.tweet_text)}"
+            rettiwt_images = tweet_data.get("image_urls", [])
+            if rettiwt_images:
+                print(f"[GENERATE_REPLY] Using Rettiwt images: {rettiwt_images}")
+                req.image_urls = rettiwt_images
+            else:
+                print(f"[GENERATE_REPLY] Rettiwt returned no images, keeping extension-provided URLs: {req.image_urls}")
+            print(f"[GENERATE_REPLY] Overridden text: {req.tweet_text[:100]}")
+            print(f"[GENERATE_REPLY] Final images: {req.image_urls}")
+        else:
+            print(f"[GENERATE_REPLY] Rettiwt fetch failed for tweet_id: {req.tweet_id}")
+
+    # Clean up pic/t.co URLs from tweet text (they're just noise for the AI)
+    if has_pic_url:
+        req.tweet_text = _re.sub(r'\s*(?:https?://)?pic\.(x\.com|twitter\.com)/\S+', '', req.tweet_text).strip()
+    req.tweet_text = _re.sub(r'\s*https?://t\.co/\S+', '', req.tweet_text).strip()
+    # Also clean up orphaned "https://" fragments (Twitter text sometimes has these on separate lines)
+    req.tweet_text = _re.sub(r'\s*https?://\s*$', '', req.tweet_text, flags=_re.MULTILINE).strip()
+
     if req.image_urls:
         print(f"[GENERATE_REPLY] Image URLs: {req.image_urls}")
     
@@ -138,22 +229,22 @@ def generate_reply_endpoint(
                     image_paths=temp_images,
                     num_replies=1
                 )[0]
-                print(f"[GENERATE_REPLY] Multimodal reply generated: {reply[:100]}...")
+                print(f"[GENERATE_REPLY] Multimodal reply generated: {reply[:100]} {'...' if len(reply) > 100 else ''}")
             else:
                 print(f"[GENERATE_REPLY] No images downloaded successfully, falling back to text-only")
                 # Fallback to text-only if image download failed
                 reply = generate_reply(user_tone=tone, tweet_text=req.tweet_text, num_replies=1)[0]
-                print(f"[GENERATE_REPLY] Text-only reply generated: {reply[:100]}...")
+                print(f"[GENERATE_REPLY] Text-only reply generated: {reply[:100]} {'...' if len(reply) > 100 else ''}")
         else:
             print(f"[GENERATE_REPLY] No images provided, using text-only generation")
             # No images, use text-only generation
             reply = generate_reply(user_tone=tone, tweet_text=req.tweet_text, num_replies=1)[0]
-            print(f"[GENERATE_REPLY] Text-only reply generated: {reply[:100]}...")
+            print(f"[GENERATE_REPLY] Text-only reply generated: {reply[:100]} {'...' if len(reply) > 100 else ''}")
     except Exception as e:
         print(f"[GENERATE_REPLY ERROR] Exception during reply generation: {e}")
         # Fallback to text-only generation
         reply = generate_reply(user_tone=tone, tweet_text=req.tweet_text, num_replies=1)[0]
-        print(f"[GENERATE_REPLY] Fallback reply generated: {reply[:100]}...")
+        print(f"[GENERATE_REPLY] Fallback reply generated: {reply[:100]} {'...' if len(reply) > 100 else ''}")
     finally:
         # Clean up temporary image files
         print(f"[IMAGE CLEANUP] Cleaning up {len(temp_images)} temporary files...")
@@ -164,6 +255,14 @@ def generate_reply_endpoint(
                     print(f"[IMAGE CLEANUP] Deleted: {temp_file}")
             except Exception as e:
                 print(f"[IMAGE CLEANUP ERROR] Failed to delete {temp_file}: {e}")
+
+    # If reply is empty after all retries, return error without consuming quota
+    if not reply or not reply.strip():
+        print(f"[GENERATE_REPLY] Empty reply after all attempts - returning error without consuming quota")
+        raise HTTPException(
+            status_code=503,
+            detail="AI model is temporarily unavailable. Please try again in a few seconds."
+        )
 
     # 4. increment quota and calculate remaining (PRO users unlimited)
     current_used = user_doc.get("quota_used_today", 0)
