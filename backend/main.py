@@ -10,7 +10,7 @@ from users import router as users_router
 from profiles import router as profiles_router
 from billing import router as billing_router
 from webhooks_dodo import router as dodo_webhooks_router
-from config import PORT, CLERK_ALLOWED_ORIGINS
+from config import PORT
 from scraper import fetch_user_tweets
 from datetime import date, datetime, timezone
 import tempfile
@@ -19,16 +19,13 @@ import os
 
 app = FastAPI(title="Twitter Reply Generator")
 
-# CORS for local dev
-allowed_origins = CLERK_ALLOWED_ORIGINS or [
-    "http://localhost:5173",
-    "https://getverve.xyz",
-]
-
+# CORS – must allow Chrome extension origins (chrome-extension://...)
+# which can't be enumerated ahead of time. Auth is handled via Bearer tokens,
+# so wildcard origins are safe here.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
